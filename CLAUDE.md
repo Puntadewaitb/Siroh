@@ -1,6 +1,6 @@
 # Peta Sirah Nabawiyah — handoff
 
-Game belajar sirah berbasis buku **Sirah Nabawiyah (Ar-Rahiqul Makhtum)**, Al-Mubarakfuri, terj. Kathur Suhardi, Pustaka Al-Kautsar (633 hlm). Untuk siswa SMP dan dewasa. Satu file HTML statis, tanpa framework, tanpa fetch eksternal (hanya Google Fonts).
+Game belajar sirah berbasis buku **Sirah Nabawiyah (Ar-Rahiqul Makhtum)**, Al-Mubarakfuri, terj. Kathur Suhardi, Pustaka Al-Kautsar (633 hlm). Untuk siswa SMP dan dewasa. Satu file HTML statis, tanpa framework, tanpa fetch eksternal (font dibundel lokal).
 
 Artifact live (claude.ai, v2): https://claude.ai/artifact/4BfaiLzU48mPSFqhxFvqfo
 
@@ -12,7 +12,10 @@ Artifact live (claude.ai, v2): https://claude.ai/artifact/4BfaiLzU48mPSFqhxFvqfo
 ## Struktur
 ```
 index.html             # hasil akhir (self-contained, ~140 KB) — dipublish via GitHub Pages; JANGAN edit langsung
-manifest.webmanifest, sw.js, icon.svg   # PWA offline
+manifest.webmanifest, sw.js, icon.svg   # PWA offline (sw precache fonts/)
+fonts/                 # font lokal (tools/fetch_fonts.py); tanpa Google Fonts
+capacitor.config.json  # bungkus APK; android/ dan www/ dibuat saat build (gitignored)
+.github/workflows/apk.yml     # build APK debug (manual atau tag v*)
 tests/                 # check_data.mjs (lint soal), e2e.mjs (Playwright), cited_pages.mjs
 tools/                 # verify_sumber.sh (OCR + skrining soal vs PDF)
 .github/workflows/pages.yml   # build+tes+deploy Pages

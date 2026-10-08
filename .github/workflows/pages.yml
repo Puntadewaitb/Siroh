@@ -25,6 +25,7 @@ jobs:
         run: git diff --exit-code index.html
       - run: npm run test:data
       - run: npm run test:e2e
+      - run: npm run test:offline
 
   deploy:
     needs: test
@@ -35,7 +36,7 @@ jobs:
       url: ${{ steps.dep.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - run: mkdir dist && cp index.html manifest.webmanifest sw.js icon.svg dist/
+      - run: mkdir dist && cp index.html manifest.webmanifest sw.js icon.svg dist/ && cp -r fonts dist/fonts
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with: { path: dist }

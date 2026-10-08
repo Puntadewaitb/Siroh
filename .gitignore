@@ -2,3 +2,6 @@ node_modules/
 __pycache__/
 tests/shot-*.png
 *.geojson
+www/
+android/
+*.apk

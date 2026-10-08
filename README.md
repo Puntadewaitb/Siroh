@@ -12,6 +12,11 @@ Game belajar sirah untuk **remaja (level SMP) dan dewasa**, berbasis buku *Sirah
 - Progres tersimpan di `localStorage`; **Mode belajar** membuka semua stasiun.
 - Adab: tidak ada gambar wajah Nabi/sahabat; hanya peta dan simbol. Posisi peta bersifat perkiraan dan dilabeli.
 
+## Offline dan APK
+- **Offline penuh:** font dibundel lokal (`fonts/`), tidak ada request ke luar domain. Setelah dibuka sekali lewat http(s), service worker menyimpan semua file sehingga bisa dimainkan tanpa internet (diuji di `tests/offline.mjs`).
+- **Install sebagai PWA:** buka situs di Chrome Android → menu ⋮ → *Install app* / *Add to Home screen*.
+- **APK (Capacitor):** di GitHub buka tab *Actions → Build APK → Run workflow*. Setelah selesai, unduh `PetaSirah-apk` dari bagian Artifacts. Memberi tag `v1.0.0` juga melampirkan APK ke Release. Ini APK *debug* (ditandatangani kunci debug): cukup untuk sideload, belum untuk Play Store. Lokal: `npm run apk` (butuh JDK 21 + Android SDK).
+
 ## Menjalankan
 ```bash
 python3 -m http.server 8080      # lalu buka http://localhost:8080

@@ -1,1 +1,24 @@
-{"name":"peta-sirah-nabawiyah","version":"1.0.0","private":true,"description":"Game belajar Sirah Nabawiyah (Ar-Rahiqul Makhtum)","scripts":{"build":"python3 build/assemble.py","serve":"python3 -m http.server 8080","test:data":"node tests/check_data.mjs","test:e2e":"node tests/e2e.mjs","test":"npm run build && npm run test:data && npm run test:e2e"},"devDependencies":{"playwright":"1.56.1"}}
+{
+  "name": "peta-sirah-nabawiyah",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Game belajar Sirah Nabawiyah (Ar-Rahiqul Makhtum)",
+  "scripts": {
+    "build": "python3 build/assemble.py",
+    "serve": "python3 -m http.server 8080",
+    "test:data": "node tests/check_data.mjs",
+    "test:e2e": "node tests/e2e.mjs",
+    "test": "npm run build && npm run test:data && npm run test:e2e && npm run test:offline",
+    "web": "node tools/make_www.mjs",
+    "apk": "npm run build && npm run web && npx cap add android && npx cap sync android && cd android && ./gradlew assembleDebug",
+    "test:offline": "node tests/offline.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.56.1",
+    "@capacitor/cli": "^8.5.0"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.5.0",
+    "@capacitor/core": "^8.5.0"
+  }
+}

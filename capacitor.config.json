@@ -1,0 +1,6 @@
+{
+  "appId": "id.petasirah.app",
+  "appName": "Peta Sirah",
+  "webDir": "www",
+  "android": { "allowMixedContent": false }
+}
