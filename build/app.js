@@ -102,25 +102,6 @@ function mapBlock(i){
   h+='<figure class="fig"><figcaption class="mt">'+esc(m.t)+'</figcaption>'+mapSVG(m,W)+legendHTML(m)+'<p class="mn">'+esc(m.n)+'</p></figure></div>';
   return h;
 }
-function ovHTML(){
-  var W=Math.min(appW()-2,380),bp=boxPx("r",OV.bx),k=W/bp.w,H=Math.round(bp.h*k);
-  var cur=firstOpen();
-  var s='<svg class="map" viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" role="img" aria-label="Peta ringkasan tempat-tempat sirah dan progresmu">';
-  s+='<rect width="'+W+'" height="'+H+'" class="sea"/><g transform="scale('+k.toFixed(4)+') translate('+(-bp.x0).toFixed(1)+' '+(-bp.y0).toFixed(1)+')"><use href="#Lr" class="land"/></g>';
-  var items=[],dots="",occ=[];
-  OV.pts.forEach(function(p){
-    var c=PL[p[0]],q=proj("r",c[0],c[1]),x=(q[0]-bp.x0)*k,y=(q[1]-bp.y0)*k;
-    var list=p[2],d=0,isCur=false;list.forEach(function(i){if(isDone(i))d++;if(i===cur)isCur=true;});
-    var cls=d===list.length?"all":(d>0||isCur?"part":"none");
-    dots+='<circle class="pt ov-'+cls+'" cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="7"/>';
-    occ.push({l:x-9,r:x+9,t:y-9,B:y+9});
-    items.push({x:x,y:y,l:p[1]+" "+d+"/"+list.length,dx:p[3],dy:p[4],an:p[5]});
-  });
-  var pos=placeLabels(items,W,H,occ),lb="";
-  pos.forEach(function(p,i){lb+='<text class="lb" x="'+p.x.toFixed(1)+'" y="'+p.y.toFixed(1)+'" text-anchor="'+(p.a==="s"?"start":(p.a==="m"?"middle":"end"))+'">'+esc(items[i].l)+'</text>';});
-  return s+dots+lb+'</svg>';
-}
-
 /* ---------- Stasiun ---------- */
 function qBlock(i){
   var m=st.mode,qs=QS(i),n=got(i),h="";
@@ -149,43 +130,57 @@ function qBlock(i){
   }
   return h+'</div>';
 }
-function stationHTML(i){
-  var s=S[i],m=st.mode,done=isDone(i),lock=!unlocked(i),cur=!done&&!lock&&i===firstOpen();
-  var open=st.open===i&&!lock;
-  var cls="st"+(done?" done":"")+(lock?" lock":"")+(cur?" cur":"")+(open?" open":"");
-  var h='<div class="'+cls+'"><div class="node" aria-hidden="true">'+(done?"✓":(i+1))+'</div><div class="card">';
-  h+='<button class="head" data-act="toggle" data-i="'+i+'" aria-expanded="'+open+'"'+(lock?' aria-disabled="true"':'')+'>';
-  h+='<span class="ttl">'+esc(s.t)+'</span><span class="meta">'+(open?'Stasiun '+(i+1)+' · ':'')+esc(s.lok)+' · hlm. '+s.hlm+' · '+Math.min(got(i),NQ)+'/'+NQ+' soal'+(lock?' · terkunci':'')+'</span></button>';
-  if(open){
-    h+='<div class="body"><p>'+esc(s.r[m])+'</p><div class="chips">'+s.k.map(function(k){return '<span class="chip">'+esc(k)+'</span>';}).join("")+'</div>';
-    h+=mapBlock(i)+qBlock(i);
-    if(done&&!justOk[i]){h+='<button class="btn" data-act="next" data-i="'+i+'">'+(i<S.length-1?'Lanjut ke stasiun '+(i+2):'Ke ujian urutan peristiwa')+'</button>';}
-    h+='</div>';
-  }
-  return h+'</div></div>';
+function stState(j){
+  if(stDone(j))return "done";
+  if(!stUnlocked(j))return "lock";
+  return j===firstOpen()?"cur":"open";
 }
-function tlHTML(){
-  var all=doneCount()===S.length||st.learn;
-  var cur=all&&!P().tl;
-  var cls="st"+(P().tl?" done":"")+(!all?" lock":"")+(cur?" cur":"");
-  var open=st.open===S.length&&all;
-  if(open)cls+=" open";
-  var h='<div class="'+cls+'"><div class="node" aria-hidden="true">'+(P().tl?"✓":"★")+'</div><div class="card">';
-  h+='<button class="head" data-act="toggle" data-i="'+S.length+'" aria-expanded="'+open+'"'+(all?'':' aria-disabled="true"')+'><span class="ttl">Ujian: susun urutan peristiwa</span><span class="meta">Semua bab'+(all?'':' · terbuka setelah 18 stasiun selesai')+'</span></button>';
-  if(open){
-    var ev=TL[st.mode];
-    if(!tl.order.length||tl.order.length!==ev.length)newTL();
-    h+='<div class="body tl"><p>Ketuk peristiwa dari yang paling awal. Ketuk lagi di urutanmu untuk membatalkan.</p>';
-    h+='<span class="tag">Pilihan</span><ul class="pool">';
-    tl.order.forEach(function(idx){if(tl.seq.indexOf(idx)<0)h+='<li><button data-act="pick" data-k="'+idx+'">'+esc(ev[idx][0])+'</button></li>';});
-    h+='</ul><span class="tag">Urutanmu</span><ol class="seq">';
-    tl.seq.forEach(function(idx,n){h+='<li><button data-act="unpick" data-k="'+idx+'"><span class="n">'+(n+1)+'.</span>'+esc(ev[idx][0])+'</button></li>';});
-    h+='</ol><div aria-live="polite">'+(tl.msg?'<p class="fb '+(tl.ok?'good':'err')+'">'+tl.msg+'</p>':'')+'</div>';
-    h+='<div class="row"><button class="btn" data-act="check">Periksa urutan</button><button class="btn ghost" data-act="reset">Acak ulang</button></div></div>';
-  }
-  return h+'</div></div>';
+function bandOf(i){for(var b=0;b<BANDS.length;b++)if(i>=BANDS[b].from&&i<=BANDS[b].to)return BANDS[b].t;return "Ujian akhir";}
+function tlBody(){
+  var ev=TL[st.mode];
+  if(!tl.order.length||tl.order.length!==ev.length)newTL();
+  var h='<div class="tl"><p>Ketuk peristiwa dari yang paling awal. Ketuk lagi di urutanmu untuk membatalkan.</p>';
+  h+='<span class="tag">Pilihan</span><ul class="pool">';
+  tl.order.forEach(function(idx){if(tl.seq.indexOf(idx)<0)h+='<li><button data-act="pick" data-k="'+idx+'">'+esc(ev[idx][0])+'</button></li>';});
+  h+='</ul><span class="tag">Urutanmu</span><ol class="seq">';
+  tl.seq.forEach(function(idx,n){h+='<li><button data-act="unpick" data-k="'+idx+'"><span class="n">'+(n+1)+'.</span>'+esc(ev[idx][0])+'</button></li>';});
+  h+='</ol><div aria-live="polite">'+(tl.msg?'<p class="fb '+(tl.ok?'good':'err')+'">'+tl.msg+'</p>':'')+'</div>';
+  h+='<div class="row"><button class="btn" data-act="check">Periksa urutan</button><button class="btn ghost" data-act="reset">Acak ulang</button></div></div>';
+  if(P().tl)h+='<div class="end"><h2>Jalur selesai</h2><p>Kamu menamatkan 18 stasiun (54 soal) dan ujian urutan di level '+(st.mode==="s"?"SMP":"dewasa")+' dengan '+P().pts+' poin. Coba level lain untuk pertanyaan yang lebih dalam.</p></div>';
+  return h;
 }
-function render(){
+function panelHTML(enter){
+  var i=st.sel.i,nk=NODE_OF[i],nd=NODES[nk],ids=nd.sts,d=0;
+  ids.forEach(function(j){if(stDone(j))d++;});
+  var h='<div class="pn'+(enter?' enter':'')+'" id="pn"><div class="pnh"><span class="pl">'+esc(nd.full)+'</span><span class="pc">'+d+'/'+ids.length+' selesai</span></div>';
+  h+='<div class="stabs" role="group" aria-label="Stasiun di '+esc(nd.full)+'">'+ids.map(function(j){
+    var s=stState(j),ic={done:"✓",cur:"●",open:"○",lock:"🔒"}[s],lab=j===S.length?"★ Ujian":String(j+1);
+    return '<button class="stab '+s+'" data-act="stab" data-i="'+j+'" aria-pressed="'+(j===i)+'" aria-label="'+(j===S.length?'Ujian urutan peristiwa':'Stasiun '+(j+1))+', '+({done:"selesai",cur:"sedang dikerjakan",open:"terbuka",lock:"terkunci"})[s]+'">'+lab+' <i aria-hidden="true">'+ic+'</i></button>';
+  }).join("")+'</div>';
+  if(i===S.length){
+    h+='<h2 class="pt">Ujian: susun urutan peristiwa</h2><p class="pm">Semua bab · '+esc(bandOf(i))+'</p>';
+    h+=stUnlocked(i)?'<div class="body">'+tlBody()+'</div>':lockMsg();
+  }else{
+    var s=S[i],m=st.mode;
+    h+='<h2 class="pt">Stasiun '+(i+1)+' · '+esc(s.t)+'</h2><p class="pm">'+esc(bandOf(i))+' · '+esc(s.lok)+' · hlm. '+s.hlm+' · '+Math.min(got(i),NQ)+'/'+NQ+' soal</p>';
+    if(!stUnlocked(i))h+=lockMsg();
+    else{
+      h+='<div class="body"><p>'+esc(s.r[m])+'</p><div class="chips">'+s.k.map(function(k){return '<span class="chip">'+esc(k)+'</span>';}).join("")+'</div>';
+      h+=mapBlock(i)+qBlock(i);
+      if(isDone(i)&&!justOk[i]){
+        var to=i<S.length-1?i+1:S.length,go=NODE_OF[to]!==nk;
+        h+='<button class="btn" data-act="next" data-i="'+i+'">'+(i<S.length-1?'Lanjut ke stasiun '+(i+2):'Ke ujian urutan peristiwa')+(go?' · menuju '+esc(NODES[NODE_OF[to]].n):'')+'</button>';
+      }
+      h+='</div>';
+    }
+  }
+  return h+'<p class="bnote">Simbol dan rute pada papan bersifat skematis; posisi tempat perkiraan, bukan skala.</p></div>';
+}
+function lockMsg(){
+  var fo=firstOpen();
+  return '<div class="body"><p class="fb err">Terkunci. Selesaikan '+(fo>=S.length?'semua stasiun':'stasiun '+(fo+1))+' dulu, atau nyalakan Mode belajar.</p>'+(fo<=S.length?'<button class="btn ghost" data-act="stab" data-i="'+fo+'">Ke stasiun saat ini</button>':'')+'</div>';
+}
+function render(enter){
   var p=P(),n=doneCount();
   document.getElementById("pts").textContent=p.pts;
   document.getElementById("cnt").textContent=n;
@@ -193,30 +188,38 @@ function render(){
   document.getElementById("bar").style.width=Math.round(qCount()/(S.length*NQ)*100)+"%";
   document.getElementById("m-smp").setAttribute("aria-pressed",st.mode==="s");
   document.getElementById("m-dewasa").setAttribute("aria-pressed",st.mode==="d");
-  document.getElementById("ov").innerHTML=ovHTML();
   chRender();
-  var h="";
-  BANDS.forEach(function(b){
-    h+='<div class="band"><h2>'+esc(b.t)+'</h2></div><div class="route">';
-    for(var i=b.from;i<=b.to;i++)h+=stationHTML(i);
-    h+='</div>';
-  });
-  h+='<div class="band"><h2>Ujian akhir</h2></div><div class="route">'+tlHTML()+'</div>';
-  if(p.tl){h+='<div class="end"><h2>Jalur selesai</h2><p>Kamu menamatkan 18 stasiun (54 soal) dan ujian urutan di level '+(st.mode==="s"?"SMP":"dewasa")+' dengan '+p.pts+' poin. Coba level lain untuk pertanyaan yang lebih dalam.</p></div>';}
-  document.getElementById("app").innerHTML=h;
+  document.getElementById("app").innerHTML=panelHTML(enter);
+  updateBoard();
 }
-function scrollToOpen(){var el=document.querySelector('.head[aria-expanded="true"]');if(el&&el.scrollIntoView)el.scrollIntoView({block:"start",behavior:"smooth"});}
 function focusQ(){var q=document.getElementById("qt");if(q)q.focus({preventScroll:true});}
+function toPanel(){var el=document.getElementById("pn");if(el&&el.scrollIntoView)el.scrollIntoView({block:"start",behavior:reduce()?"auto":"smooth"});}
+/* pilih stasiun: kalau itu stasiun terdepan, token berjalan ke sana lebih dulu */
+function select(i){
+  if(BD.moving)return;
+  var node=NODE_OF[i];
+  if(i===firstOpen()&&stUnlocked(i)&&NODE_OF[BD.tokSt]!==node){
+    travel(i,function(){st.sel.i=i;render(true);toPanel();});
+    return;
+  }
+  st.sel.i=i;render(true);
+  if(BD.view!=="focus"||Math.abs(wpos(node).x-BD.cam.x)+Math.abs(wpos(node).y-BD.cam.y)>2)focusNode(node);
+  toPanel();
+}
+function nodeDefault(k){
+  var ids=NODES[k].sts,fo=firstOpen(),j;
+  if(ids.indexOf(fo)>-1)return fo;
+  for(j=0;j<ids.length;j++)if(stUnlocked(ids[j])&&!stDone(ids[j]))return ids[j];
+  for(j=0;j<ids.length;j++)if(stUnlocked(ids[j]))return ids[j];
+  return ids[0];
+}
+function pickNode(k){if(BD.moving)return;select(nodeDefault(k));}
 
 document.getElementById("app").addEventListener("click",function(e){
   var b=e.target.closest("button");if(!b)return;
   var act=b.getAttribute("data-act"),i=parseInt(b.getAttribute("data-i"),10),k=parseInt(b.getAttribute("data-k"),10);
   var m=st.mode,p=P();
-  if(act==="toggle"){
-    var ok=i===S.length?(doneCount()===S.length||st.learn):unlocked(i);
-    if(!ok)return;
-    st.open=(st.open===i)?-1:i;render();return;
-  }
+  if(act==="stab"){select(i);return;}
   if(act==="mt"){st.mt[i]=k;render();return;}
   if(act==="ans"){
     if(isDone(i)||justOk[i])return;
@@ -231,10 +234,7 @@ document.getElementById("app").addEventListener("click",function(e){
     wrong[i]=(wrong[i]||[]).concat([k]);render();return;
   }
   if(act==="nextq"){justOk[i]=0;render();if(isDone(i)){var nb2=document.querySelector('.btn[data-act="next"]');if(nb2)nb2.focus({preventScroll:true});}else focusQ();return;}
-  if(act==="next"){
-    st.open=i<S.length-1?i+1:S.length;
-    render();scrollToOpen();return;
-  }
+  if(act==="next"){select(i<S.length-1?i+1:S.length);return;}
   if(act==="pick"){tl.seq.push(k);tl.msg="";render();return;}
   if(act==="unpick"){tl.seq=tl.seq.filter(function(x){return x!==k;});tl.msg="";render();return;}
   if(act==="reset"){newTL();render();return;}
@@ -249,10 +249,15 @@ document.getElementById("app").addEventListener("click",function(e){
     render();return;
   }
 });
-function setMode(m){ch={on:false,qs:[],n:0,score:0,streak:0,maxStreak:0,pick:-1,log:[],fin:false};st.mode=m;st.open=firstOpen();wrong=[];justOk={};tl={seq:[],order:[],msg:"",ok:false};save();render();}
+function setMode(m){
+  if(BD.moving)return;
+  ch={on:false,qs:[],n:0,score:0,streak:0,maxStreak:0,pick:-1,log:[],fin:false};
+  st.mode=m;st.sel.i=firstOpen();BD.tokSt=firstOpen();wrong=[];justOk={};tl={seq:[],order:[],msg:"",ok:false};save();
+  render(true);focusNode(NODE_OF[st.sel.i]);
+}
 document.getElementById("m-smp").addEventListener("click",function(){setMode("s");});
 document.getElementById("m-dewasa").addEventListener("click",function(){setMode("d");});
 document.getElementById("learn").addEventListener("change",function(e){st.learn=e.target.checked;render();});
 var lastW=0,rt=null;
-window.addEventListener("resize",function(){clearTimeout(rt);rt=setTimeout(function(){var w=appW();if(Math.abs(w-lastW)>16){lastW=w;render();}},150);});
-load();st.open=firstOpen();lastW=appW();render();
+window.addEventListener("resize",function(){clearTimeout(rt);rt=setTimeout(function(){resizeBoard();var w=appW();if(Math.abs(w-lastW)>16){lastW=w;render();}},150);});
+load();st.sel={i:firstOpen()};BD.tokSt=firstOpen();lastW=appW();initBoard();render();

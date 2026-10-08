@@ -44,16 +44,13 @@ body='''<div class="wrap">
     </div>
     <div class="bar" aria-hidden="true"><i id="bar" style="width:0%"></i></div>
     <label class="learn"><input type="checkbox" id="learn"> Mode belajar: buka semua stasiun tanpa urutan</label>
-    <details class="ovbox" open><summary>Peta perjalanan dan progresmu</summary><div id="ov"></div>
-      <ul class="ovleg"><li><i style="background:var(--green)"></i>semua stasiun tempat itu selesai</li><li><i style="background:var(--ochre)"></i>sedang berjalan</li><li><i style="background:var(--muted)"></i>belum dibuka</li></ul></details>
-    <div id="badges"></div>
-    <details class="ovbox chbox"><summary>Tantangan acak</summary><div id="ch"></div></details>
   </header>
-  <main id="app"></main>
+  <div class="game"><div class="boardw"><div id="board"></div></div><main id="app" aria-live="off"></main></div>
+  <section class="extras" aria-label="Lencana dan tantangan"><div id="badges"></div><details class="ovbox chbox"><summary>Tantangan acak</summary><div id="ch"></div></details></section>
 </div>
 '''
 tl=open(B+'build/tl_block.js').read()
-js=sblock+'\nvar X='+json.dumps(X,ensure_ascii=False)+';\n'+tl+'\n'+open(B+'build/maps.js').read()+'\n'+open(B+'build/challenge.js').read()+'\n'+open(B+'build/app.js').read()
+js=sblock+'\nvar X='+json.dumps(X,ensure_ascii=False)+';\n'+tl+'\n'+open(B+'build/maps.js').read()+'\n'+open(B+'build/challenge.js').read()+'\n'+open(B+'build/board.js').read()+'\n'+open(B+'build/app.js').read()
 out=head+'<style>\n'+css.replace('<style>','').replace('</style>','')+'</style>\n</head>\n<body>\n'+defs+'\n'+body+'<script>\n'+js+'\n</script>\n<script>if("serviceWorker" in navigator&&/^https?:/.test(location.protocol)){try{navigator.serviceWorker.register("sw.js").catch(function(){});}catch(e){}}</script>\n</body>\n</html>\n'
 open(B+'index.html','w').write(out)
 print(len(out.encode()))

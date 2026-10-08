@@ -4,7 +4,8 @@ Game belajar sirah untuk **remaja (level SMP) dan dewasa**, berbasis buku *Sirah
 
 ## Fitur
 - **18 stasiun** mengikuti bab buku, masing-masing punya ringkasan, peta skematis, dan **3 soal** per level (54 soal/level, 108 total). Tiap soal punya penjelasan dan rujukan **hlm.** buku.
-- **24 peta** (rute hijrah, Isra' Mi'raj, Thaif, Abrahah, peperangan, dst.) + peta ringkasan progres.
+- **Papan peta ala game**: peta daerah sebagai latar, token penanda progres berjalan di rute ke tempat berikutnya (kamera mengikuti), ketuk tempat untuk membuka stasiunnya; tempat yang sama (mis. Makkah) menampilkan tab nomor stasiun selesai/belum/terkunci. Bisa geser, zoom, dan "lihat semua".
+- **24 peta detail** (rute hijrah, Isra' Mi'raj, Thaif, Abrahah, peperangan, dst.) di dalam tiap stasiun.
 - **Ujian urutan peristiwa** setelah 18 stasiun.
 - **Tantangan acak**: 10 soal acak dari stasiun yang sudah selesai (opsi diacak), skor, rentetan benar, dan daftar materi yang perlu diulang beserta halaman buku.
 - **Lencana** per fase + ujian urutan + tantangan sempurna.

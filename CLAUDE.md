@@ -21,6 +21,7 @@ build/
   s_block.js           # BANDS + S[18] (stasiun: ringkasan SMP/dewasa, chips, soal #1 per level)
   qdata.py             # ST[18]: 2 soal tambahan per level (tuple: soal, benar, [salah], penjelasan, "hlm. N")
   challenge.js         # Tantangan acak + lencana
+  board.js             # Papan peta ala game: NODE_OF (stasiun -> tempat), NODES, kamera, token, rute, drag/zoom
   tl_block.js          # TL: data ujian urutan peristiwa (SMP 6, dewasa 8)
   maps.js              # PL (tempat), MP (24 peta), SM (stasiun -> peta), MTAB, OV (peta ringkasan)
   app.js               # logika/render/state
@@ -41,13 +42,13 @@ Build: `npm run build` (= `python3 build/assemble.py`, output `index.html`) (pat
 - localStorage key `peta-sirah-v2` (`prog.{s,d}.qd[i]` = jumlah soal benar 0–3, `pts`, `tl`). Migrasi otomatis dari `peta-sirah-v1`.
 - Stasiun terkunci sampai stasiun sebelumnya 3/3 (kecuali "Mode belajar"). Poin: SMP 4/soal, dewasa 8/soal, setengahnya kalau salah dulu; ujian urutan +30/+60.
 - Setelah benar: tombol "Soal berikutnya"; selesai 3 soal -> mode ulasan semua soal.
-- Stasiun yang dibuka melebar penuh (node disembunyikan) supaya peta cukup lebar di HP.
+- Layout: papan peta sticky di atas (HP) / kolom kiri (desktop ≥900px), panel stasiun di bawah/kanan. `st.sel.i` = stasiun terpilih (18 = ujian). Klik simpul selesai membuka ulang stasiunnya; simpul terkunci menampilkan pesan.
 
 ## Sistem peta
 - Dasar: `Lr` (regional, lon 31–48, lat 9–33, `x=(lon−31)·cos23°·60`, `y=(33−lat)·60`) dan `Lw` (lebar, lon 25–60, lat 9–39, `x=(lon−25)·cos27°·20`, `y=(39−lat)·20`). Path ada di `<defs>` svg tersembunyi, dipakai lewat `<use>`.
 - Spesifikasi peta di `MP`: `b` dasar (r/w), `bx` bbox [lonB,lonT,latS,latU], `p` titik [kunci,label,dx,dy,anchor,"m"=utama], `r` rute {p, c:a|b|c, d:putus-putus, a:panah, l:legend}, `x` teks wilayah, `n` catatan (selalu cantumkan hlm. dan disclaimer skematis).
 - `placeLabels()` menaruh label otomatis tanpa tabrak label/titik/garis rute (kandidat: dasar, tengah atas/bawah, flip, geser dy).
-- Peta ringkasan (`OV`): titik tempat berwarna sesuai progres stasiun terkait.
+- Papan perjalanan (`board.js`): 9 simpul tempat (Makkah, Thaif, Madinah, Badr, Uhud, Hudaibiyah, Khaibar, Mu’tah, Hunain). `NODE_OF[i]` = tempat tiap stasiun (indeks 18 = ujian, di Madinah). Stasiun di tempat sama jadi tab di panel. Token = progres; saat stasiun terdepan dipilih dan tempatnya beda, token berjalan di rute bezier + kamera mengikuti (instan kalau prefers-reduced-motion). Posisi Uhud digeser skematis agar tidak menumpuk Madinah. `OV` di maps.js sudah tidak dipakai.
 - Peta Abrahah ada di stasiun 2 (hlm. 44–45), Thaif + Isra' di stasiun 7 (hlm. 141–164). Stasiun 4 dan 6 (indeks 3 dan 5) belum punya peta.
 
 ## Catatan akurasi (cek dulu sebelum rilis ke luar)
