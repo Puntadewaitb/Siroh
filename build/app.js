@@ -194,6 +194,7 @@ function render(){
   document.getElementById("m-smp").setAttribute("aria-pressed",st.mode==="s");
   document.getElementById("m-dewasa").setAttribute("aria-pressed",st.mode==="d");
   document.getElementById("ov").innerHTML=ovHTML();
+  chRender();
   var h="";
   BANDS.forEach(function(b){
     h+='<div class="band"><h2>'+esc(b.t)+'</h2></div><div class="route">';
@@ -248,7 +249,7 @@ document.getElementById("app").addEventListener("click",function(e){
     render();return;
   }
 });
-function setMode(m){st.mode=m;st.open=firstOpen();wrong=[];justOk={};tl={seq:[],order:[],msg:"",ok:false};save();render();}
+function setMode(m){ch={on:false,qs:[],n:0,score:0,streak:0,maxStreak:0,pick:-1,log:[],fin:false};st.mode=m;st.open=firstOpen();wrong=[];justOk={};tl={seq:[],order:[],msg:"",ok:false};save();render();}
 document.getElementById("m-smp").addEventListener("click",function(){setMode("s");});
 document.getElementById("m-dewasa").addEventListener("click",function(){setMode("d");});
 document.getElementById("learn").addEventListener("change",function(e){st.learn=e.target.checked;render();});
