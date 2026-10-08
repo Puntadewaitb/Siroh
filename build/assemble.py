@@ -34,7 +34,7 @@ head=open(B+'build/head.html').read()
 body='''<div class="wrap">
   <header class="top">
     <h1>Peta Sirah Nabawiyah</h1>
-    <p class="src">Dari buku <i>Sirah Nabawiyah</i> (Ar-Rahiqul Makhtum) karya Syaikh Shafiyyurrahman Al-Mubarakfuri, terjemahan Kathur Suhardi, Pustaka Al-Kautsar. Nomor halaman mengikuti cetakan buku itu.</p>
+    <p class="src">Dari buku <i>Sirah Nabawiyah</i> (Ar-Rahiqul Makhtum) karya Syaikh Shafiyyurrahman Al-Mubarakfuri.</p>
     <div class="ctrl">
       <div class="seg" role="group" aria-label="Pilih level">
         <button id="m-smp" aria-pressed="true">Level SMP</button>
