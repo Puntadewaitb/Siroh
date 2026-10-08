@@ -11,11 +11,16 @@ Artifact live (claude.ai, v2): https://claude.ai/artifact/4BfaiLzU48mPSFqhxFvqfo
 
 ## Struktur
 ```
-peta-sirah.html        # hasil akhir (self-contained, ~135 KB) — ini yang dipublish
+index.html             # hasil akhir (self-contained, ~140 KB) — dipublish via GitHub Pages; JANGAN edit langsung
+manifest.webmanifest, sw.js, icon.svg   # PWA offline
+tests/                 # check_data.mjs (lint soal), e2e.mjs (Playwright), cited_pages.mjs
+tools/                 # verify_sumber.sh (OCR + skrining soal vs PDF)
+.github/workflows/pages.yml   # build+tes+deploy Pages
 build/
   assemble.py          # rakit peta-sirah.html dari semua bagian di bawah
   s_block.js           # BANDS + S[18] (stasiun: ringkasan SMP/dewasa, chips, soal #1 per level)
   qdata.py             # ST[18]: 2 soal tambahan per level (tuple: soal, benar, [salah], penjelasan, "hlm. N")
+  challenge.js         # Tantangan acak + lencana
   tl_block.js          # TL: data ujian urutan peristiwa (SMP 6, dewasa 8)
   maps.js              # PL (tempat), MP (24 peta), SM (stasiun -> peta), MTAB, OV (peta ringkasan)
   app.js               # logika/render/state
@@ -24,7 +29,7 @@ mapgen/
   clip.py              # shapely: clip land-10m/50m GeoJSON ke bbox + proyeksi -> path SVG
   reg-land.txt, wide-land.txt   # path daratan hasil clip (dipakai assemble.py)
 ```
-Build: `cd build && python3 -I assemble.py` (path relatif ke repo; header `<head>` ada di `build/head.html`). `mapgen/clip.py` butuh `land-10m.geojson`/`land-50m.geojson` (dari npm `world-atlas` + `topojson-client`, tidak ikut di repo) dan `shapely`; hanya perlu dijalankan ulang kalau bbox/proyeksi berubah.
+Build: `npm run build` (= `python3 build/assemble.py`, output `index.html`) (path relatif ke repo; header `<head>` ada di `build/head.html`). `mapgen/clip.py` butuh `land-10m.geojson`/`land-50m.geojson` (dari npm `world-atlas` + `topojson-client`, tidak ikut di repo) dan `shapely`; hanya perlu dijalankan ulang kalau bbox/proyeksi berubah.
 
 ## Model data
 - 18 stasiun (urut bab buku) + ujian urutan peristiwa. 3 soal per level per stasiun = 54 soal/level.
@@ -58,3 +63,7 @@ Build: `cd build && python3 -I assemble.py` (path relatif ke repo; header `<head
 
 ## Aturan teknis yang dipegang
 - Satu file HTML, tidak ada fetch eksternal, localStorage dibungkus try/catch, layout aman di 360px (tanpa horizontal scroll), token warna terang/gelap lewat CSS variables (`--sea/--land/--coast` untuk peta).
+
+## Status verifikasi
+- 108 soal sudah dicek ke OCR PDF (Sirah Nabawiyah.pdf di repo): skrining token + cek manual 25 soal berskor rendah; semua cocok. Koreksi: wording st15 dewasa q1, rujukan st9 dewasa q2 (hlm. 184–188).
+- Belum diverifikasi: ringkasan stasiun, chips, data ujian urutan, dan koordinat peta.

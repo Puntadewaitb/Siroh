@@ -138,7 +138,7 @@ var S=[
  k:["Delapan surat","Najasyi","Kisra","Khaibar","Dzatur Riqa’"],
  q:{s:{t:"Surat Nabi kepada Kisra ditujukan kepada raja mana?",o:["Raja Mesir","Raja Persia","Raja Romawi"],a:1,
      e:"Daftar surat dalam buku: Najasyi (Habasyah), Muqauqis (Mesir), Kisra (Persia), Qaishar (Romawi), lalu Al-Mundzir bin Sawa, pemimpin Yamamah, pemimpin Damaskus, dan raja Uman.",h:"hlm. 420–432"},
-    d:{t:"Mengapa penulis menempatkan Perang Dzatur Riqa’ pada 7 H, bukan 4 H seperti mayoritas penulis?",o:["Karena Abu Musa Al-Asy’ari dan Abu Hurairah ikut serta, padahal keduanya masuk Islam setelah Khaibar yang terjadi 7 H","Karena perang itu terjadi tepat sebelum Badr","Karena pasukan Romawi sudah tiba di Madinah"],a:0,
+    d:{t:"Mengapa penulis menempatkan Perang Dzatur Riqa’ pada 7 H, bukan 4 H seperti mayoritas penulis?",o:["Karena Abu Musa Al-Asy’ari dan Abu Hurairah ikut serta, dan keikutsertaan mereka menunjukkan perang itu terjadi setelah Perang Khaibar (7 H)","Karena perang itu terjadi tepat sebelum Badr","Karena pasukan Romawi sudah tiba di Madinah"],a:0,
      e:"Itu contoh sikap penulis yang keluar dari perbedaan pendapat dan menetapkan satu pilihan. Dalam pengantar penerjemah dicontohkan pula Perang Bani Mushthaliq, yang ditetapkan Sya’ban 6 H.",h:"Pengantar penerjemah, hlm. xi; bab di hlm. 460"}}},
 
 {t:"Perang Mu’tah dan penaklukan Makkah",lok:"Mu’tah dan Makkah",hlm:"469–503",

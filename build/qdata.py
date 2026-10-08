@@ -142,7 +142,7 @@ ST=[
  'd':[
  ("Berapa tokoh Quraisy yang ditunjuk untuk mengepung rumah Nabi pada malam hijrah?",
   "Sebelas orang, antara lain Abu Jahal, Abu Lahab, dan Umayyah bin Khalaf",["Tujuh orang","Dua puluh orang","Empat puluh orang"],
-  "Parlemen Makkah di Darun Nadwah menyetujui rencana jahat itu dengan suara bulat. Yang tampak tidur di tempat tidur beliau ternyata Ali.","hlm. 186–188"),
+  "Parlemen Makkah di Darun Nadwah menyetujui rencana jahat itu dengan suara bulat. Yang tampak tidur di tempat tidur beliau ternyata Ali.","hlm. 184–188"),
  ("Siapa Abdullah bin Uraiqith dalam perjalanan hijrah?",
   "Penunjuk jalan upahan yang saat itu masih musyrik tetapi dipercaya",["Sahabat Anshar utusan As’ad bin Zurarah","Pembantu Abu Bakar yang sudah masuk Islam","Pemimpin Bani Khuza’ah"],
   "Nabi dan Abu Bakar mengupahnya dan menyerahkan dua ekor unta kepadanya. Ia datang ke gua pada malam Senin, 16 September 622 M, lalu menempuh jalur pesisir yang jarang dilalui.","hlm. 190–191")]},
