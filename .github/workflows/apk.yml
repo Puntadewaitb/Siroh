@@ -31,8 +31,12 @@ jobs:
         with:
           name: PetaSirah-apk
           path: PetaSirah.apk
-      - name: Lampirkan ke Release (hanya untuk tag)
-        if: startsWith(github.ref, 'refs/tags/')
+      - name: Publikasikan ke Release (link unduhan tetap)
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || 'apk-terbaru' }}
+          target_commitish: ${{ github.sha }}
+          name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || 'Peta Sirah (APK terbaru)' }}
+          body: "APK debug Peta Sirah Nabawiyah. Unduh PetaSirah.apk di bawah, izinkan install dari sumber tidak dikenal, lalu buka."
           files: PetaSirah.apk
+          overwrite_files: true
