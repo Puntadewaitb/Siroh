@@ -34,7 +34,7 @@ npm run test:e2e     # Playwright: tamatkan 18 stasiun x 2 level, ujian, tantang
 Edit sumber di `build/` (`s_block.js`, `qdata.py`, `tl_block.js`, `maps.js`, `challenge.js`, `app.js`, CSS), **jangan edit `index.html` langsung**. CI gagal kalau `index.html` tidak sama dengan hasil build.
 
 ## Akurasi terhadap buku
-Nomor halaman = halaman cetakan buku (= halaman PDF − 33). Semua soal diverifikasi ke OCR PDF `Sirah Nabawiyah.pdf`:
+Nomor halaman = halaman cetakan buku (= halaman PDF − 33). Soal diverifikasi ke OCR PDF buku (`Sirah Nabawiyah.pdf`, tidak disertakan di repo; taruh sendiri di root repo untuk menjalankan tools):
 ```bash
 sudo apt install poppler-utils tesseract-ocr tesseract-ocr-ind
 tools/verify_sumber.sh /tmp/verify   # OCR halaman rujukan + skrining kecocokan token

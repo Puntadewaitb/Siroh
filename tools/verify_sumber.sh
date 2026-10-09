@@ -1,6 +1,6 @@
 #!/bin/bash
 # Verifikasi soal ke buku: OCR semua halaman yang dirujuk lalu skrining.
-# Butuh: poppler-utils, tesseract-ocr + tesseract-ocr-ind, node, python3, dan "Sirah Nabawiyah.pdf" di root repo.
+# Butuh: poppler-utils, tesseract-ocr + tesseract-ocr-ind, node, python3, dan "Sirah Nabawiyah.pdf" di root repo (file tidak ikut di git; taruh sendiri secara lokal).
 # Nomor halaman buku = nomor halaman PDF - 33.
 set -e
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"; W="${1:-/tmp/sirah-verify}"; mkdir -p "$W/ocr"; export OMP_THREAD_LIMIT=1

@@ -42,7 +42,7 @@ Build: `npm run build` (= `python3 build/assemble.py`, output `index.html`) (pat
 - `S[i].q[m]` = soal 1 (opsi tetap, `a` = indeks benar). `X[i][m]` = 2 soal tambahan, dibuat `assemble.py` (opsi diacak seeded, `a` dihitung ulang). `Z[i][m]` = 7 soal baru dari `bank.py` (opsi mc/mu diacak seeded). Runtime menggabungkan jadi `BK[i][m]` (10 soal, field `ty`); `QS(i)` = 3 soal terundi dari `BK`. m = `s` (SMP, 3 opsi) / `d` (dewasa, 4 opsi).
 - Tipe soal (`ty`): `mc` pilihan ganda (SMP 3 / dewasa 4 opsi), `mu` pilih 2 dari 5 (`a` = 2 indeks), `or` urutkan (`it` = urutan benar; SMP 3 / dewasa 4 item), `mt` jodohkan (`l`/`r` 3 pasang, `r` urutan sama dengan `l`). Komposisi bank per level: 6 mc, 2 mu, 1 or, 1 mt (3 mc di bank.py + 3 mc lama).
 - Tiap soal punya `e` (penjelasan) dan `h` (rujukan "hlm. N" — nomor halaman cetakan buku = halaman PDF − 33).
-- OCR buku: PDF hasil scan (tanpa text layer). Teks OCR tidak ikut di bundle; kalau perlu verifikasi fakta, pakai PDF-nya (Project "Siroh" di claude.ai) atau OCR ulang dengan tesseract.
+- OCR buku: PDF hasil scan (tanpa text layer), TIDAK disimpan di repo (hak cipta). Untuk verifikasi fakta, taruh `Sirah Nabawiyah.pdf` di root repo secara lokal (di-gitignore) atau pakai Project "Siroh" di claude.ai, lalu OCR dengan tesseract.
 
 ## State & UX
 - localStorage key `peta-sirah-v2` (`prog.{s,d}.qd[i]` = jumlah soal benar 0–3, `pts`, `tl`). Migrasi otomatis dari `peta-sirah-v1`.
@@ -74,5 +74,5 @@ Build: `npm run build` (= `python3 build/assemble.py`, output `index.html`) (pat
 
 ## Status verifikasi
 - Bank 10 soal/stasiun (360 soal): soal asli 108 dicek seperti di bawah; 252 soal `bank.py` ditulis dari OCR bab dan diskrining dengan `tools/verify_sumber.sh` (token) + cek manual distraktor spesifik.
-- 108 soal sudah dicek ke OCR PDF (Sirah Nabawiyah.pdf di repo): skrining token + cek manual 25 soal berskor rendah; semua cocok. Koreksi: wording st15 dewasa q1, rujukan st9 dewasa q2 (hlm. 184–188).
+- 108 soal sudah dicek ke OCR PDF (Sirah Nabawiyah.pdf; file TIDAK ada di repo, hanya lokal/Project claude.ai; di-gitignore): skrining token + cek manual 25 soal berskor rendah; semua cocok. Koreksi: wording st15 dewasa q1, rujukan st9 dewasa q2 (hlm. 184–188).
 - Belum diverifikasi: ringkasan stasiun, chips, data ujian urutan, dan koordinat peta.
