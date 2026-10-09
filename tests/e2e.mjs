@@ -34,7 +34,11 @@ const answer=solveStation;
   ok(await pg.locator(".hearts").count()===1,"ikon hati tampil");
   await answerCurrent(pg,1,{wrong:true});
   ok(await pg.evaluate(()=>P().hp[1])===2,"salah 1x: sisa 2 hati");
-  for(let n=0;n<2;n++)await answerCurrent(pg,1,{wrong:true});
+  /* SMP mc hanya punya 2 opsi salah per soal: bila terpaksa benar, lanjut ke soal berikutnya */
+  for(let n=0;n<12&&!(await pg.locator(".failbox").count());n++){
+    if(await pg.locator('.btn[data-act="nextq"]').count())await pg.click('.btn[data-act="nextq"]');
+    await answerCurrent(pg,1,{wrong:true});
+  }
   ok(await pg.locator(".failbox").count()===1,"hati habis: kotak ulang tampil");
   const after=await pg.evaluate(()=>P().set[1].slice());
   ok(after.every(x=>!before.includes(x)),"set soal baru tidak tumpang tindih dengan yang lama");
