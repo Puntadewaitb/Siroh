@@ -4,7 +4,7 @@ function chPool(){
   var pool=[];
   for(var i=0;i<S.length;i++){
     if(!(st.learn||isDone(i)))continue;
-    QS(i).forEach(function(q){pool.push({i:i,q:q});});
+    BK[i][st.mode].forEach(function(q){if(q.ty==="mc")pool.push({i:i,q:q});});
   }
   return pool;
 }

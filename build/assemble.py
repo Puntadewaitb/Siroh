@@ -23,6 +23,35 @@ for si,st in enumerate(ST):
         row[m]=qs
     X.append(row)
 assert len(X)==18
+# Bank soal tambahan (tipe: pilihan ganda, pilih 2 dari 5, urutkan, jodohkan)
+from bank import BANK
+Z=[]
+for si in range(18):
+    row={}
+    for m in 's','d':
+        out=[]
+        for qi,q in enumerate(BANK.get(si+1,{}).get(m,[])):
+            rnd=random.Random("bank-%d-%s-%d"%(si,m,qi))
+            ty=q['ty']
+            if ty=='mc':
+                nw=2 if m=='s' else 3
+                assert len(q['w'])==nw and q['b'] not in q['w'],(si,m,qi,'mc')
+                o=[q['b']]+list(q['w']);rnd.shuffle(o)
+                out.append({'ty':'mc','t':q['t'],'o':o,'a':o.index(q['b']),'e':q['e'],'h':q['h']})
+            elif ty=='mu':
+                assert len(q['b'])==2 and len(q['w'])==3 and not set(q['b'])&set(q['w']),(si,m,qi,'mu')
+                o=list(q['b'])+list(q['w']);rnd.shuffle(o)
+                out.append({'ty':'mu','t':q['t'],'o':o,'a':sorted(o.index(x) for x in q['b']),'e':q['e'],'h':q['h']})
+            elif ty=='or':
+                n=3 if m=='s' else 4
+                assert len(q['it'])==n and len(set(q['it']))==n,(si,m,qi,'or')
+                out.append({'ty':'or','t':q['t'],'it':q['it'],'e':q['e'],'h':q['h']})
+            elif ty=='mt':
+                assert len(q['pairs'])==3 and len({a for a,_ in q['pairs']})==3 and len({b for _,b in q['pairs']})==3,(si,m,qi,'mt')
+                out.append({'ty':'mt','t':q['t'],'l':[a for a,_ in q['pairs']],'r':[b for _,b in q['pairs']],'e':q['e'],'h':q['h']})
+            else: raise Exception(ty)
+        row[m]=out
+    Z.append(row)
 css=open(B+'build/css_old.txt').read()+open(B+'build/style_new.css').read()
 land_r=open(B+'mapgen/reg-land.txt').read(); land_w=open(B+'mapgen/wide-land.txt').read()
 defs='<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><path id="Lr" fill-rule="evenodd" d="%s"/><path id="Lw" fill-rule="evenodd" d="%s"/>'%(land_r,land_w)
@@ -50,7 +79,7 @@ body='''<div class="wrap">
 </div>
 '''
 tl=open(B+'build/tl_block.js').read()
-js=sblock+'\nvar X='+json.dumps(X,ensure_ascii=False)+';\n'+tl+'\n'+open(B+'build/maps.js').read()+'\n'+open(B+'build/challenge.js').read()+'\n'+open(B+'build/board.js').read()+'\n'+open(B+'build/app.js').read()
+js=sblock+'\nvar X='+json.dumps(X,ensure_ascii=False)+';\nvar Z='+json.dumps(Z,ensure_ascii=False)+';\n'+tl+'\n'+open(B+'build/maps.js').read()+'\n'+open(B+'build/challenge.js').read()+'\n'+open(B+'build/board.js').read()+'\n'+open(B+'build/quiz.js').read()+'\n'+open(B+'build/app.js').read()
 out=head+'<style>\n'+css.replace('<style>','').replace('</style>','')+'</style>\n</head>\n<body>\n'+defs+'\n'+body+'<script>\n'+js+'\n</script>\n<script>if("serviceWorker" in navigator&&/^https?:/.test(location.protocol)){try{navigator.serviceWorker.register("sw.js").catch(function(){});}catch(e){}}</script>\n</body>\n</html>\n'
 open(B+'index.html','w').write(out)
 print(len(out.encode()))

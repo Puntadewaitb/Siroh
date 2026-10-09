@@ -9,7 +9,6 @@ function load(){
 }
 function save(){try{localStorage.setItem(KEY,JSON.stringify({prog:st.prog,mode:st.mode}));}catch(e){}}
 function P(){return st.prog[st.mode];}
-function QS(i){return [S[i].q[st.mode]].concat(X[i][st.mode]);}
 function got(i){return P().qd[i]||0;}
 function isDone(i){return got(i)>=NQ;}
 function doneCount(){var n=0;for(var i=0;i<S.length;i++)if(isDone(i))n++;return n;}
@@ -103,33 +102,6 @@ function mapBlock(i){
   return h;
 }
 /* ---------- Stasiun ---------- */
-function qBlock(i){
-  var m=st.mode,qs=QS(i),n=got(i),h="";
-  var lbl=(m==="s"?"SMP":"dewasa");
-  if(isDone(i)&&!justOk[i]){
-    h+='<div class="q"><span class="lbl">Ulasan · '+lbl+'</span>';
-    qs.forEach(function(q,k){h+='<div class="rv"><p class="qt">'+(k+1)+'. '+esc(q.t)+'</p><p class="ans">Jawaban: '+esc(q.o[q.a])+'</p><p class="fb good">'+esc(q.e)+' <span class="ref">'+esc(q.h)+'</span></p></div>';});
-    h+='</div>';
-    return h;
-  }
-  var c=justOk[i]?n-1:n,q=qs[c],w=wrong[i]||[];
-  h+='<div class="q"><span class="lbl">Pertanyaan '+(c+1)+' dari '+NQ+' · '+lbl+'</span><p class="qt" tabindex="-1" id="qt">'+esc(q.t)+'</p><div class="opts">';
-  q.o.forEach(function(o,k){
-    var cls="opt",dis="";
-    if(justOk[i]){dis=" disabled";if(k===q.a)cls+=" ok";}
-    else if(w.indexOf(k)>-1){cls+=" bad";dis=" disabled";}
-    h+='<button class="'+cls+'" data-act="ans" data-i="'+i+'" data-k="'+k+'"'+dis+'>'+esc(o)+'</button>';
-  });
-  h+='</div><div aria-live="polite">';
-  if(justOk[i])h+='<p class="fb good">'+esc(q.e)+' <span class="ref">'+esc(q.h)+'</span></p>';
-  else if(w.length)h+='<p class="fb err">Belum tepat. Baca lagi ringkasan dan peta di atas atau buka '+esc(q.h)+' di buku, lalu coba lagi.</p>';
-  h+='</div>';
-  if(justOk[i]){
-    if(c<NQ-1)h+='<button class="btn" data-act="nextq" data-i="'+i+'">Soal berikutnya</button>';
-    else h+='<button class="btn" data-act="nextq" data-i="'+i+'">Selesai: lihat ulasan</button>';
-  }
-  return h+'</div>';
-}
 function stState(j){
   if(stDone(j))return "done";
   if(!stUnlocked(j))return "lock";
@@ -221,18 +193,7 @@ document.getElementById("app").addEventListener("click",function(e){
   var m=st.mode,p=P();
   if(act==="stab"){select(i);return;}
   if(act==="mt"){st.mt[i]=k;render();return;}
-  if(act==="ans"){
-    if(isDone(i)||justOk[i])return;
-    var q=QS(i)[got(i)];
-    if(k===q.a){
-      var first=!(wrong[i]&&wrong[i].length);
-      p.qd[i]=got(i)+1;p.pts+=(m==="s"?4:8)/(first?1:2);save();
-      justOk[i]=1;wrong[i]=[];render();
-      var nb=document.querySelector('.btn[data-act="nextq"]');if(nb)nb.focus({preventScroll:true});
-      return;
-    }
-    wrong[i]=(wrong[i]||[]).concat([k]);render();return;
-  }
+  if(quizAct(act,i,k)){render();if(act==="ans"||act==="mchk"||act==="ochk"||act==="mtchk"){var nb=document.querySelector('.btn[data-act="nextq"]');if(nb)nb.focus({preventScroll:true});}return;}
   if(act==="nextq"){justOk[i]=0;render();if(isDone(i)){var nb2=document.querySelector('.btn[data-act="next"]');if(nb2)nb2.focus({preventScroll:true});}else focusQ();return;}
   if(act==="next"){select(i<S.length-1?i+1:S.length);return;}
   if(act==="pick"){tl.seq.push(k);tl.msg="";render();return;}
@@ -251,10 +212,12 @@ document.getElementById("app").addEventListener("click",function(e){
 });
 function setMode(m){
   if(BD.moving)return;
+  uq={};fl={};
   ch={on:false,qs:[],n:0,score:0,streak:0,maxStreak:0,pick:-1,log:[],fin:false};
   st.mode=m;st.sel.i=firstOpen();BD.tokSt=firstOpen();wrong=[];justOk={};tl={seq:[],order:[],msg:"",ok:false};save();
   render(true);focusNode(NODE_OF[st.sel.i]);
 }
+document.getElementById("app").addEventListener("change",function(e){var s=e.target.closest&&e.target.closest("select[data-act=msl]");if(s){quizChange(s);render();}});
 document.getElementById("m-smp").addEventListener("click",function(){setMode("s");});
 document.getElementById("m-dewasa").addEventListener("click",function(){setMode("d");});
 document.getElementById("learn").addEventListener("change",function(e){st.learn=e.target.checked;render();});

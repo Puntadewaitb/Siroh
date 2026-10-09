@@ -1,10 +1,10 @@
 // Playwright: papan peta, perpindahan token, tab per tempat, 18 stasiun x 2 level, ujian, tantangan, tanpa horizontal scroll 360px.
-import {chromium} from "playwright";import {pathToFileURL} from "node:url";import path from "node:path";
+import {chromium} from "playwright";import {answerCurrent,solveStation} from "./solve.mjs";import {pathToFileURL} from "node:url";import path from "node:path";
 const url=pathToFileURL(path.resolve("index.html")).href;
 const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||undefined});
 let fail=0;const ok=(c,m)=>{if(!c){console.error("FAIL",m);fail++}else console.log("ok  ",m)};
 const idle=pg=>pg.waitForFunction(()=>!BD.moving,null,{timeout:10000});
-const answer=async(pg,i)=>{for(let q=0;q<3;q++){const a=await pg.evaluate(i=>QS(i)[got(i)].a,i);await pg.click(`.opt[data-act="ans"][data-k="${a}"]`);await pg.click('.btn[data-act="nextq"]');}};
+const answer=solveStation;
 
 /* 1. Animasi nyata: token berjalan Makkah -> Thaif */
 {
@@ -24,6 +24,27 @@ const answer=async(pg,i)=>{for(let q=0;q<3;q++){const a=await pg.evaluate(i=>QS(
   ok(await pg.locator(".fb.err",{hasText:"Terkunci"}).count()===1,"simpul terkunci menampilkan pesan");
   ok(errs.length===0,"tanpa error JS (animasi) "+errs.join("|"));
   await pg.close();
+}
+/* 1b. Hati habis: stasiun diulang dengan set soal baru, progres stasiun lain utuh */
+{
+  const ctx=await browser.newContext({viewport:{width:360,height:740},reducedMotion:"reduce"});const pg=await ctx.newPage();const errs=[];pg.on("pageerror",e=>errs.push(e.message));
+  await pg.goto(url);
+  await answer(pg,0);await pg.click('.btn[data-act="next"]');await idle(pg);
+  const before=await pg.evaluate(()=>P().set[1].slice());
+  ok(await pg.locator(".hearts").count()===1,"ikon hati tampil");
+  await answerCurrent(pg,1,{wrong:true});
+  ok(await pg.evaluate(()=>P().hp[1])===2,"salah 1x: sisa 2 hati");
+  for(let n=0;n<2;n++)await answerCurrent(pg,1,{wrong:true});
+  ok(await pg.locator(".failbox").count()===1,"hati habis: kotak ulang tampil");
+  const after=await pg.evaluate(()=>P().set[1].slice());
+  ok(after.every(x=>!before.includes(x)),"set soal baru tidak tumpang tindih dengan yang lama");
+  ok(await pg.evaluate(()=>isDone(0)),"stasiun 1 tetap selesai");
+  await pg.click('.btn[data-act="retry"]');
+  ok(await pg.locator(".hearts").count()===1&&await pg.evaluate(()=>P().hp[1])===3,"mulai lagi: hati penuh");
+  await answer(pg,1);
+  ok(await pg.evaluate(()=>isDone(1)),"stasiun 2 bisa diselesaikan dengan soal baru");
+  ok(errs.length===0,"tanpa error JS (hati) "+errs.join("|"));
+  await ctx.close();
 }
 /* 2. Tamatkan semua (gerak dikurangi -> instan) */
 for(const [mode,btn] of [["s","#m-smp"],["d","#m-dewasa"]]){

@@ -1,9 +1,9 @@
 # Peta Sirah Nabawiyah
 
-Game belajar sirah untuk **remaja (level SMP) dan dewasa**, berbasis buku *Sirah Nabawiyah* (Ar-Rahiqul Makhtum), Al-Mubarakfuri, terj. Kathur Suhardi, Pustaka Al-Kautsar. Satu halaman HTML statis, tanpa framework, jalan offline (PWA).
+Game belajar sirah untuk **remaja (level SMP) dan dewasa**, berbasis buku *Sirah Nabawiyah* (Ar-Rahiqul Makhtum), karya Syaikh Shafiyyurrahman Al-Mubarakfuri. Satu halaman HTML statis, tanpa framework, jalan offline (PWA).
 
 ## Fitur
-- **18 stasiun** mengikuti bab buku, masing-masing punya ringkasan, peta skematis, dan **3 soal** per level (54 soal/level, 108 total). Tiap soal punya penjelasan dan rujukan **hlm.** buku.
+- **18 stasiun** mengikuti bab buku, masing-masing punya ringkasan, peta skematis, dan **bank 10 soal** per level (360 soal total) yang diputar acak: tiap percobaan 3 soal. Tipe soal: pilihan ganda, pilih 2 dari 5, urutkan, dan jodohkan. Ada **3 hati** per percobaan; kalau habis, stasiun itu diulang dengan soal baru. Tiap soal punya penjelasan dan rujukan **hlm.** buku.
 - **Papan peta ala game**: peta daerah sebagai latar, token penanda progres berjalan di rute ke tempat berikutnya (kamera mengikuti), ketuk tempat untuk membuka stasiunnya; tempat yang sama (mis. Makkah) menampilkan tab nomor stasiun selesai/belum/terkunci. Bisa geser, zoom, dan "lihat semua".
 - **24 peta detail** (rute hijrah, Isra' Mi'raj, Thaif, Abrahah, peperangan, dst.) di dalam tiap stasiun.
 - **Ujian urutan peristiwa** setelah 18 stasiun.

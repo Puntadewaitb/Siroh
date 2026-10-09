@@ -108,3 +108,18 @@
   #board{height:clamp(420px,80vh,660px)}
 }
 @media (prefers-reduced-motion:reduce){.nd.cur .pulse,.tk .bob,.lg.next,.pn.enter{animation:none}}
+/* ---------- Hati + tipe soal ---------- */
+.qh{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.hearts{font-size:20px;letter-spacing:3px;color:var(--bad);line-height:1}
+.hint{margin:0;font-size:13px;color:var(--muted)}
+.opt.pick{border-color:var(--green);background:var(--green-soft)}
+.q .btn[disabled]{opacity:.5;cursor:not-allowed}
+.mtg{display:flex;flex-direction:column;gap:10px}
+.mtr{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:8px;align-items:center}
+.mtl{font-weight:500}
+.mtr select{width:100%;padding:9px 10px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit}
+.okrow{display:block;padding:9px 12px;border-radius:8px;border:1px solid var(--ok);background:var(--ok-soft)}
+.okrow .n{font-family:var(--f-mono);margin-right:8px;color:var(--ok)}
+.failbox{border-color:var(--bad)}
+.failbox .lbl{color:var(--bad)}
+@media (max-width:420px){.mtr{grid-template-columns:1fr}}

@@ -1,6 +1,6 @@
 # Peta Sirah Nabawiyah — handoff
 
-Game belajar sirah berbasis buku **Sirah Nabawiyah (Ar-Rahiqul Makhtum)**, Al-Mubarakfuri, terj. Kathur Suhardi, Pustaka Al-Kautsar (633 hlm). Untuk siswa SMP dan dewasa. Satu file HTML statis, tanpa framework, tanpa fetch eksternal (font dibundel lokal).
+Game belajar sirah berbasis buku **Sirah Nabawiyah (Ar-Rahiqul Makhtum)** karya Syaikh Shafiyyurrahman Al-Mubarakfuri (nomor halaman mengikuti cetakan buku). Untuk siswa SMP dan dewasa. Satu file HTML statis, tanpa framework, tanpa fetch eksternal (font dibundel lokal).
 
 Artifact live (claude.ai, v2): https://claude.ai/artifact/4BfaiLzU48mPSFqhxFvqfo
 
@@ -22,6 +22,8 @@ tools/                 # verify_sumber.sh (OCR + skrining soal vs PDF)
 build/
   assemble.py          # rakit peta-sirah.html dari semua bagian di bawah
   s_block.js           # BANDS + S[18] (stasiun: ringkasan SMP/dewasa, chips, soal #1 per level)
+  bank.py              # BANK[1..18]: 7 soal baru per level per stasiun (mc/mu/or/mt) -> bank 10 soal
+  quiz.js              # mesin soal: bank, hati, rotasi set, render 4 tipe soal
   qdata.py             # ST[18]: 2 soal tambahan per level (tuple: soal, benar, [salah], penjelasan, "hlm. N")
   challenge.js         # Tantangan acak + lencana
   board.js             # Papan peta ala game: NODE_OF (stasiun -> tempat), NODES, kamera, token, rute, drag/zoom
@@ -36,14 +38,16 @@ mapgen/
 Build: `npm run build` (= `python3 build/assemble.py`, output `index.html`) (path relatif ke repo; header `<head>` ada di `build/head.html`). `mapgen/clip.py` butuh `land-10m.geojson`/`land-50m.geojson` (dari npm `world-atlas` + `topojson-client`, tidak ikut di repo) dan `shapely`; hanya perlu dijalankan ulang kalau bbox/proyeksi berubah.
 
 ## Model data
-- 18 stasiun (urut bab buku) + ujian urutan peristiwa. 3 soal per level per stasiun = 54 soal/level.
-- `S[i].q[m]` = soal 1 (opsi tetap, `a` = indeks benar). `X[i][m]` = 2 soal tambahan, dibuat `assemble.py` (opsi diacak seeded, `a` dihitung ulang). `QS(i)` = gabungan 3 soal. m = `s` (SMP, 3 opsi) / `d` (dewasa, 4 opsi).
+- 18 stasiun (urut bab buku) + ujian urutan peristiwa. **Bank 10 soal per level per stasiun** (180/level, 360 total); tiap percobaan stasiun memakai 3 soal yang diundi dari bank.
+- `S[i].q[m]` = soal 1 (opsi tetap, `a` = indeks benar). `X[i][m]` = 2 soal tambahan, dibuat `assemble.py` (opsi diacak seeded, `a` dihitung ulang). `Z[i][m]` = 7 soal baru dari `bank.py` (opsi mc/mu diacak seeded). Runtime menggabungkan jadi `BK[i][m]` (10 soal, field `ty`); `QS(i)` = 3 soal terundi dari `BK`. m = `s` (SMP, 3 opsi) / `d` (dewasa, 4 opsi).
+- Tipe soal (`ty`): `mc` pilihan ganda (SMP 3 / dewasa 4 opsi), `mu` pilih 2 dari 5 (`a` = 2 indeks), `or` urutkan (`it` = urutan benar; SMP 3 / dewasa 4 item), `mt` jodohkan (`l`/`r` 3 pasang, `r` urutan sama dengan `l`). Komposisi bank per level: 6 mc, 2 mu, 1 or, 1 mt (3 mc di bank.py + 3 mc lama).
 - Tiap soal punya `e` (penjelasan) dan `h` (rujukan "hlm. N" — nomor halaman cetakan buku = halaman PDF − 33).
 - OCR buku: PDF hasil scan (tanpa text layer). Teks OCR tidak ikut di bundle; kalau perlu verifikasi fakta, pakai PDF-nya (Project "Siroh" di claude.ai) atau OCR ulang dengan tesseract.
 
 ## State & UX
 - localStorage key `peta-sirah-v2` (`prog.{s,d}.qd[i]` = jumlah soal benar 0–3, `pts`, `tl`). Migrasi otomatis dari `peta-sirah-v1`.
 - Stasiun terkunci sampai stasiun sebelumnya 3/3 (kecuali "Mode belajar"). Poin: SMP 4/soal, dewasa 8/soal, setengahnya kalau salah dulu; ujian urutan +30/+60.
+- **Hati**: 3 hati per percobaan stasiun (`MAXH`), tiap jawaban salah −1. Hati habis -> hanya stasiun itu diulang (`qd[i]=0`), set soal diundi ulang tanpa tumpang tindih dengan set sebelumnya selama bank cukup, progres stasiun lain utuh. State di `prog.{s,d}`: `set[i]` (3 indeks bank), `seen`, `hp[i]`, `fail[i]`.
 - Setelah benar: tombol "Soal berikutnya"; selesai 3 soal -> mode ulasan semua soal.
 - Layout: papan peta sticky di atas (HP) / kolom kiri (desktop ≥900px), panel stasiun di bawah/kanan. `st.sel.i` = stasiun terpilih (18 = ujian). Klik simpul selesai membuka ulang stasiunnya; simpul terkunci menampilkan pesan.
 
@@ -69,5 +73,6 @@ Build: `npm run build` (= `python3 build/assemble.py`, output `index.html`) (pat
 - Satu file HTML, tidak ada fetch eksternal, localStorage dibungkus try/catch, layout aman di 360px (tanpa horizontal scroll), token warna terang/gelap lewat CSS variables (`--sea/--land/--coast` untuk peta).
 
 ## Status verifikasi
+- Bank 10 soal/stasiun (360 soal): soal asli 108 dicek seperti di bawah; 252 soal `bank.py` ditulis dari OCR bab dan diskrining dengan `tools/verify_sumber.sh` (token) + cek manual distraktor spesifik.
 - 108 soal sudah dicek ke OCR PDF (Sirah Nabawiyah.pdf di repo): skrining token + cek manual 25 soal berskor rendah; semua cocok. Koreksi: wording st15 dewasa q1, rujukan st9 dewasa q2 (hlm. 184–188).
 - Belum diverifikasi: ringkasan stasiun, chips, data ujian urutan, dan koordinat peta.
