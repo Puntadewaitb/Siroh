@@ -23,4 +23,11 @@ S.forEach((s,i)=>{["s","d"].forEach(m=>{
 });});
 ["s","d"].forEach(m=>TL[m].forEach((e,k)=>{if(!e[0]||!/\d/.test(String(e[1])))bad(`TL ${m}[${k}]`)}));
 let prev=-1;BANDS.forEach(b=>{if(b.from!==prev+1)bad("BANDS gap "+b.t);prev=b.to});if(prev!==17)bad("BANDS tidak sampai 17");
+// Bias panjang opsi: jawaban benar tidak boleh jadi opsi terpanjang terlalu sering / terlalu timpang
+["s","d"].forEach(m=>{let uniq=0,tot=0;
+  S.forEach((s,i)=>[s.q[m],...X[i][m]].forEach((q,k)=>{const L=q.o.map(o=>o.length),c=L[q.a],mx=Math.max(...L);tot++;
+    if(c===mx&&L.filter(l=>l===mx).length===1)uniq++;
+    const oth=L.filter((_,j)=>j!==q.a),avg=oth.reduce((a,b)=>a+b,0)/oth.length;
+    if(c>2.2*avg&&c>20)bad(`st${i+1} ${m} q${k+1}: jawaban benar jauh lebih panjang dari opsi lain`);}));
+  if(uniq/tot>0.4)bad(`level ${m}: jawaban benar jadi opsi terpanjang di ${uniq}/${tot} soal (>40%)`);});
 console.log(err?`${err} masalah`:"Data OK: 18 stasiun x 3 soal x 2 level");process.exit(err?1:0);
