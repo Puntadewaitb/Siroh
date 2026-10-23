@@ -33,7 +33,8 @@ build/
   core.js              # state permainan bersama (load/save/P/got/isDone/unlocked/firstOpen) — dipakai index & peta3d
   app.js               # logika/render versi utama
   map3d.js, map3d.css  # mesin peta 3D (M3): terrain dari data ketinggian, rute, token, kamera, label anti-tumpuk, kota Makkah/Madinah
-  scene3d.js           # adegan RPG per stasiun (SC): latar 3D khas tempat, kilasan kisah (KISAH, dicek ke buku), soal di dalam adegan
+  scene3d.js           # adegan RPG per stasiun (SC): SCN.s0..s17 (zona multi-lokasi, kit low-poly), kilasan kisah, soal di dalam adegan
+  kisah/kisahN.json    # kilasan kisah per stasiun: {s:[±4 beat], d:[±8 beat]}, beat {t, h (rujukan internal, tidak ditampilkan), shot, sky, fx?}
   proto3d.js           # halaman 3D: timeline + peta + adegan; progres SAMA dengan versi utama (localStorage v2)
   vendor/three_entry.js, vendor/three.min.js   # subset Three.js r186 (global T3), regenerasi: npm run vendor
   terrain/*.png, meta.json   # ketinggian (R*256+G-1000 m) wilayah, Makkah, Madinah; dari tools/fetch_terrain.py (Terrain Tiles AWS)
@@ -48,7 +49,7 @@ Build: `npm run build` (= `python3 build/assemble.py`, output `index.html`) (pat
 - 18 stasiun (urut bab buku) + ujian urutan peristiwa. **Bank 10 soal per level per stasiun** (180/level, 360 total); tiap percobaan stasiun memakai 3 soal yang diundi dari bank.
 - `S[i].q[m]` = soal 1 (opsi tetap, `a` = indeks benar). `X[i][m]` = 2 soal tambahan, dibuat `assemble.py` (opsi diacak seeded, `a` dihitung ulang). `Z[i][m]` = 7 soal baru dari `bank.py` (opsi mc/mu diacak seeded). Runtime menggabungkan jadi `BK[i][m]` (10 soal, field `ty`); `QS(i)` = 3 soal terundi dari `BK`. m = `s` (SMP, 3 opsi) / `d` (dewasa, 4 opsi).
 - Tipe soal (`ty`): `mc` pilihan ganda (SMP 3 / dewasa 4 opsi), `mu` pilih 2 dari 5 (`a` = 2 indeks), `or` urutkan (`it` = urutan benar; SMP 3 / dewasa 4 item), `mt` jodohkan (`l`/`r` 3 pasang, `r` urutan sama dengan `l`). Komposisi bank per level: 6 mc, 2 mu, 1 or, 1 mt (3 mc di bank.py + 3 mc lama).
-- Tiap soal punya `e` (penjelasan) dan `h` (rujukan "hlm. N" — nomor halaman cetakan buku = halaman PDF − 33).
+- Tiap soal punya `e` (penjelasan) dan `h` (rujukan "hlm. N" — nomor halaman cetakan buku = halaman PDF − 33). Rujukan hlm. hanya untuk verifikasi; tampilan memakai `noHlm()` (core.js) sehingga pemain tidak melihat nomor halaman.
 - OCR buku: PDF hasil scan (tanpa text layer), TIDAK disimpan di repo (hak cipta). Untuk verifikasi fakta, taruh `Sirah Nabawiyah.pdf` di root repo secara lokal (di-gitignore) atau pakai Project "Siroh" di claude.ai, lalu OCR dengan tesseract.
 
 ## State & UX
@@ -72,10 +73,10 @@ Build: `npm run build` (= `python3 build/assemble.py`, output `index.html`) (pat
 - Label HTML di atas kanvas, urut prioritas dan anti-tumpuk; simpul yang labelnya tersembunyi tetap bisa diketuk (raycast).
 - Tes: `npm run test:3d` (SwiftShader). Screenshot manual: `node tests/shot3d.mjs <dir>`.
 - Alur RPG: pilih stasiun di timeline/peta -> "Mulai stasiun" -> adegan layar penuh -> kilasan kisah (dialog, tiap beat ada hlm.) -> 3 soal (quiz.js, hati) di dalam adegan -> selesai -> kembali ke peta (token jalan ke stasiun berikutnya).
-- Adegan: `SCN.hira` (st3, Jabal Nur dari data ketinggian, malam -> fajar), `SCN.badr` (st11, lembah pasir, sumur, kolam, tenda komando, panji hijau=Muslimin/merah=Quraisy, hujan, debu, pasir), `SCN.makkah`/`SCN.madinah` (data ketinggian + rumah/kurma), `SCN.place` (generik per tempat: Thaif hijau+tembok, Hudaibiyah pohon+tenda, Khaibar kurma+benteng, Mu’tah, Hunain, Uhud).
-- Kisah khusus baru st3 (hlm. 61–64) dan st11 (hlm. 233–261), dicek ke OCR. Stasiun lain memakai ringkasan stasiun (belum diverifikasi) sebagai kilasan.
+- Adegan khusus tiap stasiun `SCN.s0`..`SCN.s17` (shot sesuai `kisah/*.json`). Stasiun dengan dua tempat memakai zona berjauhan (±700 unit) dan transisi potong layar. Kit: rumah, Ka’bah, berhala (tugu batu, bisa runtuh), Darun Nadwah, kurma, tenda/kemah, panji berkibar (hijau = Muslimin, merah/ungu = lawan; simbol game, bukan warna sejarah), sumur, kolam, benteng, tembok kota, kebun anggur, parit, Masjid Nabawi sedang dibangun, pasar, perahu dan laut, bebatuan Al-Hijr, lampu malam, partikel (hujan, debu, angin, panah, burung dan batu, gulungan surat).
+- Kisah: SMP ±4 beat, dewasa ±8 beat per stasiun, ditulis dari OCR bab dan diskrining (angka dan nama dicocokkan ke halaman rujukan `h`). Nomor halaman TIDAK ditampilkan di game (permintaan Yogi); sumber disebut sekali di header.
 - Adab: tidak ada sosok manusia, wajah, atau malaikat; pasukan = panji, kafilah = muatan; wahyu = cahaya di gua.
-- Belum: kisah khusus 16 stasiun lain, adegan khusus tiap peristiwa (Uhud, Khandaq, Hudaibiyah, Fathu Makkah, dst.), ujian urutan di 3D, menjadikan 3D versi utama (fallback 2D).
+- Belum: ujian urutan di 3D, menjadikan 3D versi utama (fallback 2D), uji performa di HP murah.
 
 ## Catatan akurasi (cek dulu sebelum rilis ke luar)
 - Semua koordinat perkiraan. Paling perlu diverifikasi: Hunain (21.36, 40.08), Hudaibiyah, Qarnul Manazil, Jamratul Aqabah, Wadi Muhasshir, Bukit Sal'.

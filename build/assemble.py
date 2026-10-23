@@ -102,7 +102,11 @@ body3='''<div class="wrap w3">
   <p class="foot3">Relief: data ketinggian Terrain Tiles (AWS Open Data; sumber antara lain SRTM, ETOPO1), ketinggian dibesarkan. Posisi tempat dan rute perkiraan, skematis.</p>
 </div>
 '''
-js3=sblock+'\nvar X='+json.dumps(X,ensure_ascii=False)+';\nvar Z='+json.dumps(Z,ensure_ascii=False)+';\n'+tl+'\n'+open(B+'build/maps.js').read()+'\n'+open(B+'build/board.js').read()+'\n'+open(B+'build/quiz.js').read()+'\n'+open(B+'build/core.js').read()+'\nvar TERR='+json.dumps(TERR)+';\n'+open(B+'build/map3d.js').read()+'\n'+open(B+'build/scene3d.js').read()+'\n'+open(B+'build/proto3d.js').read()
+KIS={i:json.load(open(B+'build/kisah/kisah%d.json'%i)) for i in range(18) if os.path.exists(B+'build/kisah/kisah%d.json'%i)}
+for i,k in KIS.items():
+    for m in 's','d':
+        for b in k[m]: assert b['t'] and 'hlm' not in b['t'].lower() and '"' not in b['t'],(i,m,b['t'][:40])
+js3=sblock+'\nvar KISAH3='+json.dumps(KIS,ensure_ascii=False)+';\n'+'\nvar X='+json.dumps(X,ensure_ascii=False)+';\nvar Z='+json.dumps(Z,ensure_ascii=False)+';\n'+tl+'\n'+open(B+'build/maps.js').read()+'\n'+open(B+'build/board.js').read()+'\n'+open(B+'build/quiz.js').read()+'\n'+open(B+'build/core.js').read()+'\nvar TERR='+json.dumps(TERR)+';\n'+open(B+'build/map3d.js').read()+'\n'+open(B+'build/scene3d.js').read()+'\n'+open(B+'build/proto3d.js').read()
 css3=open(B+'build/map3d.css').read()
 out3=head.replace('<title>Peta Sirah Nabawiyah</title>','<title>Peta Sirah 3D</title>')+'<style>\n'+css.replace('<style>','').replace('</style>','')+css3+'</style>\n</head>\n<body>\n'+body3+'<script>\n'+open(B+'build/vendor/three.min.js').read()+'\n</script>\n<script>\n'+js3+'\n</script>\n</body>\n</html>\n'
 open(B+'peta3d.html','w').write(out3)

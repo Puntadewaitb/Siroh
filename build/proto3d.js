@@ -38,7 +38,7 @@ function infoHTML(){
   else h+='<p class="fb err">Terkunci. Selesaikan stasiun '+(firstOpen()+1)+' dulu.</p>';
   if(M3.cityOf(k))h+='<button class="btn ghost" data-a="city">Lihat kota '+esc(M3.CITY[M3.cityOf(k)].n)+'</button>';
   h+='</div>';
-  if(i<S.length&&SC.KISAH[i])h+='<p class="mut3 sm3">Adegan ini punya kilasan kisah khusus dari buku.</p>';
+
   return h;
 }
 function hud3(){var p=P();document.getElementById("pts3").textContent=p.pts;document.getElementById("cnt3").textContent=doneCount();

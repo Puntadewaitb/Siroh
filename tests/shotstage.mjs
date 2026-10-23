@@ -11,7 +11,7 @@ for(const i of list){
   await pg.click('[data-a="play"]');await pg.waitForSelector('.stdlg [data-sa="next"]',{timeout:30000});
   const n=await pg.evaluate(i=>SC.beats(i).length,i);
   for(let k=0;k<n;k++){
-    await pg.waitForTimeout(k?3400:1800);await pg.screenshot({path:`${out}/st${i+1}-b${k+1}.png`});
+    await pg.waitForTimeout(k?2600:1600);await pg.screenshot({path:`${out}/st${i+1}-b${k+1}.png`});
     await pg.click('[data-sa="next"]');if(await pg.locator('#dtx').count()&&k<n-1){await pg.waitForTimeout(100);}
     if(k<n-1&&await pg.evaluate(()=>!!document.querySelector('.stdlg [data-sa="next"]'))&&await pg.evaluate(k=>document.querySelectorAll('.dots i.on').length&&[...document.querySelectorAll('.dots i')].findIndex(x=>x.classList.contains("on"))===k,k))await pg.click('[data-sa="next"]');
   }
