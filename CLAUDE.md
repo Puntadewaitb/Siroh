@@ -11,6 +11,7 @@ Artifact live (claude.ai, v2): https://claude.ai/artifact/4BfaiLzU48mPSFqhxFvqfo
 
 ## Struktur
 ```
+peta3d.html            # PROTOTIPE peta 3D (dibuat assemble.py; JANGAN edit langsung): timeline + peta relief + tampilan kota
 index.html             # hasil akhir (self-contained, ~140 KB) — dipublish via GitHub Pages; JANGAN edit langsung
 manifest.webmanifest, sw.js, icon.svg   # PWA offline (sw precache fonts/)
 fonts/                 # font lokal (tools/fetch_fonts.py); tanpa Google Fonts
@@ -30,6 +31,10 @@ build/
   tl_block.js          # TL: data ujian urutan peristiwa (SMP 6, dewasa 8)
   maps.js              # PL (tempat), MP (24 peta), SM (stasiun -> peta), MTAB, OV (peta ringkasan)
   app.js               # logika/render/state
+  map3d.js, map3d.css  # mesin peta 3D (M3): terrain dari data ketinggian, rute, token, kamera, label anti-tumpuk, kota Makkah/Madinah
+  proto3d.js           # halaman prototipe 3D: timeline stasiun, kartu info, kisah kota dari MP (baca progres v2, tidak menyimpan)
+  vendor/three_entry.js, vendor/three.min.js   # subset Three.js r186 (global T3), regenerasi: npm run vendor
+  terrain/*.png, meta.json   # ketinggian (R*256+G-1000 m) wilayah, Makkah, Madinah; dari tools/fetch_terrain.py (Terrain Tiles AWS)
   css_old.txt, style_new.css
 mapgen/
   clip.py              # shapely: clip land-10m/50m GeoJSON ke bbox + proyeksi -> path SVG
@@ -57,6 +62,14 @@ Build: `npm run build` (= `python3 build/assemble.py`, output `index.html`) (pat
 - `placeLabels()` menaruh label otomatis tanpa tabrak label/titik/garis rute (kandidat: dasar, tengah atas/bawah, flip, geser dy).
 - Papan perjalanan (`board.js`): 9 simpul tempat (Makkah, Thaif, Madinah, Badr, Uhud, Hudaibiyah, Khaibar, Mu’tah, Hunain). `NODE_OF[i]` = tempat tiap stasiun (indeks 18 = ujian, di Madinah). Stasiun di tempat sama jadi tab di panel. Token = progres; saat stasiun terdepan dipilih dan tempatnya beda, token berjalan di rute bezier + kamera mengikuti (instan kalau prefers-reduced-motion). Posisi Uhud digeser skematis agar tidak menumpuk Madinah. `OV` di maps.js sudah tidak dipakai.
 - Peta Abrahah ada di stasiun 2 (hlm. 44–45), Thaif + Isra' di stasiun 7 (hlm. 141–164). Stasiun 4 dan 6 (indeks 3 dan 5) belum punya peta.
+
+## Peta 3D (prototipe, peta3d.html)
+- Tema tetap peta + timeline sirah, bukan diorama. Tanpa sosok manusia; Ka’bah berupa simbol tidak berskala.
+- Wilayah: lon 34.2–44.8, lat 19.4–31.9; skala 10 unit/derajat, ketinggian ×~8. Kota: Makkah & Madinah 340 unit/derajat, ×~2. Pinggir terrain melandai ke warna latar.
+- Titik kota memakai `PL`; kisah kota = peta `MP` yang sudah ada (hira/abz/mnk, mad/uhud/ahz) beserta catatan hlm.-nya.
+- Label HTML di atas kanvas, urut prioritas dan anti-tumpuk; simpul yang labelnya tersembunyi tetap bisa diketuk (raycast).
+- Tes: `npm run test:3d` (SwiftShader). Screenshot manual: `node tests/shot3d.mjs <dir>`.
+- Belum: integrasi ke index.html (soal/hati di panel), kota lain (Thaif, Badr, Khaibar, dll.), fallback 2D otomatis dari versi utama.
 
 ## Catatan akurasi (cek dulu sebelum rilis ke luar)
 - Semua koordinat perkiraan. Paling perlu diverifikasi: Hunain (21.36, 40.08), Hudaibiyah, Qarnul Manazil, Jamratul Aqabah, Wadi Muhasshir, Bukit Sal'.

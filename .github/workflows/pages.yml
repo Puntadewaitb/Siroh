@@ -22,10 +22,11 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: npm run build
       - name: index.html harus sama dengan hasil build
-        run: git diff --exit-code index.html
+        run: git diff --exit-code index.html peta3d.html
       - run: npm run test:data
       - run: npm run test:e2e
       - run: npm run test:offline
+      - run: npm run test:3d
 
   deploy:
     needs: test
@@ -36,7 +37,7 @@ jobs:
       url: ${{ steps.dep.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - run: mkdir dist && cp index.html manifest.webmanifest sw.js icon.svg dist/ && cp -r fonts dist/fonts
+      - run: mkdir dist && cp index.html peta3d.html manifest.webmanifest sw.js icon.svg dist/ && cp -r fonts dist/fonts
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with: { path: dist }

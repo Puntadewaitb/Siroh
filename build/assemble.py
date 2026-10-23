@@ -63,6 +63,7 @@ head=open(B+'build/head.html').read()
 body='''<div class="wrap">
   <header class="top">
     <h1>Peta Sirah Nabawiyah</h1>
+    <p class="src"><a class="try3" href="peta3d.html">Coba peta 3D (prototipe) →</a></p>
     <p class="src">Dari buku <i>Sirah Nabawiyah</i> (Ar-Rahiqul Makhtum) karya Syaikh Shafiyyurrahman Al-Mubarakfuri.</p>
     <div class="ctrl">
       <div class="seg" role="group" aria-label="Pilih level">
@@ -83,3 +84,24 @@ js=sblock+'\nvar X='+json.dumps(X,ensure_ascii=False)+';\nvar Z='+json.dumps(Z,e
 out=head+'<style>\n'+css.replace('<style>','').replace('</style>','')+'</style>\n</head>\n<body>\n'+defs+'\n'+body+'<script>\n'+js+'\n</script>\n<script>if("serviceWorker" in navigator&&/^https?:/.test(location.protocol)){try{navigator.serviceWorker.register("sw.js").catch(function(){});}catch(e){}}</script>\n</body>\n</html>\n'
 open(B+'index.html','w').write(out)
 print(len(out.encode()))
+
+# ---- Prototipe peta 3D (peta3d.html): data stasiun + peta, Three.js subset, terrain tertanam ----
+import base64
+tmeta=json.load(open(B+'build/terrain/meta.json'))
+TERR={k:dict(v,src='data:image/png;base64,'+base64.b64encode(open(B+'build/terrain/%s.png'%k,'rb').read()).decode()) for k,v in tmeta.items()}
+body3='''<div class="wrap w3">
+  <header class="top3"><h1>Peta Sirah Nabawiyah</h1><p class="src">Prototipe tampilan 3D · <a href="index.html">kembali ke versi utama</a></p></header>
+  <div class="m3wrap"><div id="m3" class="m3"></div>
+    <div class="c3"><button data-c="me" aria-label="Ke posisiku" title="Ke posisiku">◎</button><button data-c="zin" aria-label="Perbesar" title="Perbesar">+</button><button data-c="zout" aria-label="Perkecil" title="Perkecil">−</button><button data-c="tilt" aria-label="Miring atau tegak" title="Miring/tegak">⛰</button><button data-c="all" aria-label="Lihat semua" title="Lihat semua">▣</button></div>
+    <button id="back3" class="back3" data-a="back" hidden>← Peta perjalanan</button>
+  </div>
+  <nav id="tl3" class="tl3" aria-label="Timeline stasiun sirah"></nav>
+  <section id="info3" class="info3" aria-live="polite"></section>
+  <p class="foot3">Relief: data ketinggian Terrain Tiles (AWS Open Data; sumber antara lain SRTM, ETOPO1), ketinggian dibesarkan. Posisi tempat dan rute perkiraan, skematis.</p>
+</div>
+'''
+js3=sblock+'\n'+open(B+'build/maps.js').read()+'\n'+open(B+'build/board.js').read()+'\nvar TERR='+json.dumps(TERR)+';\n'+open(B+'build/map3d.js').read()+'\n'+open(B+'build/proto3d.js').read()
+css3=open(B+'build/map3d.css').read()
+out3=head.replace('<title>Peta Sirah Nabawiyah</title>','<title>Peta Sirah 3D</title>')+'<style>\n'+css.replace('<style>','').replace('</style>','')+css3+'</style>\n</head>\n<body>\n'+body3+'<script>\n'+open(B+'build/vendor/three.min.js').read()+'\n</script>\n<script>\n'+js3+'\n</script>\n</body>\n</html>\n'
+open(B+'peta3d.html','w').write(out3)
+print('peta3d.html',len(out3.encode()))
