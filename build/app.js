@@ -199,7 +199,7 @@ function setMode(m){
 document.getElementById("app").addEventListener("change",function(e){var s=e.target.closest&&e.target.closest("select[data-act=msl]");if(s){quizChange(s);render();}});
 document.getElementById("m-smp").addEventListener("click",function(){setMode("s");});
 document.getElementById("m-dewasa").addEventListener("click",function(){setMode("d");});
-document.getElementById("learn").addEventListener("change",function(e){st.learn=e.target.checked;render();});
+document.getElementById("learn").addEventListener("change",function(e){st.learn=e.target.checked;save();render();});
 var lastW=0,rt=null;
 window.addEventListener("resize",function(){clearTimeout(rt);rt=setTimeout(function(){resizeBoard();var w=appW();if(Math.abs(w-lastW)>16){lastW=w;render();}},150);});
-load();st.sel={i:firstOpen()};BD.tokSt=firstOpen();lastW=appW();initBoard();render();
+load();document.getElementById("learn").checked=st.learn;st.sel={i:firstOpen()};BD.tokSt=firstOpen();lastW=appW();initBoard();render();

@@ -5,7 +5,7 @@ let fail=0;const ok=(c,m)=>{if(!c){console.error("FAIL",m);fail++}else console.l
 for(const rm of ["no-preference","reduce"]){
   const ctx=await b.newContext({viewport:{width:360,height:740},reducedMotion:rm});const pg=await ctx.newPage();
   const errs=[];pg.on("pageerror",e=>errs.push(e.message));
-  await pg.goto(pathToFileURL(path.resolve("peta3d.html")).href);
+  await pg.goto(pathToFileURL(path.resolve("peta3d.html")).href);await pg.waitForSelector(".m3.ready",{timeout:60000});await pg.uncheck("#learn3");
   await pg.waitForSelector(".m3.ready",{timeout:60000});
   ok(await pg.locator(".nd3").count()===9,`${rm}: 9 simpul tempat`);
   ok(await pg.locator(".sc3").count()===19,`${rm}: timeline 18 stasiun + ujian`);

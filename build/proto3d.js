@@ -2,7 +2,7 @@
    Memakai state bersama (core.js) dan mesin soal (quiz.js); progres sama dengan versi utama (localStorage v2). */
 var P3={tok:0,city:null,story:null};
 function stDone3(i){return i===S.length?!!P().tl:isDone(i);}
-function stOpen3(i){return i===S.length?doneCount()===S.length:unlocked(i);}
+function stOpen3(i){return i===S.length?(doneCount()===S.length||st.learn):unlocked(i);}
 function band3(i){for(var b=0;b<BANDS.length;b++)if(i>=BANDS[b].from&&i<=BANDS[b].to)return BANDS[b].t;return "Ujian akhir";}
 function title3(i){return i===S.length?"Ujian urutan peristiwa":S[i].t;}
 function tlHTML(){
@@ -57,6 +57,7 @@ function pick3(i){
 function setMode3(m){if(SC.isOpen()||M3.traveling())return;uq={};fl={};st.mode=m;save();P3.tok=firstOpen();st.sel.i=P3.tok;draw3();M3.focusNode(NODE_OF[P3.tok]);}
 function start3(){
   load();P3.tok=firstOpen();st.sel={i:P3.tok};
+  var lb=document.getElementById("learn3");lb.checked=st.learn;lb.addEventListener("change",function(){st.learn=lb.checked;save();draw3();});
   var box=document.getElementById("m3");
   var ok=M3.init(box,{done:stDone3,
     onPick:function(k){var sts=NODES[k].sts,fo=firstOpen(),j=sts.indexOf(fo)>-1?fo:sts[0];for(var n=0;n<sts.length&&sts.indexOf(fo)<0;n++)if(stOpen3(sts[n]))j=sts[n];pick3(j);},

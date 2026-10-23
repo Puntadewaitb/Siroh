@@ -54,7 +54,7 @@ Build: `npm run build` (= `python3 build/assemble.py`, output `index.html`) (pat
 
 ## State & UX
 - localStorage key `peta-sirah-v2` (`prog.{s,d}.qd[i]` = jumlah soal benar 0–3, `pts`, `tl`). Migrasi otomatis dari `peta-sirah-v1`.
-- Stasiun terkunci sampai stasiun sebelumnya 3/3 (kecuali "Mode belajar"). Poin: SMP 4/soal, dewasa 8/soal, setengahnya kalau salah dulu; ujian urutan +30/+60.
+- Stasiun terkunci sampai stasiun sebelumnya 3/3, kecuali "Mode belajar" (`st.learn`). SEMENTARA default `UNLOCK_DEFAULT=true` di core.js: semua stasiun terbuka; pilihan pemain disimpan (`learn` di localStorage). Ubah ke `false` untuk kembali ke mode berurutan. Poin: SMP 4/soal, dewasa 8/soal, setengahnya kalau salah dulu; ujian urutan +30/+60.
 - **Hati**: 3 hati per percobaan stasiun (`MAXH`), tiap jawaban salah −1. Hati habis -> hanya stasiun itu diulang (`qd[i]=0`), set soal diundi ulang tanpa tumpang tindih dengan set sebelumnya selama bank cukup, progres stasiun lain utuh. State di `prog.{s,d}`: `set[i]` (3 indeks bank), `seen`, `hp[i]`, `fail[i]`.
 - Setelah benar: tombol "Soal berikutnya"; selesai 3 soal -> mode ulasan semua soal.
 - Layout: papan peta sticky di atas (HP) / kolom kiri (desktop ≥900px), panel stasiun di bawah/kanan. `st.sel.i` = stasiun terpilih (18 = ujian). Klik simpul selesai membuka ulang stasiunnya; simpul terkunci menampilkan pesan.

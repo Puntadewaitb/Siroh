@@ -5,7 +5,7 @@ const b=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||undefin
 const pg=await b.newPage({viewport:{width:390,height:844},deviceScaleFactor:1.5});const errs=[];
 pg.on("pageerror",e=>errs.push(e.message));pg.on("console",m=>{if(m.type()==="error")errs.push(m.text())});
 await pg.goto(pathToFileURL(path.resolve("peta3d.html")).href);await pg.waitForSelector(".m3.ready",{timeout:60000});
-await pg.evaluate(()=>{st.learn=true;draw3();});
+await pg.check("#learn3");
 for(const i of list){
   await pg.evaluate(i=>{pick3(i);},i);await pg.waitForTimeout(1500);
   await pg.click('[data-a="play"]');await pg.waitForSelector('.stdlg [data-sa="next"]',{timeout:30000});

@@ -9,7 +9,7 @@ const answer=solveStation;
 /* 1. Animasi nyata: token berjalan Makkah -> Thaif */
 {
   const pg=await browser.newPage({viewport:{width:360,height:740}});const errs=[];pg.on("pageerror",e=>errs.push(e.message));
-  await pg.goto(url);
+  await pg.goto(url);await pg.uncheck("#learn");
   ok(await pg.locator(".nd").count()===9,"papan punya 9 simpul tempat");
   ok(await pg.evaluate(()=>NODE_OF[BD.tokSt])==="mk","token mulai di Makkah");
   ok(await pg.locator(".stab").count()===8,"tab Makkah menampilkan 8 stasiun");
@@ -28,7 +28,7 @@ const answer=solveStation;
 /* 1b. Hati habis: stasiun diulang dengan set soal baru, progres stasiun lain utuh */
 {
   const ctx=await browser.newContext({viewport:{width:360,height:740},reducedMotion:"reduce"});const pg=await ctx.newPage();const errs=[];pg.on("pageerror",e=>errs.push(e.message));
-  await pg.goto(url);
+  await pg.goto(url);await pg.uncheck("#learn");
   await answer(pg,0);await pg.click('.btn[data-act="next"]');await idle(pg);
   const before=await pg.evaluate(()=>P().set[1].slice());
   ok(await pg.locator(".hearts").count()===1,"ikon hati tampil");
@@ -54,7 +54,7 @@ const answer=solveStation;
 for(const [mode,btn] of [["s","#m-smp"],["d","#m-dewasa"]]){
   const ctx=await browser.newContext({viewport:{width:360,height:740},reducedMotion:"reduce"});const pg=await ctx.newPage();
   const errs=[];pg.on("pageerror",e=>errs.push(e.message));
-  await pg.goto(url);await pg.click(btn);
+  await pg.goto(url);await pg.uncheck("#learn");await pg.click(btn);
   for(let i=0;i<18;i++){
     await answer(pg,i);
     ok(await pg.evaluate(i=>isDone(i),i),`${mode} stasiun ${i+1} selesai`);

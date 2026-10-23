@@ -92,7 +92,8 @@ TERR={k:dict(v,src='data:image/png;base64,'+base64.b64encode(open(B+'build/terra
 body3='''<div class="wrap w3">
   <header class="top3"><h1>Peta Sirah Nabawiyah</h1><p class="src">Bersumber dari buku <i>Sirah Nabawiyah</i> (Ar-Rahiqul Makhtum) karya Syaikh Shafiyyurrahman Al-Mubarakfuri.</p><p class="src">Versi 3D (uji coba) · <a href="index.html">versi utama</a></p>
     <div class="hud3"><div class="seg" role="group" aria-label="Pilih level"><button id="ms3" aria-pressed="true">SMP</button><button id="md3" aria-pressed="false">Dewasa</button></div>
-    <span>Poin <b id="pts3">0</b></span><span>Stasiun <b id="cnt3">0</b>/18</span></div></header>
+    <span>Poin <b id="pts3">0</b></span><span>Stasiun <b id="cnt3">0</b>/18</span>
+    <label class="learn"><input type="checkbox" id="learn3"> Buka semua stasiun (Mode belajar)</label></div></header>
   <div class="m3wrap"><div id="m3" class="m3"></div>
     <div class="c3"><button data-c="me" aria-label="Ke posisiku" title="Ke posisiku">◎</button><button data-c="zin" aria-label="Perbesar" title="Perbesar">+</button><button data-c="zout" aria-label="Perkecil" title="Perkecil">−</button><button data-c="tilt" aria-label="Miring atau tegak" title="Miring/tegak">⛰</button><button data-c="all" aria-label="Lihat semua" title="Lihat semua">▣</button></div>
     <button id="back3" class="back3" data-a="back" hidden>← Peta perjalanan</button>

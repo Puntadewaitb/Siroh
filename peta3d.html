@@ -309,7 +309,8 @@ html.stg-on{overflow:hidden}
 <div class="wrap w3">
   <header class="top3"><h1>Peta Sirah Nabawiyah</h1><p class="src">Bersumber dari buku <i>Sirah Nabawiyah</i> (Ar-Rahiqul Makhtum) karya Syaikh Shafiyyurrahman Al-Mubarakfuri.</p><p class="src">Versi 3D (uji coba) · <a href="index.html">versi utama</a></p>
     <div class="hud3"><div class="seg" role="group" aria-label="Pilih level"><button id="ms3" aria-pressed="true">SMP</button><button id="md3" aria-pressed="false">Dewasa</button></div>
-    <span>Poin <b id="pts3">0</b></span><span>Stasiun <b id="cnt3">0</b>/18</span></div></header>
+    <span>Poin <b id="pts3">0</b></span><span>Stasiun <b id="cnt3">0</b>/18</span>
+    <label class="learn"><input type="checkbox" id="learn3"> Buka semua stasiun (Mode belajar)</label></div></header>
   <div class="m3wrap"><div id="m3" class="m3"></div>
     <div class="c3"><button data-c="me" aria-label="Ke posisiku" title="Ke posisiku">◎</button><button data-c="zin" aria-label="Perbesar" title="Perbesar">+</button><button data-c="zout" aria-label="Perkecil" title="Perkecil">−</button><button data-c="tilt" aria-label="Miring atau tegak" title="Miring/tegak">⛰</button><button data-c="all" aria-label="Lihat semua" title="Lihat semua">▣</button></div>
     <button id="back3" class="back3" data-a="back" hidden>← Peta perjalanan</button>
@@ -5163,15 +5164,16 @@ function quizChange(sel){
 
 /* ---------- State permainan bersama (versi utama & peta 3D) ---------- */
 var KEY="peta-sirah-v2",NQ=3;
-var st={mode:"s",open:0,learn:false,mt:{},prog:{s:{qd:{},pts:0,tl:false},d:{qd:{},pts:0,tl:false}}};
+var UNLOCK_DEFAULT=true; /* sementara: semua stasiun terbuka (Mode belajar) sampai diubah pemain */
+var st={mode:"s",open:0,learn:UNLOCK_DEFAULT,mt:{},prog:{s:{qd:{},pts:0,tl:false},d:{qd:{},pts:0,tl:false}}};
 var wrong=[],justOk={},tl={seq:[],order:[],msg:"",ok:false};
 
 function load(){
-  try{var v=JSON.parse(localStorage.getItem(KEY));if(v&&v.prog){st.prog=v.prog;st.mode=v.mode||"s";return;}}catch(e){}
+  try{var v=JSON.parse(localStorage.getItem(KEY));if(v&&v.prog){st.prog=v.prog;st.mode=v.mode||"s";if(typeof v.learn==="boolean")st.learn=v.learn;return;}}catch(e){}
   try{var o=JSON.parse(localStorage.getItem("peta-sirah-v1"));
     if(o&&o.prog){["s","d"].forEach(function(m){var p=o.prog[m];if(!p)return;Object.keys(p.done||{}).forEach(function(i){st.prog[m].qd[i]=1;});st.prog[m].pts=p.pts||0;st.prog[m].tl=false;});st.mode=o.mode||"s";}}catch(e){}
 }
-function save(){try{localStorage.setItem(KEY,JSON.stringify({prog:st.prog,mode:st.mode}));}catch(e){}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify({prog:st.prog,mode:st.mode,learn:st.learn}));}catch(e){}}
 function P(){return st.prog[st.mode];}
 function got(i){return P().qd[i]||0;}
 function isDone(i){return got(i)>=NQ;}
@@ -6205,7 +6207,7 @@ return {open:open,close:close,isOpen:function(){return !!(el&&!el.hidden);},beat
    Memakai state bersama (core.js) dan mesin soal (quiz.js); progres sama dengan versi utama (localStorage v2). */
 var P3={tok:0,city:null,story:null};
 function stDone3(i){return i===S.length?!!P().tl:isDone(i);}
-function stOpen3(i){return i===S.length?doneCount()===S.length:unlocked(i);}
+function stOpen3(i){return i===S.length?(doneCount()===S.length||st.learn):unlocked(i);}
 function band3(i){for(var b=0;b<BANDS.length;b++)if(i>=BANDS[b].from&&i<=BANDS[b].to)return BANDS[b].t;return "Ujian akhir";}
 function title3(i){return i===S.length?"Ujian urutan peristiwa":S[i].t;}
 function tlHTML(){
@@ -6260,6 +6262,7 @@ function pick3(i){
 function setMode3(m){if(SC.isOpen()||M3.traveling())return;uq={};fl={};st.mode=m;save();P3.tok=firstOpen();st.sel.i=P3.tok;draw3();M3.focusNode(NODE_OF[P3.tok]);}
 function start3(){
   load();P3.tok=firstOpen();st.sel={i:P3.tok};
+  var lb=document.getElementById("learn3");lb.checked=st.learn;lb.addEventListener("change",function(){st.learn=lb.checked;save();draw3();});
   var box=document.getElementById("m3");
   var ok=M3.init(box,{done:stDone3,
     onPick:function(k){var sts=NODES[k].sts,fo=firstOpen(),j=sts.indexOf(fo)>-1?fo:sts[0];for(var n=0;n<sts.length&&sts.indexOf(fo)<0;n++)if(stOpen3(sts[n]))j=sts[n];pick3(j);},
