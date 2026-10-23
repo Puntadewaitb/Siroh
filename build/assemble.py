@@ -80,7 +80,7 @@ body='''<div class="wrap">
 </div>
 '''
 tl=open(B+'build/tl_block.js').read()
-js=sblock+'\nvar X='+json.dumps(X,ensure_ascii=False)+';\nvar Z='+json.dumps(Z,ensure_ascii=False)+';\n'+tl+'\n'+open(B+'build/maps.js').read()+'\n'+open(B+'build/challenge.js').read()+'\n'+open(B+'build/board.js').read()+'\n'+open(B+'build/quiz.js').read()+'\n'+open(B+'build/app.js').read()
+js=sblock+'\nvar X='+json.dumps(X,ensure_ascii=False)+';\nvar Z='+json.dumps(Z,ensure_ascii=False)+';\n'+tl+'\n'+open(B+'build/maps.js').read()+'\n'+open(B+'build/challenge.js').read()+'\n'+open(B+'build/board.js').read()+'\n'+open(B+'build/quiz.js').read()+'\n'+open(B+'build/core.js').read()+'\n'+open(B+'build/app.js').read()
 out=head+'<style>\n'+css.replace('<style>','').replace('</style>','')+'</style>\n</head>\n<body>\n'+defs+'\n'+body+'<script>\n'+js+'\n</script>\n<script>if("serviceWorker" in navigator&&/^https?:/.test(location.protocol)){try{navigator.serviceWorker.register("sw.js").catch(function(){});}catch(e){}}</script>\n</body>\n</html>\n'
 open(B+'index.html','w').write(out)
 print(len(out.encode()))
@@ -90,7 +90,9 @@ import base64
 tmeta=json.load(open(B+'build/terrain/meta.json'))
 TERR={k:dict(v,src='data:image/png;base64,'+base64.b64encode(open(B+'build/terrain/%s.png'%k,'rb').read()).decode()) for k,v in tmeta.items()}
 body3='''<div class="wrap w3">
-  <header class="top3"><h1>Peta Sirah Nabawiyah</h1><p class="src">Prototipe tampilan 3D · <a href="index.html">kembali ke versi utama</a></p></header>
+  <header class="top3"><h1>Peta Sirah Nabawiyah</h1><p class="src">Versi 3D (uji coba) · <a href="index.html">versi utama</a></p>
+    <div class="hud3"><div class="seg" role="group" aria-label="Pilih level"><button id="ms3" aria-pressed="true">SMP</button><button id="md3" aria-pressed="false">Dewasa</button></div>
+    <span>Poin <b id="pts3">0</b></span><span>Stasiun <b id="cnt3">0</b>/18</span></div></header>
   <div class="m3wrap"><div id="m3" class="m3"></div>
     <div class="c3"><button data-c="me" aria-label="Ke posisiku" title="Ke posisiku">◎</button><button data-c="zin" aria-label="Perbesar" title="Perbesar">+</button><button data-c="zout" aria-label="Perkecil" title="Perkecil">−</button><button data-c="tilt" aria-label="Miring atau tegak" title="Miring/tegak">⛰</button><button data-c="all" aria-label="Lihat semua" title="Lihat semua">▣</button></div>
     <button id="back3" class="back3" data-a="back" hidden>← Peta perjalanan</button>
@@ -100,7 +102,7 @@ body3='''<div class="wrap w3">
   <p class="foot3">Relief: data ketinggian Terrain Tiles (AWS Open Data; sumber antara lain SRTM, ETOPO1), ketinggian dibesarkan. Posisi tempat dan rute perkiraan, skematis.</p>
 </div>
 '''
-js3=sblock+'\n'+open(B+'build/maps.js').read()+'\n'+open(B+'build/board.js').read()+'\nvar TERR='+json.dumps(TERR)+';\n'+open(B+'build/map3d.js').read()+'\n'+open(B+'build/proto3d.js').read()
+js3=sblock+'\nvar X='+json.dumps(X,ensure_ascii=False)+';\nvar Z='+json.dumps(Z,ensure_ascii=False)+';\n'+tl+'\n'+open(B+'build/maps.js').read()+'\n'+open(B+'build/board.js').read()+'\n'+open(B+'build/quiz.js').read()+'\n'+open(B+'build/core.js').read()+'\nvar TERR='+json.dumps(TERR)+';\n'+open(B+'build/map3d.js').read()+'\n'+open(B+'build/scene3d.js').read()+'\n'+open(B+'build/proto3d.js').read()
 css3=open(B+'build/map3d.css').read()
 out3=head.replace('<title>Peta Sirah Nabawiyah</title>','<title>Peta Sirah 3D</title>')+'<style>\n'+css.replace('<style>','').replace('</style>','')+css3+'</style>\n</head>\n<body>\n'+body3+'<script>\n'+open(B+'build/vendor/three.min.js').read()+'\n</script>\n<script>\n'+js3+'\n</script>\n</body>\n</html>\n'
 open(B+'peta3d.html','w').write(out3)

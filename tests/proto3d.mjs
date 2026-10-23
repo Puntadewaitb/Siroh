@@ -1,5 +1,5 @@
 // Prototipe peta 3D: WebGL tampil, 9 simpul, masuk/keluar kota, simulasi perjalanan, tanpa error dan tanpa horizontal scroll.
-import {chromium} from "playwright";import {pathToFileURL} from "node:url";import path from "node:path";
+import {chromium} from "playwright";import {answerCurrent} from "./solve.mjs";import {pathToFileURL} from "node:url";import path from "node:path";
 const b=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||undefined,args:["--use-angle=swiftshader","--enable-unsafe-swiftshader","--ignore-gpu-blocklist"]});
 let fail=0;const ok=(c,m)=>{if(!c){console.error("FAIL",m);fail++}else console.log("ok  ",m)};
 for(const rm of ["no-preference","reduce"]){
@@ -13,9 +13,23 @@ for(const rm of ["no-preference","reduce"]){
   ok(await pg.locator(".lm3").count()>=8,`${rm}: kota Makkah dengan titik-titik tempat`);
   await pg.click('[data-story="mnk"]');ok(await pg.locator(".lg3").count()>=1,`${rm}: kisah kota menampilkan legenda`);
   await pg.click('#back3');await pg.waitForFunction(()=>M3.view()==="region",null,{timeout:20000});
-  await pg.click('.sc3[data-st="10"]');await pg.click('[data-a="sim"]');
-  await pg.waitForFunction(()=>!M3.busy()&&P3.tok===10,null,{timeout:30000});
-  ok(await pg.evaluate(()=>NODE_OF[P3.tok])==="bd","simulasi: token tiba di Badr");
+  await pg.evaluate(()=>{for(let i=0;i<6;i++)P().qd[i]=3;P3.tok=5;st.sel.i=5;draw3();});
+  await pg.click('.sc3[data-st="6"]');
+  await pg.waitForFunction(()=>!M3.busy()&&P3.tok===6,null,{timeout:30000});
+  ok(await pg.evaluate(()=>NODE_OF[P3.tok])==="th",`${rm}: token berjalan ke Thaif saat stasiun 7 dibuka`);
+  /* adegan RPG: stasiun 1 -> kilasan -> 3 soal -> selesai -> token siap ke stasiun 2 */
+  await pg.evaluate(()=>{st.prog={s:{qd:{},pts:0,tl:false},d:{qd:{},pts:0,tl:false}};st.mode="s";save();P3.tok=0;st.sel.i=0;draw3();});
+  await pg.click('.sc3[data-st="0"]');await pg.click('[data-a="play"]');
+  await pg.waitForSelector('.stdlg [data-sa="next"]',{timeout:30000});
+  ok(await pg.locator(".stg:not([hidden]) canvas").count()===1,`${rm}: adegan tampil`);
+  await pg.click('[data-sa="skip"]');
+  for(let n=0;n<3;n++){await answerCurrent(pg,0);await pg.click('.stdlg [data-act="nextq"]');}
+  ok(await pg.evaluate(()=>isDone(0)&&SC.mode()==="done"),`${rm}: stasiun 1 selesai di dalam adegan`);
+  await pg.click('.stdlg [data-sa="close"]');
+  ok(await pg.evaluate(()=>!SC.isOpen()&&st.sel.i===1),`${rm}: kembali ke peta, stasiun 2 terpilih`);
+  ok(await pg.evaluate(()=>JSON.parse(localStorage.getItem("peta-sirah-v2")).prog.s.qd[0])===3,`${rm}: progres tersimpan (sama dengan versi utama)`);
+  await pg.click('.sc3[data-st="2"]');
+  ok(await pg.locator('[data-a="play"]').count()===0,`${rm}: stasiun 3 masih terkunci`);
   ok(!(await pg.evaluate(()=>document.documentElement.scrollWidth>innerWidth)),`${rm}: tanpa horizontal scroll`);
   ok(errs.length===0,`${rm}: tanpa error JS ${errs.join("|")}`);
   await ctx.close();

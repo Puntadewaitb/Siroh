@@ -4,7 +4,7 @@
    Semua posisi tempat perkiraan; ketinggian dibesarkan agar relief terbaca. Tanpa sosok manusia. */
 var M3=(function(){
 var T=window.T3,R,scene,cam,el,cv,ov,W=0,H=0,dpr=1,raf=0,dirty=true,last=0;
-var view="region",world=null,worlds={},onPick=null,onCity=null,anim=[],reduceM=false,sel=-1,tokSt=0,doneF=function(){return false;};
+var trav=false,view="region",world=null,worlds={},onPick=null,onCity=null,anim=[],reduceM=false,sel=-1,tokSt=0,doneF=function(){return false;};
 var rig={x:0,z:0,d:60,phi:.82,az:0};
 var COS=function(a){return Math.cos(a*Math.PI/180);};
 function rm(){try{return matchMedia("(prefers-reduced-motion: reduce)").matches;}catch(e){return false;}}
@@ -303,9 +303,9 @@ function travel(a,b,cb){
   var wd=worlds.region;if(!wd||view!=="region"){tokSt=b;refreshRegion();if(cb)cb();return;}
   var legs=[];for(var i=a;i<b;i++)if(wd.legs[i])legs.push(i);
   if(reduceM||!legs.length){tokSt=b;refreshRegion();focusNode(NODE_OF[b],0);if(cb)cb();return;}
-  var n=0;
+  var n=0;trav=true;
   (function next(){
-    if(n>=legs.length){tokSt=b;refreshRegion();if(cb)cb();return;}
+    if(n>=legs.length){trav=false;tokSt=b;refreshRegion();if(cb)cb();return;}
     var L=wd.legs[legs[n]],pts=L.pts,tot=L.done.userData.total,ms=clamp(6500/legs.length,900,1700);L.anim=true;
     rig.d=Math.max(Math.min(rig.d,40),24);
     anim.push({t0:performance.now(),ms:ms,f:function(t){
@@ -344,5 +344,5 @@ function fitPts(pts,ms){
 function zoom(f){rig.d*=f;applyCam();kick();}
 function tilt(){fly({phi:rig.phi>.5?.12:.85},600);}
 return {init:init,setState:setState,focusNode:focusNode,overview:overview,travel:travel,enterCity:enterCity,exitCity:exitCity,
-  cityOf:cityOf,CITY:CITY,fitPts:fitPts,story:cityStory,zoom:zoom,tilt:tilt,view:function(){return view;},busy:function(){return anim.length>0;}};
+  cityOf:cityOf,CITY:CITY,fitPts:fitPts,story:cityStory,zoom:zoom,tilt:tilt,view:function(){return view;},busy:function(){return anim.length>0;},traveling:function(){return trav;}};
 })();
