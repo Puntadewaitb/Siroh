@@ -494,7 +494,7 @@ sur:{t:"Surat Nabi kepada para raja",b:"w",bx:[27,50,10,37.5],
 khb:{t:"Madinah ke Khaibar",b:"r",bx:[38.4,40.4,24.3,26.0],
  p:[["md","Madinah",8,4,"s","m"],["kh","Khaibar",8,4,"s","m"]],
  r:[{p:["md","kh"],c:"a",a:1,l:"Pasukan Muslimin ke Khaibar (garis lurus)"}],
- n:"Perang Khaibar, bagian dari bab hlm. 418–464. Khaibar di utara Madinah."},
+ n:"Perang Khaibar (hlm. 418–464). Khaibar di utara Madinah."},
 mut:{t:"Madinah ke Mu’tah",b:"w",bx:[33,43,23,34],
  p:[["md","Madinah",8,4,"s","m"],["mu","Mu’tah",8,4,"s","m"]],
  r:[{p:["md","mu"],c:"a",a:1,l:"Pasukan Mu’tah, jalur skematis"}],
@@ -586,7 +586,7 @@ function chHTML(){
   if(ch.fin){
     h='<div aria-live="polite"><p class="chscore">Skor '+ch.score+' / '+ch.qs.length+' · rentetan benar terpanjang '+ch.maxStreak+'</p></div>';
     if(ch.log.length){
-      h+='<p>Perlu diulang (rujuk buku):</p><ul class="chlog">'+ch.log.map(function(q){return '<li><b>'+esc(S[q.i].t)+'</b> · '+esc(q.h)+'<br>'+esc(q.t)+' <i>→ '+esc(q.o[q.a])+'</i></li>';}).join("")+'</ul>';
+      h+='<p>Perlu diulang:</p><ul class="chlog">'+ch.log.map(function(q){return '<li><b>'+esc(S[q.i].t)+'</b><br>'+esc(q.t)+' <i>→ '+esc(q.o[q.a])+'</i></li>';}).join("")+'</ul>';
     }else h+='<p class="fb good">Sempurna. Semua jawaban benar.</p>';
     return h+'<div class="row"><button class="btn" data-ch="start">Main lagi</button><button class="btn ghost" data-ch="close">Tutup</button></div>';
   }
@@ -598,7 +598,7 @@ function chHTML(){
     h+='<button class="'+cls+'" data-ch="ans" data-k="'+k+'"'+(done?' disabled':'')+'>'+esc(o)+'</button>';
   });
   h+='</div><div aria-live="polite">';
-  if(done)h+='<p class="fb '+(ch.pick===q.a?'good':'err')+'">'+(ch.pick===q.a?'Benar. ':'Belum tepat. ')+esc(q.e)+' <span class="ref">'+esc(q.h)+'</span></p>';
+  if(done)h+='<p class="fb '+(ch.pick===q.a?'good':'err')+'">'+(ch.pick===q.a?'Benar. ':'Belum tepat. ')+esc(noHlm(q.e))+'</p>';
   h+='</div>';
   if(done)h+='<button class="btn" data-ch="next" id="chnext">'+(ch.n+1>=ch.qs.length?'Lihat hasil':'Soal berikutnya')+'</button>';
   return h;
@@ -840,7 +840,7 @@ function qBlock(i){
   }
   if(isDone(i)&&!justOk[i]){
     h+='<div class="q"><span class="lbl">Ulasan · '+lbl+'</span>';
-    qs.forEach(function(q,k){h+='<div class="rv"><p class="qt">'+(k+1)+'. '+esc(q.t)+'</p><p class="ans">Jawaban: '+esc(ansText(q))+'</p><p class="fb good">'+esc(q.e)+' <span class="ref">'+esc(q.h)+'</span></p></div>';});
+    qs.forEach(function(q,k){h+='<div class="rv"><p class="qt">'+(k+1)+'. '+esc(q.t)+'</p><p class="ans">Jawaban: '+esc(ansText(q))+'</p><p class="fb good">'+esc(noHlm(q.e))+'</p></div>';});
     return h+'</div>';
   }
   var c=justOk[i]?n-1:n,q=qs[c],u=U(i,c),ok=!!justOk[i],w=wrong[i]||[];
@@ -884,7 +884,7 @@ function qBlock(i){
     if(!ok)h+='<button class="btn" data-act="mtchk" data-i="'+i+'"'+(Object.keys(u.mt).filter(function(k){return u.mt[k]!==""&&u.mt[k]!=null;}).length===q.l.length?"":" disabled")+'>Periksa pasangan</button>';
   }
   h+='<div aria-live="polite">';
-  if(ok)h+='<p class="fb good">'+esc(q.e)+' <span class="ref">'+esc(q.h)+'</span></p>';
+  if(ok)h+='<p class="fb good">'+esc(noHlm(q.e))+'</p>';
   else if(u.msg)h+='<p class="fb err">'+u.msg+'</p>';
   h+='</div>';
   if(ok){
@@ -907,7 +907,7 @@ function failStation(i){
 function miss(i,u,msg,k){
   var p=pz();u.tries++;p.hp[i]=hp(i)-1;
   if(k!=null)wrong[i]=(wrong[i]||[]).concat([k]);
-  u.msg=msg+" Buka "+esc(QS(i)[got(i)].h)+" di buku untuk memeriksa.";
+  u.msg=msg+" Baca lagi kisah dan ringkasannya, lalu coba lagi.";
   if(p.hp[i]<=0){failStation(i);}
   save();
 }
@@ -966,6 +966,14 @@ function firstOpen(){for(var i=0;i<S.length;i++){if(!isDone(i))return i;}return 
 function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
 function newTL(){var n=TL[st.mode].length;var idx=[];for(var i=0;i<n;i++)idx.push(i);var o=shuffle(idx);var tries=0;while(tries<5&&o.join()===idx.join()){o=shuffle(idx);tries++;}tl={seq:[],order:o,msg:"",ok:false};}
 
+/* Nomor halaman buku disimpan di data untuk verifikasi, tetapi tidak ditampilkan ke pemain. */
+function noHlm(s){
+  s=String(s).replace(/\s*\((?:[^()]*?\s)?hlm\.[^)]*\)/gi,"")
+    .replace(/(^|[.!?]\s+)Hlm\.\s*[\d–\-, ]+:\s*(\S)/g,function(_,a,c){return a+c.toUpperCase();})
+    .replace(/,?\s*(?:bab\s+)?hlm\.\s*[\d–\-]+(?:\s*,\s*[\d–\-]+)*/gi,"")
+    .replace(/\s+([.,;:])/g,"$1").replace(/\s{2,}/g," ").trim();
+  return s;
+}
 
 /* ---------- Peta ---------- */
 var C23=Math.cos(23*Math.PI/180),C27=Math.cos(27*Math.PI/180);
@@ -1037,7 +1045,7 @@ function mapSVG(m,W,opt){
 function legendHTML(m){
   var L=(m.r||[]).filter(function(r){return r.l;});
   if(!L.length)return "";
-  return '<ul class="leg">'+L.map(function(r){return '<li><svg width="30" height="8" aria-hidden="true"><line x1="1" y1="4" x2="29" y2="4" class="rt rt-'+r.c+(r.d?" dash":"")+'"/></svg><span>'+esc(r.l)+'</span></li>';}).join("")+'</ul>';
+  return '<ul class="leg">'+L.map(function(r){return '<li><svg width="30" height="8" aria-hidden="true"><line x1="1" y1="4" x2="29" y2="4" class="rt rt-'+r.c+(r.d?" dash":"")+'"/></svg><span>'+esc(noHlm(r.l))+'</span></li>';}).join("")+'</ul>';
 }
 function appW(){var a=document.getElementById("app");return Math.max(240,a.clientWidth);}
 function mapBlock(i){
@@ -1046,7 +1054,7 @@ function mapBlock(i){
   var W=Math.min(appW()-30,560);
   var h='<div class="mapbox"><span class="lbl">Peta</span>';
   if(ids.length>1){h+='<div class="tabs" role="group" aria-label="Pilih peta">'+ids.map(function(id,k){return '<button data-act="mt" data-i="'+i+'" data-k="'+k+'" aria-pressed="'+(k===cur)+'">'+esc(MTAB[id])+'</button>';}).join("")+'</div>';}
-  h+='<figure class="fig"><figcaption class="mt">'+esc(m.t)+'</figcaption>'+mapSVG(m,W)+legendHTML(m)+'<p class="mn">'+esc(m.n)+'</p></figure></div>';
+  h+='<figure class="fig"><figcaption class="mt">'+esc(m.t)+'</figcaption>'+mapSVG(m,W)+legendHTML(m)+'<p class="mn">'+esc(noHlm(m.n))+'</p></figure></div>';
   return h;
 }
 /* ---------- Stasiun ---------- */
@@ -1082,7 +1090,7 @@ function panelHTML(enter){
     h+=stUnlocked(i)?'<div class="body">'+tlBody()+'</div>':lockMsg();
   }else{
     var s=S[i],m=st.mode;
-    h+='<h2 class="pt">Stasiun '+(i+1)+' · '+esc(s.t)+'</h2><p class="pm">'+esc(bandOf(i))+' · '+esc(s.lok)+' · hlm. '+s.hlm+' · '+Math.min(got(i),NQ)+'/'+NQ+' soal</p>';
+    h+='<h2 class="pt">Stasiun '+(i+1)+' · '+esc(s.t)+'</h2><p class="pm">'+esc(bandOf(i))+' · '+esc(s.lok)+' · '+Math.min(got(i),NQ)+'/'+NQ+' soal</p>';
     if(!stUnlocked(i))h+=lockMsg();
     else{
       h+='<div class="body"><p>'+esc(s.r[m])+'</p><div class="chips">'+s.k.map(function(k){return '<span class="chip">'+esc(k)+'</span>';}).join("")+'</div>';
@@ -1153,7 +1161,7 @@ document.getElementById("app").addEventListener("click",function(e){
     var right=0;tl.seq.forEach(function(idx,n){if(idx===n)right++;});
     if(right===ev.length){
       if(!p.tl){p.tl=true;p.pts+=(m==="s"?30:60);save();}
-      tl.ok=true;tl.msg="Urutan benar: "+ev.map(function(x){return esc(x[0])+" ("+x[1]+")";}).join(" → ")+".";
+      tl.ok=true;tl.msg="Urutan benar: "+ev.map(function(x){return esc(x[0]);}).join(" → ")+".";
     }else{tl.ok=false;tl.msg=right+" dari "+ev.length+" posisi sudah tepat. Periksa lagi urutannya.";}
     render();return;
   }

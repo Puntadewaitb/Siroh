@@ -51,7 +51,7 @@ function qBlock(i){
   }
   if(isDone(i)&&!justOk[i]){
     h+='<div class="q"><span class="lbl">Ulasan · '+lbl+'</span>';
-    qs.forEach(function(q,k){h+='<div class="rv"><p class="qt">'+(k+1)+'. '+esc(q.t)+'</p><p class="ans">Jawaban: '+esc(ansText(q))+'</p><p class="fb good">'+esc(q.e)+' <span class="ref">'+esc(q.h)+'</span></p></div>';});
+    qs.forEach(function(q,k){h+='<div class="rv"><p class="qt">'+(k+1)+'. '+esc(q.t)+'</p><p class="ans">Jawaban: '+esc(ansText(q))+'</p><p class="fb good">'+esc(noHlm(q.e))+'</p></div>';});
     return h+'</div>';
   }
   var c=justOk[i]?n-1:n,q=qs[c],u=U(i,c),ok=!!justOk[i],w=wrong[i]||[];
@@ -95,7 +95,7 @@ function qBlock(i){
     if(!ok)h+='<button class="btn" data-act="mtchk" data-i="'+i+'"'+(Object.keys(u.mt).filter(function(k){return u.mt[k]!==""&&u.mt[k]!=null;}).length===q.l.length?"":" disabled")+'>Periksa pasangan</button>';
   }
   h+='<div aria-live="polite">';
-  if(ok)h+='<p class="fb good">'+esc(q.e)+' <span class="ref">'+esc(q.h)+'</span></p>';
+  if(ok)h+='<p class="fb good">'+esc(noHlm(q.e))+'</p>';
   else if(u.msg)h+='<p class="fb err">'+u.msg+'</p>';
   h+='</div>';
   if(ok){
@@ -118,7 +118,7 @@ function failStation(i){
 function miss(i,u,msg,k){
   var p=pz();u.tries++;p.hp[i]=hp(i)-1;
   if(k!=null)wrong[i]=(wrong[i]||[]).concat([k]);
-  u.msg=msg+" Buka "+esc(QS(i)[got(i)].h)+" di buku untuk memeriksa.";
+  u.msg=msg+" Baca lagi kisah dan ringkasannya, lalu coba lagi.";
   if(p.hp[i]<=0){failStation(i);}
   save();
 }

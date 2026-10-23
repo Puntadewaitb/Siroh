@@ -90,7 +90,7 @@ import base64
 tmeta=json.load(open(B+'build/terrain/meta.json'))
 TERR={k:dict(v,src='data:image/png;base64,'+base64.b64encode(open(B+'build/terrain/%s.png'%k,'rb').read()).decode()) for k,v in tmeta.items()}
 body3='''<div class="wrap w3">
-  <header class="top3"><h1>Peta Sirah Nabawiyah</h1><p class="src">Versi 3D (uji coba) · <a href="index.html">versi utama</a></p>
+  <header class="top3"><h1>Peta Sirah Nabawiyah</h1><p class="src">Bersumber dari buku <i>Sirah Nabawiyah</i> (Ar-Rahiqul Makhtum) karya Syaikh Shafiyyurrahman Al-Mubarakfuri.</p><p class="src">Versi 3D (uji coba) · <a href="index.html">versi utama</a></p>
     <div class="hud3"><div class="seg" role="group" aria-label="Pilih level"><button id="ms3" aria-pressed="true">SMP</button><button id="md3" aria-pressed="false">Dewasa</button></div>
     <span>Poin <b id="pts3">0</b></span><span>Stasiun <b id="cnt3">0</b>/18</span></div></header>
   <div class="m3wrap"><div id="m3" class="m3"></div>

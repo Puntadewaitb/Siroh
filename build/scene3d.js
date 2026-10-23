@@ -374,7 +374,7 @@ function drawDlg(){
   if(mode==="story"){
     var b=beats[bi];
     h='<div class="dnar"><span>Kilasan kisah</span><span class="dots">'+beats.map(function(_,k){return '<i class="'+(k===bi?"on":k<bi?"was":"")+'"></i>';}).join("")+'</span></div>'+
-      '<p class="dtx" id="dtx"></p><p class="dref">'+esc(b.h)+'</p><div class="dbt">'+
+      '<p class="dtx" id="dtx"></p><div class="dbt">'+
       '<button class="btn ghost" data-sa="skip">Lewati kisah</button>'+
       (bi>0?'<button class="btn ghost" data-sa="prev" aria-label="Sebelumnya">‹</button>':'')+
       '<button class="btn" data-sa="next">'+(bi<beats.length-1?"Lanjut ›":"Mulai uji ingatan ›")+'</button></div>';

@@ -20,3 +20,11 @@ function firstOpen(){for(var i=0;i<S.length;i++){if(!isDone(i))return i;}return 
 function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
 function newTL(){var n=TL[st.mode].length;var idx=[];for(var i=0;i<n;i++)idx.push(i);var o=shuffle(idx);var tries=0;while(tries<5&&o.join()===idx.join()){o=shuffle(idx);tries++;}tl={seq:[],order:o,msg:"",ok:false};}
 
+/* Nomor halaman buku disimpan di data untuk verifikasi, tetapi tidak ditampilkan ke pemain. */
+function noHlm(s){
+  s=String(s).replace(/\s*\((?:[^()]*?\s)?hlm\.[^)]*\)/gi,"")
+    .replace(/(^|[.!?]\s+)Hlm\.\s*[\d–\-, ]+:\s*(\S)/g,function(_,a,c){return a+c.toUpperCase();})
+    .replace(/,?\s*(?:bab\s+)?hlm\.\s*[\d–\-]+(?:\s*,\s*[\d–\-]+)*/gi,"")
+    .replace(/\s+([.,;:])/g,"$1").replace(/\s{2,}/g," ").trim();
+  return s;
+}

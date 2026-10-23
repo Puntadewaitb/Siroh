@@ -68,7 +68,7 @@ function mapSVG(m,W,opt){
 function legendHTML(m){
   var L=(m.r||[]).filter(function(r){return r.l;});
   if(!L.length)return "";
-  return '<ul class="leg">'+L.map(function(r){return '<li><svg width="30" height="8" aria-hidden="true"><line x1="1" y1="4" x2="29" y2="4" class="rt rt-'+r.c+(r.d?" dash":"")+'"/></svg><span>'+esc(r.l)+'</span></li>';}).join("")+'</ul>';
+  return '<ul class="leg">'+L.map(function(r){return '<li><svg width="30" height="8" aria-hidden="true"><line x1="1" y1="4" x2="29" y2="4" class="rt rt-'+r.c+(r.d?" dash":"")+'"/></svg><span>'+esc(noHlm(r.l))+'</span></li>';}).join("")+'</ul>';
 }
 function appW(){var a=document.getElementById("app");return Math.max(240,a.clientWidth);}
 function mapBlock(i){
@@ -77,7 +77,7 @@ function mapBlock(i){
   var W=Math.min(appW()-30,560);
   var h='<div class="mapbox"><span class="lbl">Peta</span>';
   if(ids.length>1){h+='<div class="tabs" role="group" aria-label="Pilih peta">'+ids.map(function(id,k){return '<button data-act="mt" data-i="'+i+'" data-k="'+k+'" aria-pressed="'+(k===cur)+'">'+esc(MTAB[id])+'</button>';}).join("")+'</div>';}
-  h+='<figure class="fig"><figcaption class="mt">'+esc(m.t)+'</figcaption>'+mapSVG(m,W)+legendHTML(m)+'<p class="mn">'+esc(m.n)+'</p></figure></div>';
+  h+='<figure class="fig"><figcaption class="mt">'+esc(m.t)+'</figcaption>'+mapSVG(m,W)+legendHTML(m)+'<p class="mn">'+esc(noHlm(m.n))+'</p></figure></div>';
   return h;
 }
 /* ---------- Stasiun ---------- */
@@ -113,7 +113,7 @@ function panelHTML(enter){
     h+=stUnlocked(i)?'<div class="body">'+tlBody()+'</div>':lockMsg();
   }else{
     var s=S[i],m=st.mode;
-    h+='<h2 class="pt">Stasiun '+(i+1)+' · '+esc(s.t)+'</h2><p class="pm">'+esc(bandOf(i))+' · '+esc(s.lok)+' · hlm. '+s.hlm+' · '+Math.min(got(i),NQ)+'/'+NQ+' soal</p>';
+    h+='<h2 class="pt">Stasiun '+(i+1)+' · '+esc(s.t)+'</h2><p class="pm">'+esc(bandOf(i))+' · '+esc(s.lok)+' · '+Math.min(got(i),NQ)+'/'+NQ+' soal</p>';
     if(!stUnlocked(i))h+=lockMsg();
     else{
       h+='<div class="body"><p>'+esc(s.r[m])+'</p><div class="chips">'+s.k.map(function(k){return '<span class="chip">'+esc(k)+'</span>';}).join("")+'</div>';
@@ -184,7 +184,7 @@ document.getElementById("app").addEventListener("click",function(e){
     var right=0;tl.seq.forEach(function(idx,n){if(idx===n)right++;});
     if(right===ev.length){
       if(!p.tl){p.tl=true;p.pts+=(m==="s"?30:60);save();}
-      tl.ok=true;tl.msg="Urutan benar: "+ev.map(function(x){return esc(x[0])+" ("+x[1]+")";}).join(" → ")+".";
+      tl.ok=true;tl.msg="Urutan benar: "+ev.map(function(x){return esc(x[0]);}).join(" → ")+".";
     }else{tl.ok=false;tl.msg=right+" dari "+ev.length+" posisi sudah tepat. Periksa lagi urutannya.";}
     render();return;
   }

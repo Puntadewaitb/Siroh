@@ -73,6 +73,7 @@ for(const [mode,btn] of [["s","#m-smp"],["d","#m-dewasa"]]){
     await pg.click(`[data-ch="ans"][data-k="${a}"]`);await pg.click('[data-ch="next"]');
   }
   ok(await pg.evaluate(()=>ch.fin&&ch.score===10&&P().chPerfect),`${mode} tantangan sempurna`);
+  ok(!(await pg.evaluate(()=>/hlm\./i.test(document.body.innerText))),`${mode} tidak ada nomor halaman buku di tampilan`);
   ok(errs.length===0,`${mode} tanpa error JS ${errs.join("|")}`);
   await pg.screenshot({path:`tests/shot-${mode}.png`,fullPage:false});
   await ctx.close();

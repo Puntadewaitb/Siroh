@@ -22,6 +22,7 @@ for(const rm of ["no-preference","reduce"]){
   await pg.click('.sc3[data-st="0"]');await pg.click('[data-a="play"]');
   await pg.waitForSelector('.stdlg [data-sa="next"]',{timeout:30000});
   ok(await pg.locator(".stg:not([hidden]) canvas").count()===1,`${rm}: adegan tampil`);
+  ok(!(await pg.evaluate(()=>/hlm\./i.test(document.body.innerText))),`${rm}: kilasan tanpa nomor halaman`);
   await pg.click('[data-sa="skip"]');
   for(let n=0;n<3;n++){await answerCurrent(pg,0);await pg.click('.stdlg [data-act="nextq"]');}
   ok(await pg.evaluate(()=>isDone(0)&&SC.mode()==="done"),`${rm}: stasiun 1 selesai di dalam adegan`);

@@ -24,14 +24,14 @@ function infoHTML(){
     var h='<p class="k3">Kota · tampilan detail</p><h2>'+esc(C.n)+'</h2><p class="mut3">Relief dari data ketinggian nyata (dibesarkan agar terbaca). Titik tempat perkiraan'+(P3.city==="mk"?"; Ka’bah berupa simbol, tidak berskala":"")+'.</p>';
     h+='<div class="sty3" role="group" aria-label="Kisah di kota ini">'+C.maps.map(function(m){return '<button data-story="'+m+'" aria-pressed="'+(P3.story===m)+'">'+esc(MP[m].t)+'</button>';}).join("")+'</div>';
     if(P3.story){var m=MP[P3.story];
-      h+=(m.r||[]).map(function(r){return '<p class="lg3"><i class="c-'+r.c+'"></i>'+esc(r.l||"")+'</p>';}).join("")+'<p class="nt3">'+esc(m.n)+'</p>';
+      h+=(m.r||[]).map(function(r){return '<p class="lg3"><i class="c-'+r.c+'"></i>'+esc(noHlm(r.l||""))+'</p>';}).join("")+'<p class="nt3">'+esc(noHlm(m.n))+'</p>';
       var sts=[];Object.keys(SM).forEach(function(k){if(SM[k].indexOf(P3.story)>-1)sts.push(+k);});
       h+=sts.map(function(j){return '<button class="go3" data-st="'+j+'">Stasiun '+(j+1)+': '+esc(S[j].t)+'</button>';}).join("");
     }
     return h;
   }
   var i=st.sel.i,k=NODE_OF[i],h='<p class="k3">Stasiun '+(i===S.length?"akhir":i+1)+' · '+esc(band3(i))+'</p><h2>'+esc(title3(i))+'</h2>';
-  if(i<S.length)h+='<p class="mut3">'+esc(S[i].lok)+' · hlm. '+esc(S[i].hlm)+' · '+Math.min(got(i),NQ)+'/'+NQ+' soal</p>';
+  if(i<S.length)h+='<p class="mut3">'+esc(S[i].lok)+' · '+Math.min(got(i),NQ)+'/'+NQ+' soal</p>';
   h+='<div class="act3">';
   if(i===S.length)h+=stOpen3(i)?'<a class="btn" href="index.html">Kerjakan ujian di versi utama</a>':'<p class="fb err">Terbuka setelah semua stasiun selesai.</p>';
   else if(stOpen3(i))h+='<button class="btn play3" data-a="play">'+(stDone3(i)?"Buka lagi adegan & ulasan":"▶ Mulai stasiun")+'</button>';

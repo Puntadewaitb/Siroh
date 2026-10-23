@@ -56,7 +56,7 @@ function chHTML(){
   if(ch.fin){
     h='<div aria-live="polite"><p class="chscore">Skor '+ch.score+' / '+ch.qs.length+' · rentetan benar terpanjang '+ch.maxStreak+'</p></div>';
     if(ch.log.length){
-      h+='<p>Perlu diulang (rujuk buku):</p><ul class="chlog">'+ch.log.map(function(q){return '<li><b>'+esc(S[q.i].t)+'</b> · '+esc(q.h)+'<br>'+esc(q.t)+' <i>→ '+esc(q.o[q.a])+'</i></li>';}).join("")+'</ul>';
+      h+='<p>Perlu diulang:</p><ul class="chlog">'+ch.log.map(function(q){return '<li><b>'+esc(S[q.i].t)+'</b><br>'+esc(q.t)+' <i>→ '+esc(q.o[q.a])+'</i></li>';}).join("")+'</ul>';
     }else h+='<p class="fb good">Sempurna. Semua jawaban benar.</p>';
     return h+'<div class="row"><button class="btn" data-ch="start">Main lagi</button><button class="btn ghost" data-ch="close">Tutup</button></div>';
   }
@@ -68,7 +68,7 @@ function chHTML(){
     h+='<button class="'+cls+'" data-ch="ans" data-k="'+k+'"'+(done?' disabled':'')+'>'+esc(o)+'</button>';
   });
   h+='</div><div aria-live="polite">';
-  if(done)h+='<p class="fb '+(ch.pick===q.a?'good':'err')+'">'+(ch.pick===q.a?'Benar. ':'Belum tepat. ')+esc(q.e)+' <span class="ref">'+esc(q.h)+'</span></p>';
+  if(done)h+='<p class="fb '+(ch.pick===q.a?'good':'err')+'">'+(ch.pick===q.a?'Benar. ':'Belum tepat. ')+esc(noHlm(q.e))+'</p>';
   h+='</div>';
   if(done)h+='<button class="btn" data-ch="next" id="chnext">'+(ch.n+1>=ch.qs.length?'Lihat hasil':'Soal berikutnya')+'</button>';
   return h;
