@@ -1,0 +1,59 @@
+[
+ {
+  "k": "jelajah",
+  "before": {
+   "s": 1,
+   "d": 1
+  },
+  "shot": "wide",
+  "t": "Lihat Jabal Nur dari kejauhan. Ketuk tanda yang bersinar.",
+  "spots": [
+   [
+    "gua",
+    "Gua Hira",
+    "Guanya tidak terlalu besar: panjangnya 4 hasta, lebarnya antara ¾ hingga 1 hasta. Kadang-kadang keluarga beliau ikut menyertai ke sana.",
+    "hlm. 61"
+   ],
+   [
+    "makkah",
+    "Makkah",
+    "Beliau beribadah di gua pada malam-malam hari, lalu pulang menemui Khadijah untuk mengambil bekal seperti biasanya.",
+    "hlm. 63"
+   ]
+  ]
+ },
+ {
+  "k": "tebak",
+  "before": {
+   "s": 1,
+   "d": 3
+  },
+  "shot": "cave",
+  "q": "Pada bulan Ramadhan, saat beliau berada di Gua Hira, Jibril datang membawa wahyu. Menurutmu, apa kata pertama yang diucapkannya?",
+  "o": [
+   "“Berhijrahlah!”",
+   "“Bersembunyilah!”",
+   "“Bacalah!”"
+  ],
+  "a": 2,
+  "r": "Jibril berkata, “Bacalah!” Beliau menjawab, “Aku tidak bisa membaca.” Perintah itu diulang tiga kali, lalu turunlah Surat Al-‘Alaq ayat 1–5.",
+  "h": "hlm. 63–64"
+ },
+ {
+  "k": "tebak",
+  "before": {
+   "s": 2,
+   "d": 6
+  },
+  "shot": "town",
+  "q": "Setelah wahyu pertama, beliau pulang dengan hati bergetar. Khadijah menenangkan beliau, lalu membawanya kepada sepupunya, Waraqah bin Naufal, seorang Nashrani yang sudah tua. Menurutmu, apa kata Waraqah?",
+  "o": [
+   "Itu hanya mimpi biasa, tidak perlu dipikirkan",
+   "Itu adalah Namus yang pernah diturunkan Allah kepada Musa",
+   "Sebaiknya beliau tidak usah kembali ke gua itu"
+  ],
+  "a": 1,
+  "r": "Waraqah berkata, “Ini adalah Namus yang diturunkan Allah kepada Musa.” Ia juga mengabarkan bahwa kaum beliau kelak akan mengusir beliau, sebab siapa pun yang membawa ajaran seperti ini pasti dimusuhi.",
+  "h": "hlm. 64"
+ }
+]

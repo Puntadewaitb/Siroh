@@ -1,0 +1,71 @@
+[
+ {
+  "k": "tebak",
+  "before": {
+   "s": 1,
+   "d": 3
+  },
+  "shot": "arafah",
+  "q": "Di Padang Arafah, Rasulullah berpesan bahwa beliau meninggalkan sesuatu yang membuat umatnya tidak akan tersesat selama berpegang teguh kepadanya. Menurutmu, apa itu?",
+  "o": [
+   "Kitab Allah",
+   "Harta yang melimpah",
+   "Benteng-benteng yang kuat"
+  ],
+  "a": 0,
+  "r": "Beliau bersabda, “Aku telah meninggalkan di tengah kalian sesuatu yang sekali-kali kalian tidak akan tersesat sesudahnya, selagi kalian berpegang teguh kepadanya, yaitu Kitab Allah.”",
+  "h": "hlm. 563"
+ },
+ {
+  "k": "jelajah",
+  "before": {
+   "s": 3,
+   "d": 7
+  },
+  "shot": "arafah",
+  "t": "Lihat tempat-tempat Haji Wada’. Ketuk tanda yang bersinar.",
+  "spots": [
+   [
+    "arafah",
+    "Padang Arafah",
+    "Tenda-tenda sudah didirikan di Arafah. Yang menyerukan ulang sabda beliau di hadapan orang-orang adalah Rabi’ah bin Umayyah bin Khalaf.",
+    "hlm. 562–563"
+   ],
+   [
+    "mina",
+    "Mina",
+    "Pada hari-hari Tasyriq beliau tinggal di Mina untuk melaksanakan manasik, mengajarkan syariat, dan berzikir kepada Allah. Surat An-Nashr turun pada pertengahan hari-hari Tasyriq.",
+    "hlm. 566, 568"
+   ],
+   [
+    "kabah",
+    "Ka’bah",
+    "Pada hari kurban beliau pergi ke Ka’bah dan shalat zhuhur di Makkah, lalu minum setimba air Zamzam yang disodorkan orang-orang Bani Abdul Muthalib.",
+    "hlm. 564–565"
+   ],
+   [
+    "madinah",
+    "Madinah",
+    "Pada Ramadhan 10 H beliau i’tikaf di masjid selama 20 hari, padahal sebelumnya hanya 10 hari. Menurut penulis, ini termasuk tanda-tanda perpisahan beliau.",
+    "hlm. 568"
+   ]
+  ]
+ },
+ {
+  "k": "tebak",
+  "before": {
+   "s": 3,
+   "d": 8
+  },
+  "shot": "madinah",
+  "q": "Setelah kembali ke Madinah, Rasulullah jatuh sakit hingga tak sanggup lagi pergi ke masjid. Menurutmu, siapa yang beliau minta mengimami shalat?",
+  "o": [
+   "Umar bin Al-Khaththab",
+   "Ali bin Abu Thalib",
+   "Abu Bakar"
+  ],
+  "a": 2,
+  "r": "Beliau mengutus orang menemui Abu Bakar agar mengimami orang-orang. Abu Bakar mengimami 17 shalat selagi beliau masih hidup.",
+  "h": "hlm. 571–572"
+ }
+]

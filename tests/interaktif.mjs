@@ -3,7 +3,7 @@ import {chromium} from "playwright";import {pathToFileURL} from "node:url";impor
 const out=process.argv[2]||null;
 const b=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||undefined,args:["--use-angle=swiftshader","--enable-unsafe-swiftshader","--ignore-gpu-blocklist"]});
 let fail=0;const ok=(c,m)=>{if(!c){console.error("FAIL",m);fail++}else console.log("ok  ",m)};
-for(const mode of ["s","d"]){
+for(const mode of (process.argv[3]||"s,d").split(",")){
   const pg=await b.newPage({viewport:{width:390,height:844}});const errs=[];pg.on("pageerror",e=>errs.push(e.message));
   await pg.goto(pathToFileURL(path.resolve("peta3d.html")).href);await pg.waitForSelector(".m3.ready",{timeout:60000});
   await pg.evaluate(m=>{st.prog={s:{qd:{},pts:0,tl:false},d:{qd:{},pts:0,tl:false}};st.learn=true;setMode3(m);},mode);

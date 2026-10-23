@@ -1,0 +1,77 @@
+[
+ {
+  "k": "tebak",
+  "before": {
+   "s": 2,
+   "d": 3
+  },
+  "shot": "mutah",
+  "q": "Zaid, Ja’far, dan Abdullah bin Rawahah gugur. Bendera kini dipegang Khalid bin Al-Walid, padahal pasukan Romawi jauh lebih banyak. Menurutmu, apa siasat Khalid esok harinya?",
+  "o": [
+   "Menyerbu langsung ke markas Heraklius",
+   "Menyerah kepada pasukan Romawi",
+   "Menukar posisi barisan agar Romawi mengira datang bala bantuan, lalu mundur teratur"
+  ],
+  "a": 2,
+  "r": "Barisan belakang dipindah ke depan, sayap kiri ke kanan, dan sebaliknya. Romawi mengira kaum Muslimin mendapat bala bantuan dan menjadi takut, lalu pasukan Muslimin mundur pelan-pelan tanpa dikejar.",
+  "h": "hlm. 474"
+ },
+ {
+  "k": "aksi",
+  "before": {
+   "s": 3,
+   "d": 8
+  },
+  "shot": "fathu",
+  "act": "masuk",
+  "t": "Di Dzu Thuwa, pasukan dibagi agar memasuki Makkah dari beberapa arah. Ketuk tiap kelompok panji hijau untuk menggerakkannya masuk ke Makkah.",
+  "r": "Semua kelompok sudah masuk! Khalid, dari dataran rendah, menunggu di Shafa; Az-Zubair, dari dataran tinggi, menancapkan bendera di Al-Hajun; Abu Ubaidah masuk lewat tengah lembah. Perlawanan hanya terjadi sebentar di Khandamah.",
+  "h": "hlm. 490–491"
+ },
+ {
+  "k": "tebak",
+  "before": {
+   "s": 3,
+   "d": 8
+  },
+  "shot": "kabah",
+  "q": "Orang-orang Quraisy, yang dulu memusuhi kaum Muslimin, berkerumun di Masjidil Haram menunggu keputusan Rasulullah. Beliau bertanya apa yang menurut mereka akan beliau perbuat. Menurutmu, apa sabda beliau?",
+  "o": [
+   "“Pergilah, karena kalian orang-orang yang bebas.”",
+   "“Kalian semua menjadi tawanan kami.”",
+   "“Tinggalkan Makkah hari ini juga.”"
+  ],
+  "a": 0,
+  "r": "Beliau mengulang ucapan Nabi Yusuf kepada saudara-saudaranya, “Pada hari ini tidak ada cercaan terhadap kalian,” lalu bersabda, “Pergilah karena kalian orang-orang yang bebas.”",
+  "h": "hlm. 493"
+ },
+ {
+  "k": "jelajah",
+  "before": {
+   "s": 4,
+   "d": 9
+  },
+  "shot": "kota",
+  "t": "Lihat kembali tempat-tempat dalam kisah ini. Ketuk tanda yang bersinar.",
+  "spots": [
+   [
+    "mutah",
+    "Mu’tah",
+    "Dusun sebelum masuk wilayah Syam; dari sana Baitul Maqdis dapat dicapai dua hari berjalan kaki. Di sini 3000 prajurit Muslimin menghadapi 200.000 pasukan Romawi dan sekutunya.",
+    "hlm. 469, 472"
+   ],
+   [
+    "kabah",
+    "Ka’bah",
+    "Di sekitar Ka’bah ada 360 berhala. Setelah berhala-berhala roboh, Rasulullah masuk ke Ka’bah dan shalat di dalamnya, lalu Bilal diperintahkan mengumandangkan azan di atas Ka’bah.",
+    "hlm. 492, 494"
+   ],
+   [
+    "kota",
+    "Makkah",
+    "Abu Sufyan berseru kepada Quraisy: siapa masuk rumah Abu Sufyan, menutup pintu rumahnya, atau masuk masjid, ia aman. Orang-orang pun berpencar ke rumah masing-masing dan ke masjid.",
+    "hlm. 489–490"
+   ]
+  ]
+ }
+]

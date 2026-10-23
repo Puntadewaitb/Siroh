@@ -352,7 +352,7 @@ function autoFit(pts,dir){
   var dv=new T.Vector3(dir[0],dir[1],dir[2]).normalize(),L=V(c),v=new T.Vector3(),H=host.clientHeight||1,
       dl=el.querySelector(".stdlg"),yMin=dl?1-2*Math.max(0,dl.getBoundingClientRect().top-host.getBoundingClientRect().top)/H+.14:-.85,D=12;
   for(var k=0;k<60;k++,D*=1.09){fitCam.position.copy(L).addScaledVector(dv,D);fitCam.lookAt(L);fitCam.updateMatrixWorld();
-    var ok=pts.every(function(p){v.set(p[0],p[1],p[2]).project(fitCam);return v.z<1&&Math.abs(v.x)<.82&&v.y<.78&&v.y>yMin;});if(ok)break;}
+    var ok=pts.every(function(p){v.set(p[0],p[1],p[2]).project(fitCam);return v.z<1&&Math.abs(v.x)<.6&&v.y<.72&&v.y>yMin;});if(ok)break;}
   var P=L.clone().addScaledVector(dv,D);return {p:[P.x,P.y,P.z],l:c};}
 function shotOf(sh,b){if(!sh)return sh;if(sh.pts)return autoFit(sh.pts,sh.dir);if(b&&(b.k==="jelajah"||b.k==="aksi"))return wideShot(sh);return sh;}
 function highest(h,cx,cz,r){var b={x:cx,z:cz,y:-1e9};for(var x=-r;x<=r;x+=r/12)for(var z=-r;z<=r;z+=r/12){var y=h(cx+x,cz+z);if(y>b.y)b={x:cx+x,z:cz+z,y:y};}return b;}
@@ -456,7 +456,7 @@ SCN.s3=function(done){need(["makkah"],function(){
 SCN.s4=function(done){need(["makkah"],function(){
   var A=demZone("makkah",PL.mk,2600,.024,0,0),mk=A.P(PL.mk[0],PL.mk[1]),h=A.h,B=procZone(700,0,{relief:4,sea:1});
   houses(mk.x,mk.z,22,420,h,21,function(x,z){return Math.hypot(x-mk.x,z-mk.z)<3.6||h(x,z)>3.2;});kaabah(mk.x,h(mk.x,mk.z),mk.z,.9);
-  hill(mk.x-4.5,mk.z+1.5,2.2,1.6,"#b89a72",5);var mv={v:0},BT=boats([{x:690,z:-8,r:.1},{x:684,z:6,r:-.2},{x:676,z:-2,r:.05}],mv);
+  hill(mk.x-4.5,mk.z+1.5,2.2,1.6,"#b89a72",5);var mv={v:0},BT=boats([{x:688,z:-5,r:.1},{x:680,z:5,r:-.2}],mv);  /* dua kapal di pelabuhan Syaiban (hijrah pertama) */
   done({sky:"day",shots:{shafa:shotAt(h,mk.x-4.5,mk.z+1.5,-8,4,10,1.5),kabah:shotAt(h,mk.x,mk.z,9,5,11,1),kota:shotAt(h,mk.x,mk.z,-30,20,40,0),pantai:{p:[700,4,16],l:[684,1,0]},laut:{p:[700,10,40],l:[690,0,0]}},
     spots:{shafa:[mk.x-4.5,h(mk.x-4.5,mk.z+1.5)+2.6,mk.z+1.5],kabah:[mk.x,h(mk.x,mk.z)+2,mk.z],perahu:[684,2.2,0]},
     aksi:{berlayar:function(A){var left=BT.length;BT.forEach(function(it){A.target([it.g.position.x,2.2,it.g.position.z],"Perahu",function(){it.go=1;if(--left===0)A.done();});});},

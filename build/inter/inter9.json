@@ -1,0 +1,83 @@
+[
+ {
+  "k": "tebak",
+  "before": {
+   "s": 0,
+   "d": 2
+  },
+  "shot": "madinah",
+  "q": "Rasulullah baru tiba di Madinah. Menurutmu, apa langkah pertama yang beliau lakukan?",
+  "o": [
+   "Membangun tembok mengelilingi kota",
+   "Membangun masjid",
+   "Menyiapkan pasukan ke Makkah"
+  ],
+  "a": 1,
+  "r": "Langkah pertama beliau adalah membangun masjid, tepat di tempat untanya menderum.",
+  "h": "hlm. 210"
+ },
+ {
+  "k": "aksi",
+  "before": {
+   "s": 1,
+   "d": 3
+  },
+  "shot": "masjid",
+  "act": "bangun",
+  "t": "Ayo bantu membangun masjid! Ketuk bagian yang bersinar sesuai urutan: dinding, tiang, lalu atap.",
+  "r": "Masjid berdiri: dinding dari bata yang disusun dengan lumpur, tiang dari batang pohon, atap dari daun kurma, dan lantai dari pasir serta kerikil kecil.",
+  "no": "Belum urut. Ikuti petunjuknya: dinding, tiang, lalu atap.",
+  "h": "hlm. 210",
+  "urut": [
+   "dinding",
+   "tiang",
+   "atap"
+  ]
+ },
+ {
+  "k": "tebak",
+  "before": {
+   "s": 2,
+   "d": 6
+  },
+  "shot": "pasar",
+  "q": "Sa’d bin Ar-Rabi’, orang Anshar yang paling banyak hartanya, menawarkan separuh hartanya kepada saudaranya, Abdurrahman bin Auf dari Muhajirin. Menurutmu, apa jawaban Abdurrahman?",
+  "o": [
+   "Mendoakan keberkahan dan minta ditunjukkan pasar",
+   "Menerima separuh harta itu",
+   "Menolak, lalu kembali ke Makkah"
+  ],
+  "a": 0,
+  "r": "Abdurrahman berkata, “Semoga Allah memberkahimu dalam keluarga dan hartamu. Tunjukkan saja di mana pasar kalian.” Ia pun mulai berdagang di pasar Bani Qainuqa’.",
+  "h": "hlm. 212"
+ },
+ {
+  "k": "jelajah",
+  "before": {
+   "s": 3,
+   "d": 7
+  },
+  "shot": "madinah",
+  "t": "Lihat Madinah yang mulai tertata. Ketuk tanda yang bersinar.",
+  "spots": [
+   [
+    "masjid",
+    "Masjid Nabawi",
+    "Panjang bangunannya ke arah kiblat seratus hasta, lebarnya hampir sama, dan fondasinya kurang lebih tiga hasta.",
+    "hlm. 210"
+   ],
+   [
+    "pasar",
+    "Pasar Bani Qainuqa’",
+    "Di sini Abdurrahman bin Auf berdagang. Tak lama kemudian ia sudah mendapat sejumlah samin dan keju, dan setiap pagi ia pergi berdagang.",
+    "hlm. 212"
+   ],
+   [
+    "kampung",
+    "Perkampungan",
+    "Tetangga terdekat kaum Muslimin di Madinah adalah orang-orang Yahudi. Meski memendam permusuhan, mereka tidak berani menampakkannya.",
+    "hlm. 218"
+   ]
+  ]
+ }
+]

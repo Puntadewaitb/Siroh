@@ -1,0 +1,77 @@
+[
+ {
+  "k": "tebak",
+  "before": {
+   "s": 1,
+   "d": 1
+  },
+  "shot": "hunain",
+  "q": "Malik bin Auf dan pasukannya tiba lebih dulu di lembah Hunain pada malam hari, sebelum pasukan Muslimin datang. Menurutmu, apa yang ia lakukan?",
+  "o": [
+   "Mengirim utusan untuk meminta damai",
+   "Menyembunyikan pasukannya di jalan masuk dan celah-celah bukit",
+   "Menunggu terang-terangan di tengah lembah"
+  ],
+  "a": 1,
+  "r": "Malik menyebar pasukannya di setiap jalan masuk, sela-sela bukit, dan celah tersembunyi. Saat subuh masih gelap, pasukan Muslimin tiba-tiba dihujani panah secara serentak, dan banyak yang lari kocar-kacir.",
+  "h": "hlm. 508"
+ },
+ {
+  "k": "aksi",
+  "before": {
+   "s": 1,
+   "d": 2
+  },
+  "shot": "hunain",
+  "act": "kumpul",
+  "t": "Banyak yang lari tercerai-berai, tetapi Rasulullah tetap teguh. Al-Abbas, yang suaranya paling lantang, diperintahkan memanggil mereka: “Manakah orang yang berikrar di bawah pohon?” Ketuk panji-panji hijau yang tercerai-berai agar kembali berkumpul.",
+  "r": "Mereka menyahut, “Kami mendengar seruanmu!” Setelah seratus orang berkumpul, mereka siap bertempur lagi, dan pasukan Muslimin pun kembali berhimpun.",
+  "h": "hlm. 508–509"
+ },
+ {
+  "k": "jelajah",
+  "before": {
+   "s": 3,
+   "d": 7
+  },
+  "shot": "hijr",
+  "t": "Lihat tempat-tempat dalam perjalanan ini. Ketuk tanda yang bersinar.",
+  "spots": [
+   [
+    "lereng",
+    "Lereng Hunain",
+    "Di sela-sela bukit inilah pasukan Malik bin Auf bersembunyi. Hunain adalah lembah dekat Dzul Majaz, lebih dari sepuluh mil dari Makkah lewat Arafah.",
+    "hlm. 505, 508"
+   ],
+   [
+    "thaif",
+    "Benteng Thaif",
+    "Sisa pasukan musuh bertahan di sini. Saat dikepung, Rasulullah menyeru bahwa siapa pun yang turun dari benteng akan bebas, dan 20 orang turun. Beliau lalu pergi sambil berdoa agar Tsaqif diberi petunjuk.",
+    "hlm. 511–512"
+   ],
+   [
+    "hijr",
+    "Al-Hijr",
+    "Perkampungan kaum Tsamud yang dulu memahat batu-batu besar di lembah. Pasukan dilarang meminum air sumurnya; adonan yang terlanjur dibuat dengan air itu diberikan kepada unta.",
+    "hlm. 531"
+   ]
+  ]
+ },
+ {
+  "k": "tebak",
+  "before": {
+   "s": 3,
+   "d": 8
+  },
+  "shot": "tabuk",
+  "q": "Pasukan Muslimin, 30.000 orang, berangkat menuju Tabuk untuk menghadapi Romawi. Menurutmu, apa yang terjadi di Tabuk?",
+  "o": [
+   "Terjadi pertempuran besar melawan Romawi",
+   "Pasukan Muslimin dikepung di Tabuk",
+   "Romawi dan sekutunya ketakutan dan tidak berani maju"
+  ],
+  "a": 2,
+  "r": "Romawi dan sekutunya ketakutan, tidak berani maju, dan berpencar di batas wilayah mereka. Yuhannah bin Ru’bah, pemimpin Ailah, malah datang menawarkan perdamaian.",
+  "h": "hlm. 532–533"
+ }
+]

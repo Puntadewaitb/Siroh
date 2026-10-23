@@ -1,0 +1,77 @@
+[
+ {
+  "k": "tebak",
+  "before": {
+   "s": 1,
+   "d": 1
+  },
+  "shot": "perjalanan",
+  "q": "Quraisy bertekad menghalangi rombongan. Khalid bin Al-Walid dengan 200 penunggang kuda menghadang di jalur utama menuju Makkah. Menurutmu, apa yang dilakukan Rasulullah?",
+  "o": [
+   "Menyerang pasukan Khalid lebih dulu",
+   "Mengambil jalur sulit di celah-celah gunung agar tidak bentrok",
+   "Membatalkan umrah dan pulang ke Madinah"
+  ],
+  "a": 1,
+  "r": "Beliau membawa rombongan lewat jalur yang sulit dan berat di antara celah-celah gunung, melewati Tsaniyatul Murar, lalu turun ke Hudaibiyah. Melihat kepulan debu mereka, Khalid sadar rombongan telah lolos dan bergegas kembali ke Makkah.",
+  "h": "hlm. 401–402"
+ },
+ {
+  "k": "aksi",
+  "before": {
+   "s": 1,
+   "d": 2
+  },
+  "shot": "sumur",
+  "act": "air",
+  "t": "Di Hudaibiyah air kolam tinggal sedikit dan orang-orang kehausan. Rasulullah mengambil sebatang anak panah dan memerintahkan agar ditancapkan di kolam. Bantu para sahabat: ketuk kolam yang airnya tinggal sedikit.",
+  "r": "Air pun memancar deras. Mereka terus mengambil air itu hingga semuanya puas.",
+  "h": "hlm. 402"
+ },
+ {
+  "k": "tebak",
+  "before": {
+   "s": 2,
+   "d": 4
+  },
+  "shot": "makkah_jauh",
+  "q": "Utsman bin Affan diutus ke Makkah untuk menyampaikan bahwa kaum Muslimin datang untuk umrah, bukan berperang. Para pemimpin Quraisy lalu menawarinya thawaf di Ka’bah. Menurutmu, apa jawaban Utsman?",
+  "o": [
+   "Langsung thawaf sendirian",
+   "Segera pulang tanpa menyampaikan pesan",
+   "Menolak thawaf sebelum Rasulullah thawaf"
+  ],
+  "a": 2,
+  "r": "Utsman menolak; ia tidak mau thawaf sebelum Rasulullah thawaf. Karena ia cukup lama ditahan Quraisy, tersiar kabar bahwa Utsman telah dibunuh.",
+  "h": "hlm. 406"
+ },
+ {
+  "k": "jelajah",
+  "before": {
+   "s": 3,
+   "d": 6
+  },
+  "shot": "kemah",
+  "t": "Lihat perkemahan di Hudaibiyah. Ketuk tanda yang bersinar.",
+  "spots": [
+   [
+    "sumur",
+    "Kolam Hudaibiyah",
+    "Sekitar 1.400 orang bergantung pada kolam kecil ini. Setelah anak panah ditancapkan, airnya memancar dan mereka terus mengambilnya hingga puas.",
+    "hlm. 400, 402"
+   ],
+   [
+    "pohon",
+    "Pohon Baiat Ridhwan",
+    "Di bawah pohon ini para sahabat berbaiat untuk tidak lari; yang pertama berbaiat adalah Abu Sinan Al-Asadi. Allah lalu menurunkan ayat: “Sesungguhnya Allah telah ridha terhadap orang-orang Mukmin ketika mereka berjanji setia kepadamu di bawah pohon.” (Al-Fath: 18)",
+    "hlm. 407"
+   ],
+   [
+    "kemah",
+    "Kemah rombongan",
+    "Suatu malam, tujuh puluh atau delapan puluh pemuda Quraisy turun dari gunung Tan’im untuk menyusup ke perkemahan. Muhammad bin Maslamah, komandan jaga, menangkap mereka semua, lalu Nabi memaafkan dan melepaskan mereka.",
+    "hlm. 405"
+   ]
+  ]
+ }
+]

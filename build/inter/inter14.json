@@ -1,0 +1,78 @@
+[
+ {
+  "k": "tebak",
+  "before": {
+   "s": 1,
+   "d": 2
+  },
+  "shot": "jalan",
+  "q": "Surat Nabi untuk Kisra, raja Persia, dibawa oleh Abdullah bin Hudzafah As-Sahmi. Menurutmu, apa yang dilakukan Kisra setelah membacanya?",
+  "o": [
+   "Mencabik-cabik surat itu",
+   "Masuk Islam di hadapan utusan Nabi",
+   "Membalas dengan hormat dan mengirim hadiah"
+  ],
+  "a": 0,
+  "r": "Kisra langsung mencabik-cabik surat itu dengan congkak. Rasulullah bersabda, “Allah akan mencabik-cabik kerajaannya.” Tak lama kemudian Kisra dibunuh putranya sendiri, Syiruyah.",
+  "h": "hlm. 425–426"
+ },
+ {
+  "k": "jelajah",
+  "before": {
+   "s": 2,
+   "d": 4
+  },
+  "shot": "khaibar",
+  "t": "Dari Madinah ke Khaibar. Ketuk tanda yang bersinar.",
+  "spots": [
+   [
+    "madinah",
+    "Madinah",
+    "Ada yang memberi tahu bahwa para raja tidak mau menerima surat tanpa cap. Maka dibuat cincin stempel dari perak bertuliskan “Muhammad Rasul Allah” dalam tiga baris, disusun mulai dari bawah.",
+    "hlm. 420"
+   ],
+   [
+    "benteng",
+    "Benteng Khaibar",
+    "Khaibar, 60 hingga 80 mil di utara Madinah, punya delapan benteng besar: lima di paroh pertama (wilayah Nathat dan Asy-Syiqq) dan tiga di paroh kedua yang disebut Al-Katibah.",
+    "hlm. 440, 447"
+   ]
+  ]
+ },
+ {
+  "k": "aksi",
+  "before": {
+   "s": 4,
+   "d": 8
+  },
+  "shot": "khaibar",
+  "act": "benteng",
+  "t": "Benteng-benteng paroh pertama Khaibar jatuh satu per satu; setiap kali kalah, orang Yahudi pindah ke benteng berikutnya. Bantu pasukan Muslimin: ketuk benteng-benteng itu sesuai urutan penaklukannya.",
+  "urut": [
+   "Na’im",
+   "Ash-Sha’b bin Mu’adz",
+   "Az-Zubair",
+   "Ubay"
+  ],
+  "r": "Na’im, Ash-Sha’b bin Mu’adz, Az-Zubair, lalu Ubay jatuh berturut-turut. Orang Yahudi akhirnya bertahan di An-Nizar, benteng terkuat di paroh pertama, sampai dindingnya dijebol peluru batu manjaniq.",
+  "no": "Belum tepat. Ingat kisahnya: dimulai dari Na’im, garis pertahanan pertama, lalu benteng yang paling banyak makanannya. Coba lagi.",
+  "h": "hlm. 447–451"
+ },
+ {
+  "k": "tebak",
+  "before": {
+   "s": 4,
+   "d": 9
+  },
+  "shot": "kebun",
+  "q": "Semua benteng Khaibar akhirnya diserahkan kepada kaum Muslimin. Menurutmu, bagaimana nasib kebun-kebun Khaibar?",
+  "o": [
+   "Kebun-kebun itu dibakar habis",
+   "Orang Yahudi tetap mengolahnya dengan bagi hasil",
+   "Kebun-kebun dibiarkan tanpa digarap"
+  ],
+  "a": 1,
+  "r": "Orang Yahudi meminta tetap mengolah tanah itu karena lebih berpengalaman bertani. Beliau menyerahkannya kepada mereka, dan mereka mendapat bagian dari hasil panen.",
+  "h": "hlm. 453–454"
+ }
+]

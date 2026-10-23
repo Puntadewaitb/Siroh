@@ -1,0 +1,71 @@
+[
+ {
+  "k": "tebak",
+  "before": {
+   "s": 0,
+   "d": 1
+  },
+  "shot": "shafa",
+  "q": "Rasulullah naik ke Bukit Shafa dan memanggil suku-suku Quraisy. Beliau bertanya, “Jika kukabarkan di lembah ini ada pasukan berkuda yang mengepung kalian, apakah kalian percaya kepadaku?” Menurutmu, apa jawaban mereka?",
+  "o": [
+   "Mereka diam dan tidak mau menjawab",
+   "Tidak percaya, karena beliau sering bercanda",
+   "Percaya, karena mereka selalu mendapati beliau jujur"
+  ],
+  "a": 2,
+  "r": "Mereka menjawab, “Kami tidak pernah mendapati engkau kecuali jujur.” Beliau lalu memperingatkan mereka akan azab yang pedih, tetapi Abu Lahab malah mencela beliau.",
+  "h": "hlm. 79"
+ },
+ {
+  "k": "aksi",
+  "before": {
+   "s": 2,
+   "d": 6
+  },
+  "shot": "pantai",
+  "act": "berlayar",
+  "t": "Makkah makin sempit bagi kaum Muslimin yang lemah, dan Rasulullah memerintahkan sebagian sahabat hijrah ke Habasyah. Bantu rombongan pertama: ketuk perahu yang bersinar satu per satu agar berlayar sebelum Quraisy menyusul.",
+  "r": "Berhasil! Ketika Quraisy tiba di pinggir pantai, rombongan sudah bertolak dengan selamat. Di Habasyah mereka hidup dengan perlakuan yang baik.",
+  "h": "hlm. 98–99"
+ },
+ {
+  "k": "tebak",
+  "before": {
+   "s": 3,
+   "d": 7
+  },
+  "shot": "laut",
+  "q": "Quraisy mengirim utusan membawa hadiah agar Raja Najasyi memulangkan kaum Muslimin. Ja’far bin Abu Thalib menjelaskan ajaran Islam dan membacakan awal surat Maryam. Menurutmu, apa keputusan Najasyi?",
+  "o": [
+   "Menyerahkan kaum Muslimin kepada utusan Quraisy",
+   "Menolak menyerahkan mereka dan mengembalikan hadiah Quraisy",
+   "Menyuruh kaum Muslimin pindah ke negeri lain"
+  ],
+  "a": 1,
+  "r": "Najasyi menangis hingga jenggotnya basah. Ia bersumpah tidak akan menyerahkan kaum Muslimin, lalu menyuruh hadiah kedua utusan itu dikembalikan.",
+  "h": "hlm. 101–103"
+ },
+ {
+  "k": "jelajah",
+  "before": {
+   "s": 4,
+   "d": 9
+  },
+  "shot": "kabah",
+  "t": "Kembali ke Makkah. Ketuk tanda yang bersinar di sekitar Ka’bah.",
+  "spots": [
+   [
+    "shafa",
+    "Bukit Shafa",
+    "Rumah Al-Arqam bin Abil-Arqam di atas Bukit Shafa terpencil dari pengintaian mata-mata Quraisy. Sejak tahun kelima kenabian, rumah itu menjadi markas dakwah dan tempat kaum Muslimin berkumpul diam-diam.",
+    "hlm. 97"
+   ],
+   [
+    "kabah",
+    "Ka’bah",
+    "Ibnu Mas’ud berkata, kaum Muslimin hampir tidak bisa shalat di dekat Ka’bah sampai Umar masuk Islam. Setelah itu mereka bisa duduk berkelompok di sekitar Baitul Haram dan thawaf di sekeliling Ka’bah.",
+    "hlm. 115"
+   ]
+  ]
+ }
+]

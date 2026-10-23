@@ -1,0 +1,72 @@
+[
+ {
+  "k": "aksi",
+  "before": {
+   "s": 1,
+   "d": 2
+  },
+  "shot": "kota_malam",
+  "act": "sembunyi",
+  "t": "Quraisy pasti mencari di jalur utama ke Madinah, yang mengarah ke utara. Menurutmu, ke mana Rasulullah dan Abu Bakar bersembunyi lebih dulu? Ketuk tempat yang tepat.",
+  "r": "Tepat! Mereka justru berjalan ke arah selatan sekitar 5 mil, mendaki gunung yang terjal dan berbatu, lalu bersembunyi di Gua Tsaur di puncaknya.",
+  "no": "Belum tepat. Beliau memilih tempat di arah yang tidak disangka Quraisy: sebuah gua di gunung sebelah selatan Makkah. Coba lagi.",
+  "h": "hlm. 188"
+ },
+ {
+  "k": "jelajah",
+  "before": {
+   "s": 2,
+   "d": 5
+  },
+  "shot": "tsaur",
+  "t": "Lihat Makkah dan Gunung Tsaur malam itu. Ketuk tanda yang bersinar.",
+  "spots": [
+   [
+    "rumah",
+    "Rumah yang dikepung",
+    "Para pengepung menunggu sampai pagi. Ternyata yang tidur di tempat tidur itu adalah Ali bin Abu Thalib. Ketika ditanya di mana Muhammad, Ali menjawab, “Aku tidak tahu.”",
+    "hlm. 188"
+   ],
+   [
+    "tsaur",
+    "Gua Tsaur",
+    "Di mulut gua, Abu Bakar meminta masuk lebih dulu untuk memeriksanya. Ia menyingkirkan kotoran di dalamnya dan menutup sebuah lubang dengan robekan mantelnya, baru kemudian mempersilakan Rasulullah masuk.",
+    "hlm. 188–189"
+   ]
+  ]
+ },
+ {
+  "k": "tebak",
+  "before": {
+   "s": 2,
+   "d": 6
+  },
+  "shot": "pesisir",
+  "q": "Quraisy menjanjikan seratus unta bagi siapa pun yang bisa membawa Rasulullah. Suraqah bin Malik memacu kudanya mengejar rombongan di jalan pesisir. Menurutmu, apa yang terjadi?",
+  "o": [
+   "Kaki depan kudanya terperosok ke pasir, lalu ia meminta jaminan keamanan",
+   "Suraqah berhasil menangkap rombongan",
+   "Rombongan berbalik pulang ke Makkah"
+  ],
+  "a": 0,
+  "r": "Kaki depan kuda Suraqah terperosok ke pasir hingga lutut. Ia menyerah dan meminta jaminan keamanan. Pulangnya, ia malah menyuruh orang-orang berhenti mencari.",
+  "h": "hlm. 192–194"
+ },
+ {
+  "k": "tebak",
+  "before": {
+   "s": 4,
+   "d": 8
+  },
+  "shot": "madinah",
+  "q": "Di Madinah, setiap orang Anshar memegang tali kekang unta beliau dan meminta beliau singgah di rumahnya. Menurutmu, bagaimana tempat singgah beliau ditentukan?",
+  "o": [
+   "Diundi di antara kabilah-kabilah Anshar",
+   "Beliau memilih rumah yang paling besar",
+   "Beliau membiarkan untanya berjalan, karena unta itu sudah diperintah"
+  ],
+  "a": 2,
+  "r": "Beliau bersabda, “Berilah jalan kepada unta ini, karena ia sudah diperintah.” Unta itu menderum di perkampungan Bani An-Najjar, paman-paman beliau dari pihak ibu, dekat rumah Abu Ayyub.",
+  "h": "hlm. 198–199"
+ }
+]

@@ -1,0 +1,59 @@
+[
+ {
+  "k": "jelajah",
+  "before": {
+   "s": 2,
+   "d": 3
+  },
+  "shot": "thaif",
+  "t": "Lihat Thaif dan kebun di dekatnya. Ketuk tanda yang bersinar.",
+  "spots": [
+   [
+    "thaif",
+    "Thaif",
+    "Thaif berjarak lebih kurang 60 mil dari Makkah. Rasulullah menempuhnya dengan berjalan kaki, pergi maupun pulang, dan tinggal di tengah penduduknya selama sepuluh hari.",
+    "hlm. 141"
+   ],
+   [
+    "kebun",
+    "Kebun anggur",
+    "Kebun milik Utbah dan Syaibah, anak-anak Rabi’ah, sekitar tiga mil dari Thaif. Sampai di sini orang-orang yang membuntuti dan melempari beliau berhenti, lalu kembali ke Thaif.",
+    "hlm. 142"
+   ]
+  ]
+ },
+ {
+  "k": "tebak",
+  "before": {
+   "s": 3,
+   "d": 5
+  },
+  "shot": "jalan",
+  "q": "Dalam perjalanan pulang, Jibril datang bersama malaikat penjaga gunung, yang siap menimpakan dua gunung di Makkah kepada penduduknya jika beliau menghendaki. Menurutmu, apa jawaban Rasulullah?",
+  "o": [
+   "Menyuruh malaikat itu melakukannya",
+   "Menolak, dan berharap dari kalangan mereka muncul orang yang menyembah Allah semata",
+   "Meminta agar Thaif saja yang ditimpa gunung"
+  ],
+  "a": 1,
+  "r": "Beliau menjawab, “Bahkan aku berharap kepada Allah, Dia mengeluarkan dari kalangan mereka orang-orang yang menyembah Allah semata dan tidak menyekutukan sesuatu pun dengan-Nya.”",
+  "h": "hlm. 143–144"
+ },
+ {
+  "k": "tebak",
+  "before": {
+   "s": 4,
+   "d": 7
+  },
+  "shot": "langit",
+  "q": "Pada malam Mi’raj, Allah mewajibkan shalat lima puluh kali. Atas saran Nabi Musa, Rasulullah berulang kali kembali memohon keringanan. Menurutmu, akhirnya shalat ditetapkan berapa kali?",
+  "o": [
+   "Lima kali",
+   "Tiga kali",
+   "Tujuh kali"
+  ],
+  "a": 0,
+  "r": "Shalat ditetapkan lima kali. Musa masih menyarankan meminta keringanan lagi, tetapi beliau bersabda, “Aku sudah malu kepada Rabb-ku. Aku sudah ridha dan bisa menerimanya.”",
+  "h": "hlm. 160"
+ }
+]
