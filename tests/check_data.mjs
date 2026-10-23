@@ -5,7 +5,7 @@ const js=html.split("<script>")[1].split("</script>")[0];
 const stub={getElementById:()=>({addEventListener(){},setAttribute(){},style:{},clientWidth:360,innerHTML:""}),querySelector:()=>null,addEventListener(){}};
 const ctx={document:stub,window:{addEventListener(){}},localStorage:{getItem:()=>null,setItem(){}},Math,JSON,console};
 vm.createContext(ctx);
-vm.runInContext(js.split("/* ---------- Peta ---------- */")[0].replace(/\nfunction load\(\)[\s\S]*$/,"")+";this.S=S;this.BK=BK;this.TL=TL;this.BANDS=BANDS;",ctx);
+vm.runInContext(js.split("/* ---------- Peta ---------- */")[0].replace(/\nfunction load\(\)[\s\S]*$/,"")+";this.S=S;this.BK=BK;this.EZ=EZ;this.TL=TL;this.BANDS=BANDS;",ctx);
 const {S,BK,TL,BANDS}=ctx;let err=0;const bad=m=>{console.error("FAIL",m);err++;};
 const BANKSIZE=10,HLM=/hlm\. [\divx]+/;
 if(S.length!==18)bad("stasiun!=18");
@@ -33,7 +33,8 @@ S.forEach((s,i)=>["s","d"].forEach(m=>{
       if(q.l.length!==3||q.r.length!==3||new Set(q.l).size!==3||new Set(q.r).size!==3)bad(id+": harus 3 pasangan berbeda");
     }else bad(id+": tipe tidak dikenal");
   });
-  if(!ty.mu||!ty.or||!ty.mt)bad(`st${i+1} ${m}: bank harus memuat tipe mu, or, mt (${JSON.stringify(ty)})`);
+  if(ctx.EZ[i]){if(Object.keys(ty).join()!=="mc")bad(`st${i+1} ${m}: stasiun soal mudah harus pilihan ganda saja`);}
+  else if(!ty.mu||!ty.or||!ty.mt)bad(`st${i+1} ${m}: bank harus memuat tipe mu, or, mt (${JSON.stringify(ty)})`);
 }));
 ["s","d"].forEach(m=>{const t=stats[m];if(t.uniq/t.mc>0.4)bad(`level ${m}: jawaban benar jadi opsi terpanjang di ${t.uniq}/${t.mc} soal mc (>40%)`);});
 ["s","d"].forEach(m=>TL[m].forEach((e,k)=>{if(!e[0]||!/\d/.test(String(e[1])))bad(`TL ${m}[${k}]`)}));

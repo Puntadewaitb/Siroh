@@ -13,7 +13,7 @@
     "apk": "npm run build && npm run web && npx cap add android && npx cap sync android && cd android && ./gradlew assembleDebug",
     "test:offline": "node tests/offline.mjs",
     "vendor": "esbuild build/vendor/three_entry.js --bundle --minify --format=iife --global-name=T3 --legal-comments=none --target=es2018 --outfile=build/vendor/three.min.js && node -e \"const f=require('fs'),p='build/vendor/three.min.js';f.writeFileSync(p,'/* three.js r186 (MIT License, Copyright 2010-2026 Three.js Authors) — subset */\\n'+f.readFileSync(p))\"",
-    "test:3d": "node tests/proto3d.mjs"
+    "test:3d": "node tests/proto3d.mjs && node tests/interaktif.mjs"
   },
   "devDependencies": {
     "@capacitor/cli": "^8.5.0",

@@ -86,3 +86,15 @@ html.stg-on{overflow:hidden}
 .dbt{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:8px}
 @media (min-width:900px){.stdlg{bottom:24px;padding:18px 22px}.dtx{font-size:1.1rem}}
 .stcut{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity .3s;z-index:1}.stcut.on{opacity:1}
+.stov{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1}
+.hs{position:absolute;left:0;top:0;pointer-events:auto;display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:0;padding:6px;cursor:pointer;color:#fff;font:600 .78rem var(--f-body);text-shadow:0 1px 3px rgba(0,0,0,.8)}
+.hs i{width:30px;height:30px;border-radius:50%;background:radial-gradient(circle,#fff6d5 0 30%,#f2b84b 55%,rgba(242,184,75,0) 72%);box-shadow:0 0 0 2px rgba(255,255,255,.85);animation:hsp 1.4s ease-in-out infinite}
+.hs.aks i{background:radial-gradient(circle,#e6fff3 0 30%,#3fbf8a 55%,rgba(63,191,138,0) 72%)}
+.hs.got i{animation:none;opacity:.55;box-shadow:0 0 0 2px #3fbf8a}
+.hs span{background:rgba(0,0,0,.45);border-radius:6px;padding:1px 6px;white-space:nowrap}
+.hs:focus-visible{outline:3px solid #fff;border-radius:10px}
+@keyframes hsp{0%,100%{transform:scale(.9)}50%{transform:scale(1.12)}}
+@media (prefers-reduced-motion:reduce){.hs i{animation:none}}
+.dots i.ix{border-radius:2px;background:#e9c46a}.dots i.ix.on{background:var(--ochre)}
+.dq{min-height:0}.cnt{font:600 .8rem var(--f-mono);color:var(--green);white-space:nowrap}
+.stdlg .opts{margin:.4rem 0}

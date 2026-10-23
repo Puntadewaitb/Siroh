@@ -52,6 +52,21 @@ for si in range(18):
             else: raise Exception(ty)
         row[m]=out
     Z.append(row)
+# Soal mudah (hanya pilihan ganda) untuk stasiun awal: build/easy/easyN.json menggantikan bank stasiun itu
+EZ={}
+for si in range(18):
+    f=B+'build/easy/easy%d.json'%si
+    if not os.path.exists(f):continue
+    d=json.load(open(f));row={}
+    for m in 's','d':
+        nw=2 if m=='s' else 3;out=[]
+        assert len(d[m])==10,(si,m)
+        for qi,q in enumerate(d[m]):
+            assert len(q['w'])==nw and q['b'] not in q['w'] and 'hlm' not in (q['t']+q['e']).lower(),(si,m,qi)
+            o=[q['b']]+list(q['w']);random.Random("easy-%d-%s-%d"%(si,m,qi)).shuffle(o)
+            out.append({'ty':'mc','t':q['t'],'o':o,'a':o.index(q['b']),'e':q['e'],'h':q['h']})
+        row[m]=out
+    EZ[si]=row
 css=open(B+'build/css_old.txt').read()+open(B+'build/style_new.css').read()
 land_r=open(B+'mapgen/reg-land.txt').read(); land_w=open(B+'mapgen/wide-land.txt').read()
 defs='<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><path id="Lr" fill-rule="evenodd" d="%s"/><path id="Lw" fill-rule="evenodd" d="%s"/>'%(land_r,land_w)
@@ -80,7 +95,7 @@ body='''<div class="wrap">
 </div>
 '''
 tl=open(B+'build/tl_block.js').read()
-js=sblock+'\nvar X='+json.dumps(X,ensure_ascii=False)+';\nvar Z='+json.dumps(Z,ensure_ascii=False)+';\n'+tl+'\n'+open(B+'build/maps.js').read()+'\n'+open(B+'build/challenge.js').read()+'\n'+open(B+'build/board.js').read()+'\n'+open(B+'build/quiz.js').read()+'\n'+open(B+'build/core.js').read()+'\n'+open(B+'build/app.js').read()
+js=sblock+'\nvar X='+json.dumps(X,ensure_ascii=False)+';\nvar Z='+json.dumps(Z,ensure_ascii=False)+';\nvar EZ='+json.dumps(EZ,ensure_ascii=False)+';\n'+tl+'\n'+open(B+'build/maps.js').read()+'\n'+open(B+'build/challenge.js').read()+'\n'+open(B+'build/board.js').read()+'\n'+open(B+'build/quiz.js').read()+'\n'+open(B+'build/core.js').read()+'\n'+open(B+'build/app.js').read()
 out=head+'<style>\n'+css.replace('<style>','').replace('</style>','')+'</style>\n</head>\n<body>\n'+defs+'\n'+body+'<script>\n'+js+'\n</script>\n<script>if("serviceWorker" in navigator&&/^https?:/.test(location.protocol)){try{navigator.serviceWorker.register("sw.js").catch(function(){});}catch(e){}}</script>\n</body>\n</html>\n'
 open(B+'index.html','w').write(out)
 print(len(out.encode()))
@@ -107,7 +122,7 @@ KIS={i:json.load(open(B+'build/kisah/kisah%d.json'%i)) for i in range(18) if os.
 for i,k in KIS.items():
     for m in 's','d':
         for b in k[m]: assert b['t'] and 'hlm' not in b['t'].lower() and '"' not in b['t'],(i,m,b['t'][:40])
-js3=sblock+'\nvar KISAH3='+json.dumps(KIS,ensure_ascii=False)+';\n'+'\nvar X='+json.dumps(X,ensure_ascii=False)+';\nvar Z='+json.dumps(Z,ensure_ascii=False)+';\n'+tl+'\n'+open(B+'build/maps.js').read()+'\n'+open(B+'build/board.js').read()+'\n'+open(B+'build/quiz.js').read()+'\n'+open(B+'build/core.js').read()+'\nvar TERR='+json.dumps(TERR)+';\n'+open(B+'build/map3d.js').read()+'\n'+open(B+'build/scene3d.js').read()+'\n'+open(B+'build/proto3d.js').read()
+js3=sblock+'\nvar KISAH3='+json.dumps(KIS,ensure_ascii=False)+';\n'+'\nvar X='+json.dumps(X,ensure_ascii=False)+';\nvar Z='+json.dumps(Z,ensure_ascii=False)+';\nvar EZ='+json.dumps(EZ,ensure_ascii=False)+';\n'+tl+'\n'+open(B+'build/maps.js').read()+'\n'+open(B+'build/board.js').read()+'\n'+open(B+'build/quiz.js').read()+'\n'+open(B+'build/core.js').read()+'\nvar TERR='+json.dumps(TERR)+';\n'+open(B+'build/map3d.js').read()+'\n'+open(B+'build/scene3d.js').read()+'\n'+open(B+'build/proto3d.js').read()
 css3=open(B+'build/map3d.css').read()
 out3=head.replace('<title>Peta Sirah Nabawiyah</title>','<title>Peta Sirah 3D</title>')+'<style>\n'+css.replace('<style>','').replace('</style>','')+css3+'</style>\n</head>\n<body>\n'+body3+'<script>\n'+open(B+'build/vendor/three.min.js').read()+'\n</script>\n<script>\n'+js3+'\n</script>\n</body>\n</html>\n'
 open(B+'peta3d.html','w').write(out3)

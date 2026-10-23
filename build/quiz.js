@@ -3,7 +3,7 @@
    Salah = hilang 1 hati; hati habis -> stasiun diulang dengan 3 soal baru dari bank.
    Tipe: mc (pilihan ganda), mu (pilih 2 dari 5), or (urutkan), mt (jodohkan). */
 var MAXH=3;
-var BK=S.map(function(s,i){var o={};["s","d"].forEach(function(m){var b=[s.q[m]].concat(X[i][m],Z[i][m]);b.forEach(function(q){if(!q.ty)q.ty="mc";});o[m]=b;});return o;});
+var BK=S.map(function(s,i){var o={};["s","d"].forEach(function(m){var b=(typeof EZ!=="undefined"&&EZ[i])?EZ[i][m].slice():[s.q[m]].concat(X[i][m],Z[i][m]);b.forEach(function(q){if(!q.ty)q.ty="mc";});o[m]=b;});return o;});
 var fl={},uq={};
 function pz(){var p=P();p.set=p.set||{};p.seen=p.seen||{};p.hp=p.hp||{};p.fail=p.fail||{};return p;}
 function hp(i){var p=pz();return p.hp[i]==null?MAXH:p.hp[i];}
