@@ -4,7 +4,7 @@ const out=process.argv[2]||null;
 const b=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||undefined,args:["--use-angle=swiftshader","--enable-unsafe-swiftshader","--ignore-gpu-blocklist"]});
 let fail=0;const ok=(c,m)=>{if(!c){console.error("FAIL",m);fail++}else console.log("ok  ",m)};
 for(const mode of (process.argv[3]||"s,d").split(",")){
-  const pg=await b.newPage({viewport:{width:390,height:844}});const errs=[];pg.on("pageerror",e=>errs.push(e.message));
+  const ctx=await b.newContext({viewport:{width:390,height:844},reducedMotion:"reduce"});const pg=await ctx.newPage();const errs=[];pg.on("pageerror",e=>errs.push(e.message));
   await pg.goto(pathToFileURL(path.resolve("peta3d.html")).href);await pg.waitForSelector(".m3.ready",{timeout:60000});
   await pg.evaluate(m=>{st.prog={s:{qd:{},pts:0,tl:false},d:{qd:{},pts:0,tl:false}};st.learn=true;setMode3(m);},mode);
   const list=await pg.evaluate(()=>Object.keys(Object.assign({},INTER3)).map(Number).concat([10,11,12]).sort((a,b)=>a-b));
@@ -14,7 +14,7 @@ for(const mode of (process.argv[3]||"s,d").split(",")){
     const n=await pg.evaluate(i=>SC.beats(i).length,i);let seen={tebak:0,aksi:0,jelajah:0};
     for(let k=0;k<n;k++){
       const s=await pg.evaluate(()=>SC.step());
-      if(s.k!=="beat"){await pg.waitForTimeout(2600);seen[s.k]++;
+      if(s.k!=="beat"){await pg.waitForTimeout(700);seen[s.k]++;
         if(s.k!=="tebak"){const vis=await pg.$$eval(".hs",els=>els.map(e=>{const r=e.getBoundingClientRect(),d=document.querySelector(".stdlg").getBoundingClientRect();return e.style.display!=="none"&&r.top>40&&r.bottom<d.top+4&&r.left>-4&&r.right<innerWidth+4;}));
           ok(vis.length>0&&vis.every(Boolean),`${mode} st${i+1} ${s.k}: semua tanda terlihat di atas dialog (${vis.filter(Boolean).length}/${vis.length})`);}
         if(s.k==="tebak"){await pg.click('.stdlg [data-sa="tb"]');}
@@ -34,6 +34,6 @@ for(const mode of (process.argv[3]||"s,d").split(",")){
     await pg.click(".stx");
   }
   ok(await pg.evaluate(()=>P().pts)>0,`${mode} poin dari interaksi: ${await pg.evaluate(()=>P().pts)}`);
-  ok(errs.length===0,`${mode} tanpa error JS ${errs.join("|")}`);await pg.close();
+  ok(errs.length===0,`${mode} tanpa error JS ${errs.join("|")}`);await ctx.close();
 }
 await b.close();process.exit(fail?1:0);
