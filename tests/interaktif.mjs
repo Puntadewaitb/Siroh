@@ -5,7 +5,7 @@ const b=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||undefin
 let fail=0;const ok=(c,m)=>{if(!c){console.error("FAIL",m);fail++}else console.log("ok  ",m)};
 for(const mode of (process.argv[3]||"s,d").split(",")){
   const ctx=await b.newContext({viewport:{width:390,height:844},reducedMotion:"reduce"});const pg=await ctx.newPage();const errs=[];pg.on("pageerror",e=>errs.push(e.message));
-  await pg.goto(pathToFileURL(path.resolve("peta3d.html")).href);await pg.waitForSelector(".m3.ready",{timeout:60000});
+  await pg.goto(pathToFileURL(path.resolve("index.html")).href);await pg.waitForSelector(".m3.ready",{timeout:60000});
   await pg.evaluate(m=>{st.prog={s:{qd:{},pts:0,tl:false},d:{qd:{},pts:0,tl:false}};st.learn=true;setMode3(m);},mode);
   const list=await pg.evaluate(()=>Object.keys(Object.assign({},INTER3)).map(Number).concat([10,11,12]).sort((a,b)=>a-b));
   for(const i of list){

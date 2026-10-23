@@ -37,6 +37,7 @@ function badgeList(){
   });
   b.push({t:"Ujian urutan peristiwa",ok:!!p.tl});
   b.push({t:"Tantangan acak sempurna",ok:!!p.chPerfect});
+  b.push({t:"Latihan harian 7 hari beruntun",ok:!!(p.lh&&p.lh.best>=7)});
   return b;
 }
 function badgesHTML(){
@@ -58,7 +59,7 @@ function chHTML(){
     if(ch.log.length){
       h+='<p>Perlu diulang:</p><ul class="chlog">'+ch.log.map(function(q){return '<li><b>'+esc(S[q.i].t)+'</b><br>'+esc(q.t)+' <i>→ '+esc(q.o[q.a])+'</i></li>';}).join("")+'</ul>';
     }else h+='<p class="fb good">Sempurna. Semua jawaban benar.</p>';
-    return h+'<div class="row"><button class="btn" data-ch="start">Main lagi</button><button class="btn ghost" data-ch="close">Tutup</button></div>';
+    return h+'<div class="row"><button class="btn" data-ch="start">Main lagi</button></div>';
   }
   var q=ch.qs[ch.n],done=ch.pick>-1;
   h='<p class="muted">Soal '+(ch.n+1)+' dari '+ch.qs.length+' · skor '+ch.score+' · rentetan '+ch.streak+'</p>';
@@ -73,17 +74,10 @@ function chHTML(){
   if(done)h+='<button class="btn" data-ch="next" id="chnext">'+(ch.n+1>=ch.qs.length?'Lihat hasil':'Soal berikutnya')+'</button>';
   return h;
 }
-function chRender(){
-  var el=document.getElementById("ch");if(el)el.innerHTML=chHTML();
-  var bd=document.getElementById("badges");if(bd)bd.innerHTML=badgesHTML();
-}
-document.getElementById("ch").addEventListener("click",function(e){
-  var b=e.target.closest("button");if(!b)return;
-  var a=b.getAttribute("data-ch");
+/* aksi tombol tantangan (data-ch) */
+function chAct(a,k){
   if(a==="start")chStart();
   else if(a==="close")ch.on=false;
-  else if(a==="ans")chAnswer(parseInt(b.getAttribute("data-k"),10));
+  else if(a==="ans")chAnswer(k);
   else if(a==="next")chNext();
-  chRender();
-  var nb=document.getElementById("chnext");if(nb)nb.focus({preventScroll:true});
-});
+}

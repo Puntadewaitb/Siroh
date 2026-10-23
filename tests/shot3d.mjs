@@ -5,7 +5,7 @@ const b=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||undefin
 const errs=[];
 for(const [w,h,tag] of [[390,844,"hp"],[1280,800,"desktop"]]){
   const pg=await b.newPage({viewport:{width:w,height:h},deviceScaleFactor:w<500?2:1});pg.on("pageerror",e=>errs.push(e.message));pg.on("console",m=>{if(m.type()==="error")errs.push(m.text())});
-  await pg.goto(pathToFileURL(path.resolve("peta3d.html")).href);
+  await pg.goto(pathToFileURL(path.resolve("index.html")).href);
   await pg.waitForSelector(".m3.ready",{timeout:30000});await pg.waitForTimeout(1500);
   await pg.locator(".m3wrap").screenshot({path:`${out}/p3-${tag}-region.png`});
   await pg.click('[data-c="all"]');await pg.waitForTimeout(1500);await pg.locator(".m3wrap").screenshot({path:`${out}/p3-${tag}-all.png`});

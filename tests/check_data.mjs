@@ -1,11 +1,11 @@
 // Lint bank soal: struktur tiap tipe, indeks jawaban, rujukan halaman, duplikasi, dan bias panjang opsi.
 import fs from "node:fs";import vm from "node:vm";
 const html=fs.readFileSync(new URL("../index.html",import.meta.url),"utf8");
-const js=html.split("<script>")[1].split("</script>")[0];
+const js=html.split("<script>").map(x=>x.split("</script>")[0]).find(x=>x.includes("var BANDS"));
 const stub={getElementById:()=>({addEventListener(){},setAttribute(){},style:{},clientWidth:360,innerHTML:""}),querySelector:()=>null,addEventListener(){}};
 const ctx={document:stub,window:{addEventListener(){}},localStorage:{getItem:()=>null,setItem(){}},Math,JSON,console};
 vm.createContext(ctx);
-vm.runInContext(js.split("/* ---------- Peta ---------- */")[0].replace(/\nfunction load\(\)[\s\S]*$/,"")+";this.S=S;this.BK=BK;this.EZ=EZ;this.TL=TL;this.BANDS=BANDS;",ctx);
+vm.runInContext(js.split("/* ---------- Peta ---------- */")[0].replace(/\nfunction load\(\)[\s\S]*$/,"")+";this.S=S;this.BK=BK;this.EZ=EZ;this.TL=TL;this.BANDS=BANDS;this.KARTU=KARTU;",ctx);
 const {S,BK,TL,BANDS}=ctx;let err=0;const bad=m=>{console.error("FAIL",m);err++;};
 const BANKSIZE=10,HLM=/hlm\. [\divx]+/;
 if(S.length!==18)bad("stasiun!=18");
@@ -38,5 +38,6 @@ S.forEach((s,i)=>["s","d"].forEach(m=>{
 }));
 ["s","d"].forEach(m=>{const t=stats[m];if(t.uniq/t.mc>0.4)bad(`level ${m}: jawaban benar jadi opsi terpanjang di ${t.uniq}/${t.mc} soal mc (>40%)`);});
 ["s","d"].forEach(m=>TL[m].forEach((e,k)=>{if(!e[0]||!/\d/.test(String(e[1])))bad(`TL ${m}[${k}]`)}));
+const KARTU=ctx.KARTU;for(let i=0;i<18;i++){const L=KARTU[i]||[];if(L.length!==3||new Set(L.map(c=>c.k)).size!==3)bad(`kartu st${i+1}`);L.forEach(c=>{if(!HLM.test(c.h)||/hlm/i.test(c.t))bad(`kartu st${i+1} ${c.n}: rujukan`)})}
 let prev=-1;BANDS.forEach(b=>{if(b.from!==prev+1)bad("BANDS gap "+b.t);prev=b.to});if(prev!==17)bad("BANDS tidak sampai 17");
 console.log(err?`${err} masalah`:`Data OK: 18 stasiun x ${BANKSIZE} soal x 2 level (${JSON.stringify(types)})`);process.exit(err?1:0);

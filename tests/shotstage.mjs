@@ -4,7 +4,7 @@ const out=process.argv[2]||"tests",list=(process.argv[3]||"2,10").split(",").map
 const b=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||undefined,args:["--use-angle=swiftshader","--enable-unsafe-swiftshader","--ignore-gpu-blocklist"]});
 const pg=await b.newPage({viewport:{width:390,height:844},deviceScaleFactor:1.5});const errs=[];
 pg.on("pageerror",e=>errs.push(e.message));pg.on("console",m=>{if(m.type()==="error")errs.push(m.text())});
-await pg.goto(pathToFileURL(path.resolve("peta3d.html")).href);await pg.waitForSelector(".m3.ready",{timeout:60000});
+await pg.goto(pathToFileURL(path.resolve("index.html")).href);await pg.waitForSelector(".m3.ready",{timeout:60000});
 await pg.check("#learn3");
 for(const i of list){
   await pg.evaluate(i=>{pick3(i);},i);await pg.waitForTimeout(1500);

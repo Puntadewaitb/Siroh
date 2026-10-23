@@ -1,5 +1,5 @@
 
-/* ---------- Peta 3D (prototipe) ---------- */
+/* ---------- Game utama: peta 3D, timeline, menu, jendela ---------- */
 .w3{max-width:1180px}
 .top3{padding:14px 0 10px}
 .top3 h1{margin:0;font-family:var(--f-display);font-size:clamp(1.4rem,4.6vw,2rem);color:var(--green)}
@@ -98,3 +98,38 @@ html.stg-on{overflow:hidden}
 .dots i.ix{border-radius:2px;background:#e9c46a}.dots i.ix.on{background:var(--ochre)}
 .dq{min-height:0}.cnt{font:600 .8rem var(--f-mono);color:var(--green);white-space:nowrap}
 .stdlg .opts{margin:.4rem 0}
+/* ---------- Menu mode lain + pengaturan ---------- */
+.menu3{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
+@media (min-width:700px){.menu3{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.menu3 button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:14px;padding:10px 12px;cursor:pointer;min-width:0}
+.menu3 b{font:600 .92rem var(--f-body);color:var(--green)}
+.menu3 small{font:.74rem var(--f-mono);color:var(--muted);overflow:hidden;text-overflow:ellipsis;max-width:100%;white-space:nowrap}
+.menu3 button:focus-visible{outline:3px solid var(--green);outline-offset:2px}
+.set3{margin-top:12px;font-size:.88rem}
+.set3 summary{cursor:pointer;color:var(--muted)}
+.set3 .seg{margin-top:8px}
+.m3wrap.nogl{height:auto;min-height:0}
+.m3wrap.nogl .c3,.m3wrap.nogl::after{display:none}
+/* ---------- Jendela (modal) ---------- */
+.mdl{position:fixed;inset:0;z-index:60;background:rgba(10,14,12,.55);display:flex;align-items:flex-end;justify-content:center;padding:10px}
+.mdl[hidden]{display:none}
+.mdlb{width:100%;max-width:720px;max-height:calc(100dvh - 20px);display:flex;flex-direction:column;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:18px;box-shadow:0 10px 40px rgba(0,0,0,.4);overflow:hidden}
+@media (min-width:700px){.mdl{align-items:center}}
+.mdlh{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line)}
+.mdlh h2{flex:1;margin:0;font-family:var(--f-display);color:var(--green);font-size:1.15rem;line-height:1.25}
+.mdlh h2:focus{outline:none}
+.mdx{flex:none;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-size:1.4rem;line-height:1;cursor:pointer}
+.mdlc{overflow:auto;overscroll-behavior:contain;padding:14px 16px 18px;display:flex;flex-direction:column;gap:10px}
+.mdlc p{margin:0}
+.mdlc .end h3{margin:.2rem 0;font-family:var(--f-display);color:var(--green)}
+.fbk summary{cursor:pointer;font-weight:600;color:var(--green)}
+.fbk p{margin:.5rem 0 0;line-height:1.55}
+/* ---------- Album kartu ---------- */
+.kb{margin:.6rem 0 0;font:.72rem var(--f-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.kg{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.kc{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--surface);border-top:4px solid var(--ochre)}
+.kc.k-tokoh{border-top-color:var(--green)}.kc.k-tempat{border-top-color:#2f6f8f}
+.kc.off{opacity:.6;border-top-color:var(--line);background:transparent}
+.kc .kk{font:.68rem var(--f-mono);color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.kc h4{margin:.2rem 0 .3rem;font-family:var(--f-display);font-size:1rem;color:var(--ink)}
+.kc p:last-child{font-size:.84rem;line-height:1.45}

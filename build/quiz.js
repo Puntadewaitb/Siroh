@@ -116,7 +116,7 @@ function failStation(i){
   justOk[i]=0;wrong[i]=[];delete uq[i];fl[i]=true;
 }
 function miss(i,u,msg,k){
-  var p=pz();u.tries++;p.hp[i]=hp(i)-1;
+  var p=pz();if(typeof rvMiss==="function"&&p.set[i])rvMiss(i,p.set[i][got(i)]);u.tries++;p.hp[i]=hp(i)-1;
   if(k!=null)wrong[i]=(wrong[i]||[]).concat([k]);
   u.msg=msg+" Baca lagi kisah dan ringkasannya, lalu coba lagi.";
   if(p.hp[i]<=0){failStation(i);}

@@ -252,7 +252,7 @@ function tap(e){
   if(best)onPick(best);
 }
 function resize(){
-  W=el.clientWidth;H=el.clientHeight;if(!W||!H)return;dpr=Math.min(window.devicePixelRatio||1,1.75);
+  W=el.clientWidth;H=el.clientHeight;if(!W||!H)return;dpr=Math.min(window.devicePixelRatio||1,typeof gfxLite==="function"&&gfxLite()?1:1.75);
   R.setPixelRatio(dpr);R.setSize(W,H,false);cam.aspect=W/H;cam.updateProjectionMatrix();dirty=true;kick();
 }
 function frame(t){
@@ -343,6 +343,6 @@ function fitPts(pts,ms){
 }
 function zoom(f){rig.d*=f;applyCam();kick();}
 function tilt(){fly({phi:rig.phi>.5?.12:.85},600);}
-return {init:init,setState:setState,focusNode:focusNode,overview:overview,travel:travel,enterCity:enterCity,exitCity:exitCity,
+return {resize:function(){if(R)resize();},init:init,setState:setState,focusNode:focusNode,overview:overview,travel:travel,enterCity:enterCity,exitCity:exitCity,
   cityOf:cityOf,CITY:CITY,fitPts:fitPts,story:cityStory,zoom:zoom,tilt:tilt,view:function(){return view;},busy:function(){return anim.length>0;},traveling:function(){return trav;}};
 })();

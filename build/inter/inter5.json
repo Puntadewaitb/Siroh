@@ -1,0 +1,54 @@
+[
+ {
+  "k": "tebak",
+  "before": {
+   "s": 0,
+   "d": 1
+  },
+  "shot": "kota",
+  "q": "Quraisy sadar, menumpahkan darah Rasulullah bisa membuat Makkah banjir darah, karena Bani Hasyim dan Bani Al-Muththalib melindungi beliau. Menurutmu, apa yang mereka lakukan?",
+  "o": [
+   "Mengusir kedua bani itu ke Habasyah",
+   "Memboikot kedua bani itu: tidak menikah, berjual beli, atau berbicara dengan mereka",
+   "Berdamai dan membiarkan dakwah berjalan"
+  ],
+  "a": 1,
+  "r": "Mereka menulis piagam: dilarang menikah, berjual beli, berkumpul, dan berbicara dengan kedua bani itu sampai mereka menyerahkan Rasulullah untuk dibunuh.",
+  "h": "hlm. 119"
+ },
+ {
+  "k": "jelajah",
+  "before": {
+   "s": 3,
+   "d": 4
+  },
+  "shot": "syib",
+  "t": "Lihat keadaan selama pemboikotan. Ketuk tanda yang bersinar.",
+  "spots": [
+   [
+    "syib",
+    "Syi’b Abu Thalib",
+    "Bahan makanan yang datang langsung diborong kaum musyrik. Mereka hanya bisa keluar berbelanja pada bulan-bulan suci, itu pun harganya dibuat melambung.",
+    "hlm. 120"
+   ],
+   [
+    "kabah",
+    "Ka’bah",
+    "Piagam itu ditulis di atas selembar papan, lalu digantung di tembok bagian dalam Ka’bah.",
+    "hlm. 119"
+   ]
+  ]
+ },
+ {
+  "k": "aksi",
+  "before": {
+   "s": 3,
+   "d": 6
+  },
+  "shot": "kabah",
+  "act": "piagam",
+  "t": "Tiga tahun piagam boikot tergantung di dalam Ka’bah. Ketuk Ka’bah untuk melihat keadaan piagam itu sekarang.",
+  "r": "Rayap telah memakan isinya, kecuali tulisan “Bismika Allahumma” (dengan nama-Mu, ya Allah) dan setiap kata “Allah”. Persis seperti yang dikabarkan Allah kepada Rasulullah. Piagam pun dirobek dan boikot berakhir.",
+  "h": "hlm. 122–123"
+ }
+]

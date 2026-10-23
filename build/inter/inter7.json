@@ -1,0 +1,59 @@
+[
+ {
+  "k": "tebak",
+  "before": {
+   "s": 2,
+   "d": 4
+  },
+  "shot": "madinah_jauh",
+  "q": "Mush’ab bin Umair diutus ke Yatsrib untuk mengajarkan Islam. Suatu hari Usaid bin Hudhair, pemimpin kaumnya, datang membawa tombak hendak mengusirnya. Menurutmu, apa yang dilakukan Mush’ab?",
+  "o": [
+   "Mengajaknya duduk dan mendengarkan dulu",
+   "Lari meninggalkan Yatsrib",
+   "Balas mengancam dengan senjata"
+  ],
+  "a": 0,
+  "r": "Mush’ab berkata, “Silakan duduk dan dengarkan. Jika engkau suka, terimalah; jika tidak, tinggalkan.” Usaid menancapkan tombaknya, duduk, mendengar Al-Qur’an, lalu masuk Islam.",
+  "h": "hlm. 166–167"
+ },
+ {
+  "k": "jelajah",
+  "before": {
+   "s": 3,
+   "d": 5
+  },
+  "shot": "kemah",
+  "t": "Musim haji tahun ketiga belas kenabian. Ketuk tanda yang bersinar.",
+  "spots": [
+   [
+    "kemah",
+    "Kemah jamaah Yatsrib",
+    "Lebih dari 70 Muslim Yatsrib datang bersama rombongan kaumnya yang masih musyrik. Malam itu mereka tidur di tengah kaumnya, lalu keluar diam-diam setelah lewat sepertiga malam.",
+    "hlm. 170–171"
+   ],
+   [
+    "aqabah",
+    "Bukit Aqabah",
+    "Pertemuan disepakati di sebuah bukit di Aqabah pada pertengahan hari Tasyriq, pada malam yang gelap, agar tetap rahasia.",
+    "hlm. 170"
+   ]
+  ]
+ },
+ {
+  "k": "tebak",
+  "before": {
+   "s": 4,
+   "d": 7
+  },
+  "shot": "aqabah",
+  "q": "Kaum Muslimin Yatsrib berjanji taat, berinfak, dan melindungi Rasulullah seperti melindungi keluarga sendiri. Menurutmu, apa balasan yang dijanjikan bagi mereka?",
+  "o": [
+   "Harta rampasan perang",
+   "Kekuasaan atas Makkah",
+   "Surga"
+  ],
+  "a": 2,
+  "r": "Balasannya surga. Beliau juga menegaskan, “Aku bagian dari kalian dan kalian bagian dari diriku.”",
+  "h": "hlm. 172"
+ }
+]

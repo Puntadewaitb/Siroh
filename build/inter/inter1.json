@@ -1,0 +1,76 @@
+[
+ {
+  "k": "tebak",
+  "before": {
+   "s": 0,
+   "d": 2
+  },
+  "shot": "abrahah",
+  "q": "Pasukan bergajah Abrahah datang untuk menghancurkan Ka’bah. Di Wadi Muhasshir, gajahnya menderum dan tak mau maju. Menurutmu, apa yang terjadi kemudian?",
+  "o": [
+   "Pasukan Abrahah berhasil merobohkan Ka’bah",
+   "Allah mengirim burung-burung yang menjatuhkan batu-batu kecil",
+   "Quraisy mengalahkan mereka dalam perang besar"
+  ],
+  "a": 1,
+  "r": "Allah mengirim burung-burung Ababil membawa batu sebesar biji kacang, dan pasukan itu hancur. Quraisy sendiri mengungsi ke atas gunung dan kembali dengan selamat.",
+  "h": "hlm. 44–45"
+ },
+ {
+  "k": "jelajah",
+  "before": {
+   "s": 3,
+   "d": 6
+  },
+  "shot": "kota",
+  "t": "Lihat tempat-tempat masa kecil Rasulullah. Ketuk tanda yang bersinar.",
+  "spots": [
+   [
+    "wadi",
+    "Wadi Muhasshir",
+    "Letaknya antara Muzdalifah dan Mina. Setiap kali gajah Abrahah diarahkan menjauhi Ka’bah ia mau berdiri, tetapi begitu dihadapkan ke Ka’bah ia menderum lagi.",
+    "hlm. 44"
+   ],
+   [
+    "kabah",
+    "Ka’bah",
+    "Saat menggali kembali sumur Zamzam, Abdul Muththalib menemukan pedang, baju perang, dan dua pangkal pelana dari emas peninggalan Jurhum. Pedang-pedang itu dijadikan pintu Ka’bah.",
+    "hlm. 43"
+   ]
+  ]
+ },
+ {
+  "k": "jelajah",
+  "before": {
+   "s": 3,
+   "d": 6
+  },
+  "shot": "badiyah",
+  "t": "Pedalaman tempat Rasulullah kecil disusui. Ketuk tanda yang bersinar.",
+  "spots": [
+   [
+    "badiyah",
+    "Perkampungan Bani Sa’d",
+    "Orang Arab menyusukan bayinya ke pedalaman agar jauh dari penyakit kota, tubuhnya kuat, dan bahasa Arabnya fasih.",
+    "hlm. 49"
+   ]
+  ]
+ },
+ {
+  "k": "tebak",
+  "before": {
+   "s": 4,
+   "d": 8
+  },
+  "shot": "kabah",
+  "q": "Quraisy hampir bertumpah darah memperebutkan siapa yang berhak meletakkan Hajar Aswad. Keputusan diserahkan kepada orang pertama yang masuk masjid, yaitu Rasulullah. Menurutmu, apa yang beliau lakukan?",
+  "o": [
+   "Mengundi kabilah mana yang berhak",
+   "Menaruhnya di selendang, lalu para pemuka kabilah mengangkatnya bersama",
+   "Meletakkannya sendiri tanpa melibatkan kabilah lain"
+  ],
+  "a": 1,
+  "r": "Beliau menaruh Hajar Aswad di tengah selendang, para pemuka kabilah memegang ujung-ujungnya dan mengangkatnya bersama, lalu beliau meletakkannya di tempatnya. Semua pihak ridha.",
+  "h": "hlm. 58"
+ }
+]

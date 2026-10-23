@@ -1,81 +1,86 @@
-// Playwright: papan peta, perpindahan token, tab per tempat, 18 stasiun x 2 level, ujian, tantangan, tanpa horizontal scroll 360px.
+// Playwright (tanpa WebGL, jalur cadangan): 18 stasiun x 2 level lewat jendela soal, kunci urutan, hati, ujian urutan,
+// latihan harian, album kartu, tantangan acak, tanpa horizontal scroll 360px, screenshot terang/gelap.
 import {chromium} from "playwright";import {answerCurrent,solveStation} from "./solve.mjs";import {pathToFileURL} from "node:url";import path from "node:path";
 const url=pathToFileURL(path.resolve("index.html")).href;
 const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||undefined});
 let fail=0;const ok=(c,m)=>{if(!c){console.error("FAIL",m);fail++}else console.log("ok  ",m)};
-const idle=pg=>pg.waitForFunction(()=>!BD.moving,null,{timeout:10000});
-const answer=solveStation;
-
-/* 1. Animasi nyata: token berjalan Makkah -> Thaif */
-{
-  const pg=await browser.newPage({viewport:{width:360,height:740}});const errs=[];pg.on("pageerror",e=>errs.push(e.message));
-  await pg.goto(url);await pg.uncheck("#learn");
-  ok(await pg.locator(".nd").count()===9,"papan punya 9 simpul tempat");
-  ok(await pg.evaluate(()=>NODE_OF[BD.tokSt])==="mk","token mulai di Makkah");
-  ok(await pg.locator(".stab").count()===8,"tab Makkah menampilkan 8 stasiun");
-  ok(await pg.locator(".stab.cur").count()===1&&await pg.locator(".stab.lock").count()===7,"tab: 1 sedang, 7 terkunci");
-  for(let i=0;i<6;i++){await answer(pg,i);await pg.click('.btn[data-act="next"]');await idle(pg);}
-  ok(await pg.evaluate(()=>st.sel.i)===6&&await pg.evaluate(()=>NODE_OF[BD.tokSt])==="th","selesai stasiun 6: token berjalan ke Thaif (animasi)");
-  ok(await pg.locator("#lg-5.done").count()===1,"rute Makkah-Thaif ditandai selesai");
-  await pg.click('#nd-mk');
-  ok(await pg.evaluate(()=>st.sel.i)===5||await pg.evaluate(()=>NODE_OF[st.sel.i])==="mk","klik simpul yang selesai membuka stasiunnya");
-  ok(await pg.locator(".stab.done").count()===6,"tab Makkah: 6 selesai");
-  await pg.click('[data-bc="all"]');await idle(pg);await pg.locator('#nd-md').dispatchEvent('click');
-  ok(await pg.locator(".fb.err",{hasText:"Terkunci"}).count()===1,"simpul terkunci menampilkan pesan");
-  ok(errs.length===0,"tanpa error JS (animasi) "+errs.join("|"));
-  await pg.close();
+const noGL=()=>{const g=HTMLCanvasElement.prototype.getContext;HTMLCanvasElement.prototype.getContext=function(t,...a){return /webgl/i.test(t)?null:g.call(this,t,...a);};};
+const wide=pg=>pg.evaluate(()=>document.documentElement.scrollWidth>innerWidth);
+async function newPage(o={}){const ctx=await browser.newContext({viewport:{width:360,height:740},...o});await ctx.addInitScript(noGL);const pg=await ctx.newPage();
+  const errs=[];pg.on("pageerror",e=>errs.push(e.message));await pg.goto(url);return {pg,ctx,errs};}
+async function playStation(pg,i){
+  await pg.click(`.sc3[data-st="${i}"]`);await pg.click('[data-a="play"]');await pg.waitForSelector("#mdl:not([hidden])");
+  await solveStation(pg,i);await pg.click('[data-m="x"]');
 }
-/* 1b. Hati habis: stasiun diulang dengan set soal baru, progres stasiun lain utuh */
+
+/* 1. Jalur cadangan tanpa WebGL + kunci urutan + hati */
 {
-  const ctx=await browser.newContext({viewport:{width:360,height:740},reducedMotion:"reduce"});const pg=await ctx.newPage();const errs=[];pg.on("pageerror",e=>errs.push(e.message));
-  await pg.goto(url);await pg.uncheck("#learn");
-  await answer(pg,0);await pg.click('.btn[data-act="next"]');await idle(pg);
-  const before=await pg.evaluate(()=>P().set[1].slice());
-  ok(await pg.locator(".hearts").count()===1,"ikon hati tampil");
-  await answerCurrent(pg,1,{wrong:true});
-  ok(await pg.evaluate(()=>P().hp[1])===2,"salah 1x: sisa 2 hati");
-  /* SMP mc hanya punya 2 opsi salah per soal: bila terpaksa benar, lanjut ke soal berikutnya */
-  for(let n=0;n<12&&!(await pg.locator(".failbox").count());n++){
-    if(await pg.locator('.btn[data-act="nextq"]').count())await pg.click('.btn[data-act="nextq"]');
-    await answerCurrent(pg,1,{wrong:true});
-  }
-  ok(await pg.locator(".failbox").count()===1,"hati habis: kotak ulang tampil");
-  const after=await pg.evaluate(()=>P().set[1].slice());
-  ok(after.every(x=>!before.includes(x)),"set soal baru tidak tumpang tindih dengan yang lama");
-  ok(await pg.evaluate(()=>isDone(0)),"stasiun 1 tetap selesai");
-  await pg.click('.btn[data-act="retry"]');
-  ok(await pg.locator(".hearts").count()===1&&await pg.evaluate(()=>P().hp[1])===3,"mulai lagi: hati penuh");
-  await answer(pg,1);
-  ok(await pg.evaluate(()=>isDone(1)),"stasiun 2 bisa diselesaikan dengan soal baru");
-  ok(errs.length===0,"tanpa error JS (hati) "+errs.join("|"));
+  const {pg,ctx,errs}=await newPage();
+  ok(await pg.locator(".no3").count()===1,"tanpa WebGL: pesan cadangan tampil");
+  ok(await pg.locator(".sc3").count()===19,"timeline 18 stasiun + ujian");
+  await pg.uncheck("#learn3");
+  ok(await pg.locator(".sc3.lock").count()===18,"mode berurutan: 17 stasiun + ujian terkunci");
+  await pg.click('[data-a="play"]');await pg.waitForSelector("#mdl:not([hidden])");
+  ok(await pg.locator(".fbk p").count()>=3,"kilasan kisah tampil sebagai teks");
+  ok(!(await pg.evaluate(()=>/hlm\./i.test(document.getElementById("mdl").innerText))),"tanpa nomor halaman");
+  await answerCurrent(pg,0,{wrong:true});
+  ok(await pg.evaluate(()=>hp(0))===2,"jawaban salah: hati berkurang");
+  ok(await pg.evaluate(()=>Object.keys(P().rv||{}).length)===1,"soal salah masuk antrean latihan harian");
+  await pg.click('[data-m="x"]');
+  ok(!(await wide(pg)),"tanpa horizontal scroll");
+  ok(errs.length===0,"tanpa error JS "+errs.join("|"));
   await ctx.close();
 }
-/* 2. Tamatkan semua (gerak dikurangi -> instan) */
-for(const [mode,btn] of [["s","#m-smp"],["d","#m-dewasa"]]){
-  const ctx=await browser.newContext({viewport:{width:360,height:740},reducedMotion:"reduce"});const pg=await ctx.newPage();
-  const errs=[];pg.on("pageerror",e=>errs.push(e.message));
-  await pg.goto(url);await pg.uncheck("#learn");await pg.click(btn);
-  for(let i=0;i<18;i++){
-    await answer(pg,i);
-    ok(await pg.evaluate(i=>isDone(i),i),`${mode} stasiun ${i+1} selesai`);
-    await pg.click('.btn[data-act="next"]');await idle(pg);
-    ok(!(await pg.evaluate(()=>document.documentElement.scrollWidth>innerWidth)),`${mode} st${i+1} tanpa horizontal scroll`);
-  }
-  const order=await pg.evaluate(()=>TL[st.mode].map((_,n)=>n));
-  for(const n of order)await pg.click(`button[data-act="pick"][data-k="${n}"]`);
-  await pg.click('.btn[data-act="check"]');
-  ok(await pg.evaluate(()=>P().tl),`${mode} ujian urutan lulus`);
-  ok(await pg.locator("#nd-md.done").count()===1,`${mode} simpul Madinah selesai`);
-  ok((await pg.locator(".badges li.on").count())===6,`${mode} 6 lencana`);
-  await pg.locator(".chbox summary").click();await pg.click('[data-ch="start"]');
-  for(let n=0;n<10;n++){
-    const a=await pg.evaluate(()=>ch.qs[ch.n].a);
-    await pg.click(`[data-ch="ans"][data-k="${a}"]`);await pg.click('[data-ch="next"]');
-  }
-  ok(await pg.evaluate(()=>ch.fin&&ch.score===10&&P().chPerfect),`${mode} tantangan sempurna`);
-  ok(!(await pg.evaluate(()=>/hlm\./i.test(document.body.innerText))),`${mode} tidak ada nomor halaman buku di tampilan`);
-  ok(errs.length===0,`${mode} tanpa error JS ${errs.join("|")}`);
-  await pg.screenshot({path:`tests/shot-${mode}.png`,fullPage:false});
+
+/* 2. Tamat 18 stasiun x 2 level + ujian urutan + menu */
+for(const m of ["s","d"]){
+  const {pg,ctx,errs}=await newPage();await pg.uncheck("#learn3");
+  if(m==="d")await pg.click("#md3");
+  for(let i=0;i<18;i++){await playStation(pg,i);}
+  ok(await pg.evaluate(()=>doneCount())===18,`${m}: 18 stasiun tamat`);
+  ok(await pg.evaluate(()=>st.sel.i)===18,`${m}: ujian urutan terpilih`);
+  await pg.click('#info3 [data-mn="ujian"]');
+  const n=await pg.evaluate(()=>TL[st.mode].length);
+  for(let k=0;k<n;k++)await pg.click(`#mdlc [data-tl="pick"][data-k="${k}"]`);
+  await pg.click('#mdlc [data-tl="check"]');
+  ok(await pg.evaluate(()=>P().tl===true),`${m}: ujian urutan lulus`);
+  await pg.click('[data-m="x"]');
+  await pg.click('[data-mn="album"]');
+  ok(await pg.locator("#mdlc .kc:not(.off)").count()===54,`${m}: album 54 kartu terbuka`);
+  ok(await pg.locator("#mdlc .badges li.on").count()>=6,`${m}: lencana bab diraih`);
+  await pg.click('[data-m="x"]');
+  await pg.click('[data-mn="tantangan"]');await pg.click('#mdlc [data-ch="start"]');
+  for(let k=0;k<10;k++){const a=await pg.evaluate(()=>ch.qs[ch.n].a);await pg.click(`#mdlc [data-ch="ans"][data-k="${a}"]`);await pg.click("#chnext");}
+  ok(await pg.evaluate(()=>P().chPerfect===true),`${m}: tantangan acak sempurna`);
+  await pg.click('[data-m="x"]');
+  await pg.click('[data-mn="latihan"]');await pg.click('#mdlc [data-lt="start"]');
+  const pts0=await pg.evaluate(()=>P().pts);
+  for(let k=0;k<5;k++){const a=await pg.evaluate(()=>lt.qs[lt.n].a);await pg.click(`#mdlc [data-lt="ans"][data-k="${a}"]`);await pg.click("#ltnext");}
+  ok(await pg.evaluate(p=>P().pts===p+10&&lh().streak===1,pts0),`${m}: latihan harian +10 poin, rentetan 1 hari`);
+  await pg.click('#mdlc [data-lt="start"]');for(let k=0;k<5;k++){await pg.click('#mdlc [data-lt="ans"][data-k="0"]');await pg.click("#ltnext");}
+  ok(await pg.evaluate(p=>P().pts===p+10,pts0),`${m}: latihan kedua di hari yang sama tanpa poin`);
+  await pg.click('[data-m="x"]');
+  ok(!(await wide(pg)),`${m}: tanpa horizontal scroll`);
+  ok(errs.length===0,`${m}: tanpa error JS `+errs.join("|"));
+  if(m==="s"){await pg.screenshot({path:"tests/shot-s.png",fullPage:true});}
+  await ctx.close();
+}
+
+/* 3. Pengulangan berjarak: soal salah jatuh tempo besok, benar -> jeda makin panjang */
+{
+  const {pg,ctx}=await newPage();
+  const r=await pg.evaluate(()=>{P().qd[5]=3;rvMiss(5,0);const t=today(),k="5:0",a=[rvDue().includes(k)];rvGood(k);a.push(rvs()[k].due===t+2);rvBad(k);a.push(rvs()[k].due===t+1&&rvs()[k].b===0);return a;});
+  ok(r.every(Boolean),"kotak latihan: jatuh tempo, naik kotak, turun lagi saat salah");
+  await ctx.close();
+}
+
+/* 4. Tema gelap + pengaturan grafis */
+{
+  const {pg,ctx,errs}=await newPage({colorScheme:"dark"});
+  await pg.evaluate(()=>{for(let i=0;i<4;i++)P().qd[i]=3;save();draw3();});await pg.click(".set3 summary");await pg.click('[data-gfx="ringan"]');
+  ok(await pg.evaluate(()=>gfxLite()&&JSON.parse(localStorage.getItem("peta-sirah-v2")).gfx==="ringan"),"mode grafis ringan tersimpan");
+  await pg.click('[data-mn="album"]');await pg.screenshot({path:"tests/shot-d.png"});
+  ok(errs.length===0,"gelap: tanpa error JS "+errs.join("|"));
   await ctx.close();
 }
 await browser.close();process.exit(fail?1:0);

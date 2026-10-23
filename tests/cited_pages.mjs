@@ -1,7 +1,7 @@
 // Cetak semua nomor halaman buku yang dirujuk soal/peta (untuk verifikasi ke PDF).
 import fs from "node:fs";import vm from "node:vm";
 const html=fs.readFileSync(new URL("../index.html",import.meta.url),"utf8");
-const js=html.split("<script>")[1].split("</script>")[0];
+const js=html.split("<script>").map(x=>x.split("</script>")[0]).find(x=>x.includes("var BANDS"));
 const stub={getElementById:()=>({addEventListener(){},setAttribute(){},style:{},clientWidth:360,innerHTML:""}),querySelector:()=>null,addEventListener(){}};
 const ctx={document:stub,window:{addEventListener(){}},localStorage:{getItem:()=>null,setItem(){}},Math,JSON,console};
 vm.createContext(ctx);

@@ -1,15 +1,19 @@
 /* ---------- State permainan bersama (versi utama & peta 3D) ---------- */
 var KEY="peta-sirah-v2",NQ=3;
 var UNLOCK_DEFAULT=true; /* sementara: semua stasiun terbuka (Mode belajar) sampai diubah pemain */
-var st={mode:"s",open:0,learn:UNLOCK_DEFAULT,mt:{},prog:{s:{qd:{},pts:0,tl:false},d:{qd:{},pts:0,tl:false}}};
+var st={mode:"s",open:0,learn:UNLOCK_DEFAULT,gfx:"auto",mt:{},prog:{s:{qd:{},pts:0,tl:false},d:{qd:{},pts:0,tl:false}}};
 var wrong=[],justOk={},tl={seq:[],order:[],msg:"",ok:false};
 
 function load(){
-  try{var v=JSON.parse(localStorage.getItem(KEY));if(v&&v.prog){st.prog=v.prog;st.mode=v.mode||"s";if(typeof v.learn==="boolean")st.learn=v.learn;return;}}catch(e){}
+  try{var v=JSON.parse(localStorage.getItem(KEY));if(v&&v.prog){st.prog=v.prog;st.mode=v.mode||"s";if(typeof v.learn==="boolean")st.learn=v.learn;if(v.gfx)st.gfx=v.gfx;return;}}catch(e){}
   try{var o=JSON.parse(localStorage.getItem("peta-sirah-v1"));
     if(o&&o.prog){["s","d"].forEach(function(m){var p=o.prog[m];if(!p)return;Object.keys(p.done||{}).forEach(function(i){st.prog[m].qd[i]=1;});st.prog[m].pts=p.pts||0;st.prog[m].tl=false;});st.mode=o.mode||"s";}}catch(e){}
 }
-function save(){try{localStorage.setItem(KEY,JSON.stringify({prog:st.prog,mode:st.mode,learn:st.learn}));}catch(e){}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify({prog:st.prog,mode:st.mode,learn:st.learn,gfx:st.gfx}));}catch(e){}}
+/* Grafis: "auto" (turun ke ringan bila perangkat lemah atau fps rendah), "tinggi", "ringan" */
+var GFX={low:false};
+try{GFX.low=!!(navigator.deviceMemory&&navigator.deviceMemory<=2);}catch(e){}
+function gfxLite(){return st.gfx==="ringan"||(st.gfx==="auto"&&GFX.low);}
 function P(){return st.prog[st.mode];}
 function got(i){return P().qd[i]||0;}
 function isDone(i){return got(i)>=NQ;}

@@ -166,6 +166,7 @@ function clutter(h,area,n,seed,bushCol,avoid){
 function ringHills(rad,n,hmin,hmax,col,seed){var r=seeded(seed||19);for(var i=0;i<n;i++){var a=i/n*Math.PI*2+r()*.2,d=rad*(.9+r()*.25);hill(Math.cos(a)*d,Math.sin(a)*d,18+r()*22,hmin+r()*(hmax-hmin),col,seed+i);}}
 /* partikel: hujan, debu, pasir terlempar */
 function particles(n,size,col,op,spawn,step,blend){
+  if(lite())n=Math.ceil(n/3);
   var a=new Float32Array(n*3),v=[];for(var i=0;i<n;i++){var p=spawn(i,true);a[i*3]=p.x;a[i*3+1]=p.y;a[i*3+2]=p.z;v.push(p);}
   var g=new T.BufferGeometry();g.setAttribute("position",new T.BufferAttribute(a,3));
   var m=new T.Points(g,new T.PointsMaterial({color:col,size:size,transparent:true,opacity:op,depthWrite:false,blending:blend?T.AdditiveBlending:undefined}));scene.add(m);
@@ -354,6 +355,9 @@ function autoFit(pts,dir){
   for(var k=0;k<60;k++,D*=1.09){fitCam.position.copy(L).addScaledVector(dv,D);fitCam.lookAt(L);fitCam.updateMatrixWorld();
     var ok=pts.every(function(p){v.set(p[0],p[1],p[2]).project(fitCam);return v.z<1&&Math.abs(v.x)<.6&&v.y<.72&&v.y>yMin;});if(ok)break;}
   var P=L.clone().addScaledVector(dv,D);return {p:[P.x,P.y,P.z],l:c};}
+/* layar tegak sempit: kalau tanda menyebar ke samping (sumbu x), pandang dari samping agar sebaran jadi kedalaman */
+function fitDir(pts){var x0=1e9,x1=-1e9,z0=1e9,z1=-1e9;pts.forEach(function(p){x0=Math.min(x0,p[0]);x1=Math.max(x1,p[0]);z0=Math.min(z0,p[2]);z1=Math.max(z1,p[2]);});
+  var a=cam&&cam.aspect||.5;return (a<1&&x1-x0>(z1-z0)*1.3)?[.7,1.15,.1]:[.1,1.15,.7];}
 function shotOf(sh,b){if(!sh)return sh;if(sh.pts)return autoFit(sh.pts,sh.dir);if(b&&(b.k==="jelajah"||b.k==="aksi"))return wideShot(sh);return sh;}
 function highest(h,cx,cz,r){var b={x:cx,z:cz,y:-1e9};for(var x=-r;x<=r;x+=r/12)for(var z=-r;z<=r;z+=r/12){var y=h(cx+x,cz+z);if(y>b.y)b={x:cx+x,z:cz+z,y:y};}return b;}
 /* ---- Kit tambahan ---- */
@@ -371,7 +375,7 @@ function idols(h,cx,cz,rad,n){
   return {fall:function(){items.forEach(function(it,k){var t0=performance.now()+k*90;upd.push(function(t){var kk=clamp((t-t0)/(reduceM?1:700),0,1);it.o.rotation.set(Math.sin(it.a)*ease(kk)*1.5,0,-Math.cos(it.a)*ease(kk)*1.5);return kk>=1;});});}};
 }
 function nadwah(x,y,z){var b=new T.Mesh(new T.BoxGeometry(3,1.2,2.2),std("#d8c49c"));b.position.set(x,y+.6,z);b.castShadow=b.receiveShadow=true;scene.add(b);}
-function scrollOn(x,y,z){var s=new T.Mesh(new T.CylinderGeometry(.08,.08,.5,8),std("#f3ecd8"));s.rotation.z=Math.PI/2;s.position.set(x,y,z);scene.add(s);}
+function scrollOn(x,y,z){var s=new T.Mesh(new T.CylinderGeometry(.08,.08,.5,8),std("#f3ecd8"));s.rotation.z=Math.PI/2;s.position.set(x,y,z);scene.add(s);return s;}
 function boats(list,moving){
   var items=[];list.forEach(function(p,k){var g=new T.Group();
     var hull=new T.Mesh(new T.BoxGeometry(3,.6,1.1),std("#7a5434"));hull.position.y=.2;g.add(hull);
@@ -436,7 +440,9 @@ SCN.s0=function(done){need(["makkah"],function(){
   tentField(hA,34,-30,26,14,14,3,"#e8dcc4");clutter(hA,240,300,5);caravanLine(hA,-90,8,90,14,12);
   houses(mk.x,mk.z,22,420,hB,21,function(x,z){return Math.hypot(x-mk.x,z-mk.z)<4.4||hB(x,z)>3.2;});kaabah(mk.x,hB(mk.x,mk.z),mk.z,.9);
   idols(hB,mk.x,mk.z,2.6,18);nadwah(mk.x,hB(mk.x,mk.z-6),mk.z-6);
-  done({sky:"day",shots:{gurun:shotAt(hA,34,-30,-44,14,56,2),kafilah:shotAt(hA,0,10,16,5,20,1),kabah:shotAt(hB,mk.x,mk.z,9,5,11,1),kota:shotAt(hB,mk.x,mk.z,-30,20,40,0)}});
+  var kf={x:mk.x-8,z:mk.z-30},km={x:mk.x+7,z:mk.z+27};caravanLine(hB,kf.x-14,kf.z-3,kf.x+14,kf.z+3,5,30000);tentField(hB,km.x,km.z,10,6,7,5,"#e8dcc4");
+  done({sky:"day",shots:{gurun:shotAt(hA,34,-30,-44,14,56,2),kafilah:shotAt(hA,0,10,16,5,20,1),kabah:shotAt(hB,mk.x,mk.z,9,5,11,1),kota:shotAt(hB,mk.x,mk.z,-30,20,40,0)},
+    spots:{kabah:[mk.x,hB(mk.x,mk.z)+2,mk.z],nadwah:[mk.x,hB(mk.x,mk.z-6)+2,mk.z-6],kafilah:[kf.x,hB(kf.x,kf.z)+2.4,kf.z],kemah:[km.x,hB(km.x,km.z)+2.2,km.z]}});
 });};
 SCN.s1=function(done){need(["makkah"],function(){
   var A=demZone("makkah",PL.mk,2600,.024,0,0),mk=A.P(PL.mk[0],PL.mk[1]),h=A.h,B=procZone(700,0,{relief:5,green:.25}),C=procZone(-700,0,{relief:7});
@@ -444,6 +450,7 @@ SCN.s1=function(done){need(["makkah"],function(){
   tentField(B.h,700,-10,40,24,18,7,"#e2d2b4");clutter(B.h,220,260,9,"#7d8a50");caravanLine(C.h,-790,0,-610,10,18,30000);clutter(C.h,220,200,11);
   var ab={x:mk.x+40,z:mk.z},F={fl:flockAt(ab.x,ab.z),st:stonesAt(ab.x+10,ab.z)};
   done({sky:"day",shots:{abrahah:shotAt(h,ab.x,ab.z,-30,10,26,6),kota:shotAt(h,mk.x,mk.z,-28,18,36,0),badiyah:shotAt(B.h,700,-10,-16,6,22,1),kafilah:shotAt(C.h,-700,5,14,6,20,1),kabah:shotAt(h,mk.x,mk.z,9,5,11,1)},
+    spots:{wadi:[ab.x,h(ab.x,ab.z)+2.4,ab.z],kabah:[mk.x,h(mk.x,mk.z)+2,mk.z],badiyah:[700,B.h(700,-10)+2.4,-10]},
     onShot:{abrahah:function(){on(F.fl);setTimeout(function(){on(F.st);},1400);},"*":function(){off(F.fl);off(F.st);}}});
 });};
 SCN.s2=function(done){SCN.hira(done);};
@@ -451,7 +458,8 @@ SCN.s3=function(done){need(["makkah"],function(){
   var A=demZone("makkah",PL.mk,2600,.024,0,0),mk=A.P(PL.mk[0],PL.mk[1]),h=A.h;
   houses(mk.x,mk.z,22,420,h,21,function(x,z){return Math.hypot(x-mk.x,z-mk.z)<3.6||h(x,z)>3.2;});kaabah(mk.x,h(mk.x,mk.z),mk.z,.9);
   townLamps(h,mk.x,mk.z,18,70,3);var rm={x:mk.x+6,z:mk.z-9};var g=glow(rm.x,h(rm.x,rm.z)+1.2,rm.z,"#ffcf8a",2.4,16,2.2);
-  done({sky:"night",shots:{kota_malam:shotAt(h,mk.x,mk.z,-26,16,30,0),rumah:shotAt(h,rm.x,rm.z,8,4,9,1),kabah:shotAt(h,mk.x,mk.z,8,4,10,1),lembah:shotAt(h,mk.x+30,mk.z-30,-20,8,24,2)}});
+  done({sky:"night",shots:{kota_malam:shotAt(h,mk.x,mk.z,-26,16,30,0),rumah:shotAt(h,rm.x,rm.z,8,4,9,1),kabah:shotAt(h,mk.x,mk.z,8,4,10,1),lembah:shotAt(h,mk.x+30,mk.z-30,-20,8,24,2)},
+    spots:{rumah:[rm.x,h(rm.x,rm.z)+2.2,rm.z],kabah:[mk.x,h(mk.x,mk.z)+2,mk.z]}});
 });};
 SCN.s4=function(done){need(["makkah"],function(){
   var A=demZone("makkah",PL.mk,2600,.024,0,0),mk=A.P(PL.mk[0],PL.mk[1]),h=A.h,B=procZone(700,0,{relief:4,sea:1});
@@ -466,9 +474,15 @@ SCN.s4=function(done){need(["makkah"],function(){
 SCN.s5=function(done){need(["makkah"],function(){
   var A=demZone("makkah",PL.mk,2600,.024,0,0),mk=A.P(PL.mk[0],PL.mk[1]),h=A.h;
   houses(mk.x,mk.z,22,420,h,21,function(x,z){return Math.hypot(x-mk.x,z-mk.z)<3.6||h(x,z)>3.2;});var kb=kaabah(mk.x,h(mk.x,mk.z),mk.z,.9);
-  scrollOn(mk.x,h(mk.x,mk.z)+.75,mk.z+.42);townLamps(h,mk.x,mk.z,18,22,8);
+  /* papan piagam: tergantung di DALAM Ka'bah (hlm. 119), jadi baru ditampilkan melayang di depan Ka'bah saat aksi */
+  var pg=new T.Mesh(new T.BoxGeometry(.9,.6,.06),std("#c9a46a"));pg.position.set(mk.x,h(mk.x,mk.z)+2.1,mk.z+1.6);pg.visible=false;scene.add(pg);var pgG=glow(pg.position.x,pg.position.y,pg.position.z+.2,"#ffe2a8",0,6,1.4);townLamps(h,mk.x,mk.z,18,22,8);
   var sy=highest(h,mk.x+26,mk.z+4,10);var sv={x:(sy.x+mk.x)/2+6,z:sy.z+4};
-  done({sky:"dusk",shots:{syib:shotAt(h,sv.x,sv.z,-10,4,12,1),kabah:shotAt(h,mk.x,mk.z,4,2.5,6,.8),rumah_sunyi:shotAt(h,mk.x,mk.z,22,7,22,0),kota:shotAt(h,mk.x,mk.z,-30,20,40,0)}});
+  done({sky:"dusk",shots:{syib:shotAt(h,sv.x,sv.z,-10,4,12,1),kabah:shotAt(h,mk.x,mk.z,4,2.5,6,.8),rumah_sunyi:shotAt(h,mk.x,mk.z,22,7,22,0),kota:shotAt(h,mk.x,mk.z,-30,20,40,0)},
+    spots:{syib:[sv.x,h(sv.x,sv.z)+2.2,sv.z],kabah:[mk.x,h(mk.x,mk.z)+2,mk.z]},
+    aksi:{piagam:function(A){A.target([mk.x,h(mk.x,mk.z)+2,mk.z],"Ka’bah",function(){rot();A.done();});},piagamFinish:function(){rot();}}});
+  /* piagam dimakan rayap: gulungan menyusut dan memudar */
+  function rot(){if(pg.userData.rot)return;pg.userData.rot=1;pg.visible=true;pgG.l.intensity=1.2;var t0=performance.now(),d=reduceM?1:2400;
+    upd.push(function(t){var k=clamp((t-t0)/d,0,1),r=clamp((k-.4)/.6,0,1);pg.scale.set(1-.55*r,1-.45*r,1);pg.material.color.set(r>.3?"#8a7350":"#c9a46a");pgG.l.intensity=1.2*(1-r*.6);return k>=1;});}
 });};
 SCN.s6=function(done){need(["makkah"],function(){
   var A=procZone(0,0,{relief:14,green:.55,pal:[[0,"#c8b58a"],[.4,"#8f9a62"],[.7,"#6f7c4c"],[1,"#5a5844"]]}),h=A.h,B=demZone("makkah",PL.mk,2600,.024,700,0),mk=B.P(PL.mk[0],PL.mk[1]);
@@ -483,7 +497,8 @@ SCN.s7=function(done){need(["madinah"],function(){
   tentField(h,0,10,14,40,40,5);var L=[];for(var i=0;i<40;i++){var x=(Math.random()-.5)*14,z=(Math.random()-.5)*40+10;L.push({x:x,y:h(x,z)+.8,z:z});}lamps(L,"#ffc677",1.2);
   var gap={x:-6,z:-34};lamps([{x:gap.x,y:h(gap.x,gap.z)+1,z:gap.z},{x:gap.x+2,y:h(gap.x+2,gap.z)+1,z:gap.z+1},{x:gap.x-1.5,y:h(gap.x-1.5,gap.z)+1,z:gap.z+2}],"#ffd9a0",2.4);
   var md=B.P(PL.md[0],PL.md[1]),r=seeded(17),P=[];for(i=0;i<220;i++){var px=md.x+(r()-.5)*90,pz=md.z+(r()-.5)*70;var y=B.h(px,pz);if(y<2&&fbm(px*.08,pz*.08,3)>.5)P.push({x:px,y:y,z:pz});}palms(P,17);
-  done({sky:"night",shots:{mina:shotAt(h,0,10,-6,12,40,0),aqabah:shotAt(h,gap.x,gap.z,6,4,12,1),kemah:shotAt(h,2,16,8,4,10,.5),madinah_jauh:shotAt(B.h,md.x,md.z,-30,12,40,1)}});
+  done({sky:"night",shots:{mina:shotAt(h,0,10,-6,12,40,0),aqabah:shotAt(h,gap.x,gap.z,6,4,12,1),kemah:shotAt(h,2,16,8,4,10,.5),madinah_jauh:shotAt(B.h,md.x,md.z,-30,12,40,1)},
+    spots:{kemah:[2,h(2,16)+2.2,16],aqabah:[gap.x,h(gap.x,gap.z)+2.4,gap.z]}});
 });};
 SCN.s8=function(done){need(["makkah","madinah"],function(){
   var A=demZone("makkah",PL.mk,2600,.024,0,0),mk=A.P(PL.mk[0],PL.mk[1]),h=A.h,ts=A.P(PL.ts[0],PL.ts[1]),
@@ -679,12 +694,18 @@ function camTick(t){
 }
 
 /* ---- Loop ---- */
+function lite(){return typeof gfxLite==="function"&&gfxLite();}
+/* mode grafis "auto": kalau rata-rata frame > 45 ms selama ~3 detik, turun ke ringan (tanpa bayangan, resolusi 1x) */
+var lastT0=0,fps={n:0,sum:0,t0:0};
+function fpsCheck(t,d){if(st.gfx!=="auto"||GFX.low||!d||d>500)return;if(!fps.t0)fps.t0=t;fps.n++;fps.sum+=d;
+  if(t-fps.t0>3000){if(fps.sum/fps.n>45){GFX.low=true;applyGfx();}fps={n:0,sum:0,t0:0};}}
+function applyGfx(){if(sun)sun.castShadow=!lite();resize();}
 function frame(t){
-  raf=0;if(!live)return;var dt=Math.min(64,t-(lastT||t));lastT=t;
+  raf=0;if(!live)return;var dt=Math.min(64,t-(lastT||t));lastT=t;fpsCheck(t,t-(lastT0||t));lastT0=t;
   skyTick(t);camTick(t);for(var i=upd.length-1;i>=0;i--){if(upd[i](t,dt)===true)upd.splice(i,1);}
   R.render(scene,cam);hsPlace();if(!document.hidden)raf=requestAnimationFrame(frame);
 }
-function resize(){if(!R||!host)return;var w=host.clientWidth,h=host.clientHeight;if(!w||!h)return;R.setPixelRatio(Math.min(window.devicePixelRatio||1,1.5));R.setSize(w,h,false);layoutCam();}
+function resize(){if(!R||!host)return;var w=host.clientWidth,h=host.clientHeight;if(!w||!h)return;R.setPixelRatio(lite()?1:Math.min(window.devicePixelRatio||1,1.5));R.setSize(w,h,false);layoutCam();}
 /* pusat pandang digeser ke area di atas kotak dialog, supaya objek yang diceritakan tidak tertutup */
 function layoutCam(){if(!cam||!host)return;var w=host.clientWidth,h=host.clientHeight;if(!w||!h)return;
   var dl=el&&el.querySelector(".stdlg"),d=dl?Math.min(dl.offsetHeight*.8,h*.5):0;cam.aspect=w/(h+d);cam.setViewOffset(w,h+d,0,d,w,h);cam.updateProjectionMatrix();}
@@ -747,6 +768,7 @@ function drawDlg(){
   }else{
     var nx=stI<S.length-1?stI+1:S.length;
     d.innerHTML='<div class="dnar"><span>Stasiun selesai</span></div><p class="dtx">Alhamdulillah, stasiun '+(stI+1)+' selesai. Poinmu sekarang '+P().pts+'.</p>'+
+      (typeof kartuOf==="function"&&kartuOf(stI).length?'<p class="fb good">Kartu koleksi terbuka: '+esc(kartuNames(stI))+'. Lihat di Album kartu.</p>':'')+
       '<div class="dbt"><button class="btn ghost" data-sa="replay">Ulangi kisah</button><button class="btn" data-sa="close">'+(nx<S.length?"Kembali ke peta: lanjut ke stasiun "+(nx+1):"Kembali ke peta")+'</button></div>';
   }
 }
@@ -759,7 +781,7 @@ function playBeat(){
   var b=beats[bi];if(!cur)return;hsClear();sx={pick:-1,found:{},done:false,msg:"",total:0};drawDlg();layoutCam();
   var sh=shotOf(cur.shots[b.shot]||cur.shots[Object.keys(cur.shots)[0]],b);
   if(b.k==="jelajah"||b.k==="aksi"){setupStep(b);
-    if(hs.length){var f0=hs[0].v,pts=hs.filter(function(o){return o.v.distanceTo(f0)<260;}).map(function(o){return o.v.toArray();});sh=autoFit(pts,[.1,1.15,.7]);}}
+    if(hs.length){var f0=hs[0].v,pts=hs.filter(function(o){return o.v.distanceTo(f0)<260;}).map(function(o){return o.v.toArray();});sh=autoFit(pts,fitDir(pts));}}
   var far=cam&&sh&&cam.position.distanceTo(V(sh.p))>180;
   function go(){
     if(far){cam.position.copy(V(sh.p));camA={p:V(sh.p),l:V(sh.l)};camB=null;cam.lookAt(V(sh.l));}
@@ -802,7 +824,7 @@ function open(i,h){
   if(!R){try{R=new T.WebGLRenderer({antialias:true,powerPreference:"high-performance"});}catch(e){return false;}
     R.toneMapping=T.ACESFilmicToneMapping;R.toneMappingExposure=1.05;R.shadowMap.enabled=true;R.shadowMap.type=T.PCFSoftShadowMap;cv=R.domElement;cv.className="stcv";host.appendChild(cv);}
   clearScene();scene=scene||new T.Scene();scene.fog=new T.Fog("#eadcc0",60,260);cam=new T.PerspectiveCamera(46,1,.1,2000);
-  skyNow=null;mkSky();
+  skyNow=null;mkSky();sun.castShadow=!lite();fps={n:0,sum:0,t0:0};lastT0=0;
   el.querySelector(".stt").textContent="Stasiun "+(i+1)+" · "+S[i].t;
   el.hidden=false;document.documentElement.classList.add("stg-on");resize();
   mode=isDone(i)?"done":"story";beats=stepsFor(i);bi=0;hsClear();
@@ -823,5 +845,5 @@ function close(){
   if(hooks.onClose)hooks.onClose(stI);
 }
 document.addEventListener("visibilitychange",function(){if(live&&!document.hidden&&!raf)raf=requestAnimationFrame(frame);});
-return {open:open,close:close,isOpen:function(){return !!(el&&!el.hidden);},_dbg:function(){var v=new T.Vector3();return {cam:cam.position.toArray().map(Math.round),off:cam.view,hs:hs.map(function(o){v.copy(o.v).project(cam);return v.toArray().map(function(x){return +x.toFixed(2);});})};},want:function(){return sx.want;},beats:stepsFor,step:function(){return beats[bi]&&{k:beats[bi].k||"beat",act:beats[bi].act,done:!!sx.done,found:Object.keys(sx.found||{}).length};},mode:function(){return mode;},KISAH:typeof KISAH3!=="undefined"?KISAH3:{}};
+return {open:open,close:close,isOpen:function(){return !!(el&&!el.hidden);},_dbg:function(){var v=new T.Vector3();return {shadow:!!(sun&&sun.castShadow),cam:cam.position.toArray().map(Math.round),off:cam.view,hs:hs.map(function(o){v.copy(o.v).project(cam);return v.toArray().map(function(x){return +x.toFixed(2);});})};},want:function(){return sx.want;},beats:stepsFor,step:function(){return beats[bi]&&{k:beats[bi].k||"beat",act:beats[bi].act,done:!!sx.done,found:Object.keys(sx.found||{}).length};},mode:function(){return mode;},KISAH:typeof KISAH3!=="undefined"?KISAH3:{}};
 })();

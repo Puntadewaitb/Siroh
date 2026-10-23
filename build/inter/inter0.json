@@ -1,0 +1,71 @@
+[
+ {
+  "k": "tebak",
+  "before": {
+   "s": 1,
+   "d": 2
+  },
+  "shot": "kabah",
+  "q": "Nabi Ibrahim menempatkan Hajar dan Isma’il kecil di lembah tandus dekat Baitul-Haram. Beberapa hari kemudian bekal dan air habis, padahal tidak ada mata air. Menurutmu, apa yang terjadi?",
+  "o": [
+   "Turun hujan deras berhari-hari",
+   "Mata air Zamzam memancar",
+   "Mereka pindah ke negeri Syam"
+  ],
+  "a": 1,
+  "r": "Mata air Zamzam memancar berkat karunia Allah dan menjadi sumber penghidupan mereka, yang tak pernah habis hingga sekarang.",
+  "h": "hlm. 4–5"
+ },
+ {
+  "k": "tebak",
+  "before": {
+   "s": 2,
+   "d": 4
+  },
+  "shot": "kabah",
+  "q": "Amr bin Luhay, pemimpin Khuza’ah yang dihormati, pulang dari perjalanan ke Syam. Menurutmu, apa yang ia bawa lalu ia taruh di dalam Ka’bah?",
+  "o": [
+   "Batu bangunan untuk memperbaiki Ka’bah",
+   "Kain penutup baru untuk Ka’bah",
+   "Berhala bernama Hubal"
+  ],
+  "a": 2,
+  "r": "Ia membawa Hubal dan meletakkannya di dalam Ka’bah, lalu mengajak penduduk Makkah menyekutukan Allah.",
+  "h": "hlm. 23"
+ },
+ {
+  "k": "jelajah",
+  "before": {
+   "s": 5,
+   "d": 9
+  },
+  "shot": "kota",
+  "t": "Lihat Jazirah Arab sebelum risalah. Ketuk tanda yang bersinar.",
+  "spots": [
+   [
+    "kabah",
+    "Ka’bah",
+    "Saat Makkah ditaklukkan kelak, ada 360 berhala di sekitar Ka’bah. Semuanya dihancurkan, dikeluarkan dari masjid, lalu dibakar.",
+    "hlm. 24"
+   ],
+   [
+    "nadwah",
+    "Darun Nadwah",
+    "Dibangun Qushay di sebelah utara Ka’bah, pintunya langsung ke masjid. Di sinilah pemuka Quraisy membicarakan masalah penting.",
+    "hlm. 18"
+   ],
+   [
+    "kafilah",
+    "Kafilah dagang",
+    "Perdagangan adalah sarana utama mencari nafkah. Jalur dagang hanya aman pada bulan-bulan suci, saat pasar Ukazh, Dzil-Majaz, dan Majinnah dibuka.",
+    "hlm. 36"
+   ],
+   [
+    "kemah",
+    "Perkemahan kabilah",
+    "Ikatan dalam satu kabilah sangat kuat. Di tengah jazirah ada pertanian dan penggembalaan ternak.",
+    "hlm. 36"
+   ]
+  ]
+ }
+]

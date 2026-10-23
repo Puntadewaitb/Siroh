@@ -1,4 +1,4 @@
-const V="peta-sirah-v2",FILES=["./","index.html","manifest.webmanifest","icon.svg","fonts/fonts.css"];
+const V="peta-sirah-v3",FILES=["./","index.html","manifest.webmanifest","icon.svg","fonts/fonts.css"];
 self.addEventListener("install",e=>{e.waitUntil((async()=>{
   const c=await caches.open(V);await c.addAll(FILES);
   const css=await (await fetch("fonts/fonts.css")).text();

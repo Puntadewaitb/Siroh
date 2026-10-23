@@ -68,46 +68,22 @@ for si in range(18):
         row[m]=out
     EZ[si]=row
 css=open(B+'build/css_old.txt').read()+open(B+'build/style_new.css').read()
-land_r=open(B+'mapgen/reg-land.txt').read(); land_w=open(B+'mapgen/wide-land.txt').read()
-defs='<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><path id="Lr" fill-rule="evenodd" d="%s"/><path id="Lw" fill-rule="evenodd" d="%s"/>'%(land_r,land_w)
-for c in 'abc':
-    defs+='<marker id="ma-%s" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0L10,5L0,10z" class="ma-%s"/></marker>'%(c,c)
-defs+='</defs></svg>'
-# CSS lama: ambil seluruhnya (sudah berisi <style> pembuka?) -> lihat di bawah
 head=open(B+'build/head.html').read()
-body='''<div class="wrap">
-  <header class="top">
-    <h1>Peta Sirah Nabawiyah</h1>
-    <p class="src"><a class="try3" href="peta3d.html">Coba peta 3D (prototipe) →</a></p>
-    <p class="src">Dari buku <i>Sirah Nabawiyah</i> (Ar-Rahiqul Makhtum) karya Syaikh Shafiyyurrahman Al-Mubarakfuri.</p>
-    <div class="ctrl">
-      <div class="seg" role="group" aria-label="Pilih level">
-        <button id="m-smp" aria-pressed="true">Level SMP</button>
-        <button id="m-dewasa" aria-pressed="false">Level dewasa</button>
-      </div>
-      <div class="stats" aria-live="polite"><span>Poin <b id="pts">0</b></span><span>Soal <b id="qn">0</b>/54</span><span>Stasiun <b id="cnt">0</b>/18</span></div>
-    </div>
-    <div class="bar" aria-hidden="true"><i id="bar" style="width:0%"></i></div>
-    <label class="learn"><input type="checkbox" id="learn"> Mode belajar: buka semua stasiun tanpa urutan</label>
-  </header>
-  <div class="game"><div class="boardw"><div id="board"></div></div><main id="app" aria-live="off"></main></div>
-  <section class="extras" aria-label="Lencana dan tantangan"><div id="badges"></div><details class="ovbox chbox"><summary>Tantangan acak</summary><div id="ch"></div></details></section>
-</div>
-'''
 tl=open(B+'build/tl_block.js').read()
-js=sblock+'\nvar X='+json.dumps(X,ensure_ascii=False)+';\nvar Z='+json.dumps(Z,ensure_ascii=False)+';\nvar EZ='+json.dumps(EZ,ensure_ascii=False)+';\n'+tl+'\n'+open(B+'build/maps.js').read()+'\n'+open(B+'build/challenge.js').read()+'\n'+open(B+'build/board.js').read()+'\n'+open(B+'build/quiz.js').read()+'\n'+open(B+'build/core.js').read()+'\n'+open(B+'build/app.js').read()
-out=head+'<style>\n'+css.replace('<style>','').replace('</style>','')+'</style>\n</head>\n<body>\n'+defs+'\n'+body+'<script>\n'+js+'\n</script>\n<script>if("serviceWorker" in navigator&&/^https?:/.test(location.protocol)){try{navigator.serviceWorker.register("sw.js").catch(function(){});}catch(e){}}</script>\n</body>\n</html>\n'
-open(B+'index.html','w').write(out)
-print(len(out.encode()))
-
-# ---- Prototipe peta 3D (peta3d.html): data stasiun + peta, Three.js subset, terrain tertanam ----
+# Kartu koleksi: 3 kartu per stasiun (tokoh/tempat/peristiwa); h = rujukan hlm. (tidak ditampilkan)
+KARTU=json.load(open(B+'build/kartu.json'))
+assert sorted(KARTU,key=int)==[str(i) for i in range(18)]
+for i,L in KARTU.items():
+    assert len(L)==3 and {c['k'] for c in L}=={'tokoh','tempat','peristiwa'},i
+    for c in L: assert c['n'] and c['t'] and 'hlm' not in (c['n']+c['t']).lower() and '"' not in c['t'] and c['h'].startswith('hlm. '),(i,c['n'])
+# ---- Game utama (index.html): peta 3D + timeline + adegan; data stasiun, Three.js subset, terrain tertanam ----
 import base64
 tmeta=json.load(open(B+'build/terrain/meta.json'))
 TERR={k:dict(v,src='data:image/png;base64,'+base64.b64encode(open(B+'build/terrain/%s.png'%k,'rb').read()).decode()) for k,v in tmeta.items()}
 body3='''<div class="wrap w3">
-  <header class="top3"><h1>Peta Sirah Nabawiyah</h1><p class="src">Bersumber dari buku <i>Sirah Nabawiyah</i> (Ar-Rahiqul Makhtum) karya Syaikh Shafiyyurrahman Al-Mubarakfuri.</p><p class="src">Versi 3D (uji coba) · <a href="index.html">versi utama</a></p>
+  <header class="top3"><h1>Peta Sirah Nabawiyah</h1><p class="src">Bersumber dari buku <i>Sirah Nabawiyah</i> (Ar-Rahiqul Makhtum) karya Syaikh Shafiyyurrahman Al-Mubarakfuri.</p>
     <div class="hud3"><div class="seg" role="group" aria-label="Pilih level"><button id="ms3" aria-pressed="true">SMP</button><button id="md3" aria-pressed="false">Dewasa</button></div>
-    <span>Poin <b id="pts3">0</b></span><span>Stasiun <b id="cnt3">0</b>/18</span>
+    <span>Poin <b id="pts3">0</b></span><span>Stasiun <b id="cnt3">0</b>/18</span><span title="Hari latihan berturut-turut">Rentetan <b id="stk3">0</b> hari</span>
     <label class="learn"><input type="checkbox" id="learn3"> Buka semua stasiun (Mode belajar)</label></div></header>
   <div class="m3wrap"><div id="m3" class="m3"></div>
     <div class="c3"><button data-c="me" aria-label="Ke posisiku" title="Ke posisiku">◎</button><button data-c="zin" aria-label="Perbesar" title="Perbesar">+</button><button data-c="zout" aria-label="Perkecil" title="Perkecil">−</button><button data-c="tilt" aria-label="Miring atau tegak" title="Miring/tegak">⛰</button><button data-c="all" aria-label="Lihat semua" title="Lihat semua">▣</button></div>
@@ -115,8 +91,18 @@ body3='''<div class="wrap w3">
   </div>
   <nav id="tl3" class="tl3" aria-label="Timeline stasiun sirah"></nav>
   <section id="info3" class="info3" aria-live="polite"></section>
+  <section class="menu3" aria-label="Mode bermain lain">
+    <button data-mn="latihan"><b>Latihan harian</b><small id="ltdue">5 soal</small></button>
+    <button data-mn="album"><b>Album kartu</b><small id="kcnt">0/54</small></button>
+    <button data-mn="tantangan"><b>Tantangan acak</b><small>10 soal</small></button>
+    <button data-mn="ujian"><b>Ujian urutan</b><small>stasiun akhir</small></button>
+  </section>
+  <details class="set3"><summary>Pengaturan grafis</summary>
+    <div class="seg" role="group" aria-label="Kualitas grafis"><button data-gfx="auto">Otomatis</button><button data-gfx="tinggi">Tinggi</button><button data-gfx="ringan">Ringan</button></div>
+    <p class="mut3 sm3">Sekarang: <b id="gfxnow">tinggi</b>. Mode ringan mematikan bayangan, mengurangi partikel, dan menurunkan resolusi agar lancar di HP sederhana.</p></details>
   <p class="foot3">Relief: data ketinggian Terrain Tiles (AWS Open Data; sumber antara lain SRTM, ETOPO1), ketinggian dibesarkan. Posisi tempat dan rute perkiraan, skematis.</p>
 </div>
+<div id="mdl" class="mdl" hidden><div class="mdlb" role="dialog" aria-modal="true" aria-labelledby="mdlt"><div class="mdlh"><h2 id="mdlt" tabindex="-1"></h2><button class="mdx" data-m="x" aria-label="Tutup">×</button></div><div id="mdlc" class="mdlc"></div></div></div>
 '''
 KIS={i:json.load(open(B+'build/kisah/kisah%d.json'%i)) for i in range(18) if os.path.exists(B+'build/kisah/kisah%d.json'%i)}
 for i,k in KIS.items():
@@ -136,8 +122,13 @@ for i in range(18):
         if st_['k']=='jelajah':
             for sp in st_['spots']:assert 'hlm' not in sp[2].lower() and '"' not in sp[2],(i,sp)
     IXS[i]=L
-js3=sblock+'\nvar INTER3='+json.dumps(IXS,ensure_ascii=False)+';\nvar KISAH3='+json.dumps(KIS,ensure_ascii=False)+';\n'+'\nvar X='+json.dumps(X,ensure_ascii=False)+';\nvar Z='+json.dumps(Z,ensure_ascii=False)+';\nvar EZ='+json.dumps(EZ,ensure_ascii=False)+';\n'+tl+'\n'+open(B+'build/maps.js').read()+'\n'+open(B+'build/board.js').read()+'\n'+open(B+'build/quiz.js').read()+'\n'+open(B+'build/core.js').read()+'\nvar TERR='+json.dumps(TERR)+';\n'+open(B+'build/map3d.js').read()+'\n'+open(B+'build/scene3d.js').read()+'\n'+open(B+'build/proto3d.js').read()
-css3=open(B+'build/map3d.css').read()
-out3=head.replace('<title>Peta Sirah Nabawiyah</title>','<title>Peta Sirah 3D</title>')+'<style>\n'+css.replace('<style>','').replace('</style>','')+css3+'</style>\n</head>\n<body>\n'+body3+'<script>\n'+open(B+'build/vendor/three.min.js').read()+'\n</script>\n<script>\n'+js3+'\n</script>\n</body>\n</html>\n'
-open(B+'peta3d.html','w').write(out3)
-print('peta3d.html',len(out3.encode()))
+J=lambda f:open(B+'build/'+f).read()
+js3=(sblock+'\nvar INTER3='+json.dumps(IXS,ensure_ascii=False)+';\nvar KISAH3='+json.dumps(KIS,ensure_ascii=False)+';\nvar KARTU='+json.dumps(KARTU,ensure_ascii=False)+';\n'
+  +'var X='+json.dumps(X,ensure_ascii=False)+';\nvar Z='+json.dumps(Z,ensure_ascii=False)+';\nvar EZ='+json.dumps(EZ,ensure_ascii=False)+';\n'+tl+'\n'
+  +'\n'.join(J(f) for f in ['maps.js','nodes.js','quiz.js','challenge.js','core.js','latihan.js','ujian.js','kartu.js'])
+  +'\n/* ---------- Peta ---------- */\nvar TERR='+json.dumps(TERR)+';\n'+'\n'.join(J(f) for f in ['map3d.js','scene3d.js','game.js']))
+out3=head+'<style>\n'+css.replace('<style>','').replace('</style>','')+open(B+'build/map3d.css').read()+'</style>\n</head>\n<body>\n'+body3+'<script>\n'+J('vendor/three.min.js')+'\n</script>\n<script>\n'+js3+'\n</script>\n<script>if("serviceWorker" in navigator&&/^https?:/.test(location.protocol)){try{navigator.serviceWorker.register("sw.js").catch(function(){});}catch(e){}}</script>\n</body>\n</html>\n'
+open(B+'index.html','w').write(out3)
+print('index.html',len(out3.encode()))
+# peta3d.html lama -> alihkan ke versi utama (tautan lama tetap jalan)
+open(B+'peta3d.html','w').write('<!doctype html>\n<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Peta Sirah Nabawiyah</title><meta http-equiv="refresh" content="0;url=index.html"><link rel="canonical" href="index.html"></head>\n<body><p><a href="index.html">Buka Peta Sirah Nabawiyah</a></p><script>location.replace("index.html"+location.hash);</script></body></html>\n')

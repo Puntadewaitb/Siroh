@@ -1,0 +1,59 @@
+[
+ {
+  "k": "tebak",
+  "before": {
+   "s": 1,
+   "d": 1
+  },
+  "shot": "rumah",
+  "q": "Pada hari pertama dakwah, Khadijah, Zaid bin Haritsah, dan Ali masuk Islam. Satu lagi adalah sahabat karib beliau yang kemudian mengajak banyak temannya. Menurutmu, siapa dia?",
+  "o": [
+   "Abu Thalib",
+   "Abu Bakar Ash-Shiddiq",
+   "Umar bin Al-Khaththab"
+  ],
+  "a": 1,
+  "r": "Abu Bakar Ash-Shiddiq. Berkat ajakannya, Utsman bin Affan, Az-Zubair, Abdurrahman bin Auf, Sa’d bin Abi Waqqash, dan Thalhah masuk Islam.",
+  "h": "hlm. 73–74"
+ },
+ {
+  "k": "jelajah",
+  "before": {
+   "s": 2,
+   "d": 3
+  },
+  "shot": "rumah",
+  "t": "Dakwah masih rahasia. Ketuk tanda yang bersinar.",
+  "spots": [
+   [
+    "rumah",
+    "Pertemuan diam-diam",
+    "Orang-orang masuk Islam secara sembunyi-sembunyi. Rasulullah menemui mereka dan mengajarkan agama diam-diam, karena dakwah masih dilakukan perorangan.",
+    "hlm. 74"
+   ],
+   [
+    "kabah",
+    "Ka’bah",
+    "Makkah adalah pusat agama bangsa Arab: tempat ibadah di Ka’bah sekaligus penyembahan berhala dan patung yang disucikan seluruh bangsa Arab.",
+    "hlm. 73"
+   ]
+  ]
+ },
+ {
+  "k": "tebak",
+  "before": {
+   "s": 3,
+   "d": 5
+  },
+  "shot": "lembah",
+  "q": "Saat waktu shalat tiba, Nabi dan para sahabat ingin dakwah tetap rahasia. Menurutmu, di mana mereka shalat?",
+  "o": [
+   "Di pelataran Ka’bah bersama orang banyak",
+   "Di Darun Nadwah",
+   "Di tempat terpencil, diam-diam"
+  ],
+  "a": 2,
+  "r": "Mereka pergi ke tempat yang terpencil lalu shalat secara sembunyi-sembunyi agar tidak dilihat kaumnya.",
+  "h": "hlm. 75"
+ }
+]
