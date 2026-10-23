@@ -122,7 +122,21 @@ KIS={i:json.load(open(B+'build/kisah/kisah%d.json'%i)) for i in range(18) if os.
 for i,k in KIS.items():
     for m in 's','d':
         for b in k[m]: assert b['t'] and 'hlm' not in b['t'].lower() and '"' not in b['t'],(i,m,b['t'][:40])
-js3=sblock+'\nvar KISAH3='+json.dumps(KIS,ensure_ascii=False)+';\n'+'\nvar X='+json.dumps(X,ensure_ascii=False)+';\nvar Z='+json.dumps(Z,ensure_ascii=False)+';\nvar EZ='+json.dumps(EZ,ensure_ascii=False)+';\n'+tl+'\n'+open(B+'build/maps.js').read()+'\n'+open(B+'build/board.js').read()+'\n'+open(B+'build/quiz.js').read()+'\n'+open(B+'build/core.js').read()+'\nvar TERR='+json.dumps(TERR)+';\n'+open(B+'build/map3d.js').read()+'\n'+open(B+'build/scene3d.js').read()+'\n'+open(B+'build/proto3d.js').read()
+IXS={}
+for i in range(18):
+    f=B+'build/inter/inter%d.json'%i
+    if not os.path.exists(f):continue
+    L=json.load(open(f))
+    for st_ in L:
+        assert st_['k'] in ('tebak','jelajah','aksi') and set(st_['before'])=={'s','d'},(i,st_)
+        txt=json.dumps(st_,ensure_ascii=False)
+        for fld in ('q','r','t','no'):
+            assert 'hlm' not in str(st_.get(fld,'')).lower() and '"' not in str(st_.get(fld,'')),(i,fld)
+        if st_['k']=='tebak':assert len(st_['o'])==3 and 0<=st_['a']<3,(i,st_['q'])
+        if st_['k']=='jelajah':
+            for sp in st_['spots']:assert 'hlm' not in sp[2].lower() and '"' not in sp[2],(i,sp)
+    IXS[i]=L
+js3=sblock+'\nvar INTER3='+json.dumps(IXS,ensure_ascii=False)+';\nvar KISAH3='+json.dumps(KIS,ensure_ascii=False)+';\n'+'\nvar X='+json.dumps(X,ensure_ascii=False)+';\nvar Z='+json.dumps(Z,ensure_ascii=False)+';\nvar EZ='+json.dumps(EZ,ensure_ascii=False)+';\n'+tl+'\n'+open(B+'build/maps.js').read()+'\n'+open(B+'build/board.js').read()+'\n'+open(B+'build/quiz.js').read()+'\n'+open(B+'build/core.js').read()+'\nvar TERR='+json.dumps(TERR)+';\n'+open(B+'build/map3d.js').read()+'\n'+open(B+'build/scene3d.js').read()+'\n'+open(B+'build/proto3d.js').read()
 css3=open(B+'build/map3d.css').read()
 out3=head.replace('<title>Peta Sirah Nabawiyah</title>','<title>Peta Sirah 3D</title>')+'<style>\n'+css.replace('<style>','').replace('</style>','')+css3+'</style>\n</head>\n<body>\n'+body3+'<script>\n'+open(B+'build/vendor/three.min.js').read()+'\n</script>\n<script>\n'+js3+'\n</script>\n</body>\n</html>\n'
 open(B+'peta3d.html','w').write(out3)

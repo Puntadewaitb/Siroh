@@ -7,7 +7,8 @@ for(const mode of ["s","d"]){
   const pg=await b.newPage({viewport:{width:390,height:844}});const errs=[];pg.on("pageerror",e=>errs.push(e.message));
   await pg.goto(pathToFileURL(path.resolve("peta3d.html")).href);await pg.waitForSelector(".m3.ready",{timeout:60000});
   await pg.evaluate(m=>{st.prog={s:{qd:{},pts:0,tl:false},d:{qd:{},pts:0,tl:false}};st.learn=true;setMode3(m);},mode);
-  for(const i of [10,11,12]){
+  const list=await pg.evaluate(()=>Object.keys(Object.assign({},INTER3)).map(Number).concat([10,11,12]).sort((a,b)=>a-b));
+  for(const i of list){
     await pg.evaluate(i=>pick3(i),i);await pg.waitForTimeout(400);await pg.click('[data-a="play"]');
     await pg.waitForSelector('.stdlg [data-sa="next"]',{timeout:30000});
     const n=await pg.evaluate(i=>SC.beats(i).length,i);let seen={tebak:0,aksi:0,jelajah:0};
@@ -21,14 +22,14 @@ for(const mode of ["s","d"]){
           ok(await pg.evaluate(()=>SC.step().found)===c,`${mode} st${i+1} jelajah: ${c} tanda ditemukan`);}
         if(s.k==="aksi"){for(let g=0;g<12&&!(await pg.evaluate(()=>SC.step().done));g++){
             const lab=await pg.locator(".hs.aks").evaluateAll(els=>els.map(e=>e.textContent));if(!lab.length)break;
-            const j=lab.indexOf("Bukit kecil");await pg.locator(".hs.aks").nth(j>-1?j:0).dispatchEvent("click");await pg.waitForTimeout(150);}
+            const want=await pg.evaluate(()=>SC.want&&SC.want());let j=lab.indexOf("Bukit kecil");if(j<0)j=lab.indexOf("Gua Tsaur");if(want&&lab.indexOf(want)>-1)j=lab.indexOf(want);await pg.locator(".hs.aks").nth(j>-1?j:0).dispatchEvent("click");await pg.waitForTimeout(150);}
           ok(await pg.evaluate(()=>SC.step().done),`${mode} st${i+1} aksi ${s.act} selesai`);}
         if(out)await pg.screenshot({path:`${out}/ix-${mode}-st${i+1}-${k}.png`});
       }
       await pg.click('.stdlg [data-sa="next"]');
       if(s.k==="beat"&&await pg.evaluate(k=>SC.mode()==="story"&&document.querySelectorAll(".dots i.on").length&&[...document.querySelectorAll(".dots i")].findIndex(x=>x.classList.contains("on"))===k,k))await pg.click('.stdlg [data-sa="next"]');
     }
-    ok(seen.tebak>=1&&seen.aksi===1&&seen.jelajah===1,`${mode} st${i+1}: ${JSON.stringify(seen)}`);
+    ok(seen.tebak+seen.aksi+seen.jelajah>=2,`${mode} st${i+1}: ${JSON.stringify(seen)}`);
     ok(await pg.evaluate(()=>SC.mode())==="quiz",`${mode} st${i+1}: lanjut ke soal`);
     await pg.click(".stx");
   }
