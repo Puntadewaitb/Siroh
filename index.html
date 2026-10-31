@@ -5154,16 +5154,16 @@ function chAct(a,k){
 
 /* ---------- State permainan bersama (versi utama & peta 3D) ---------- */
 var KEY="peta-sirah-v2",NQ=3;
-var UNLOCK_DEFAULT=true; /* sementara: semua stasiun terbuka (Mode belajar) sampai diubah pemain */
-var st={mode:"s",open:0,learn:UNLOCK_DEFAULT,gfx:"auto",mt:{},prog:{s:{qd:{},pts:0,tl:false},d:{qd:{},pts:0,tl:false}}};
+var UNLOCK_DEFAULT=false; /* default: stasiun terbuka berurutan; centang "Mode belajar" untuk membuka semua */
+var st={mode:"s",open:0,learn:UNLOCK_DEFAULT,lk:false,gfx:"auto",mt:{},prog:{s:{qd:{},pts:0,tl:false},d:{qd:{},pts:0,tl:false}}};
 var wrong=[],justOk={},tl={seq:[],order:[],msg:"",ok:false};
 
 function load(){
-  try{var v=JSON.parse(localStorage.getItem(KEY));if(v&&v.prog){st.prog=v.prog;st.mode=v.mode||"s";if(typeof v.learn==="boolean")st.learn=v.learn;if(v.gfx)st.gfx=v.gfx;return;}}catch(e){}
+  try{var v=JSON.parse(localStorage.getItem(KEY));if(v&&v.prog){st.prog=v.prog;st.mode=v.mode||"s";if(v.lk&&typeof v.learn==="boolean"){st.learn=v.learn;st.lk=true;}if(v.gfx)st.gfx=v.gfx;return;}}catch(e){}
   try{var o=JSON.parse(localStorage.getItem("peta-sirah-v1"));
     if(o&&o.prog){["s","d"].forEach(function(m){var p=o.prog[m];if(!p)return;Object.keys(p.done||{}).forEach(function(i){st.prog[m].qd[i]=1;});st.prog[m].pts=p.pts||0;st.prog[m].tl=false;});st.mode=o.mode||"s";}}catch(e){}
 }
-function save(){try{localStorage.setItem(KEY,JSON.stringify({prog:st.prog,mode:st.mode,learn:st.learn,gfx:st.gfx}));}catch(e){}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify({prog:st.prog,mode:st.mode,learn:st.learn,lk:st.lk,gfx:st.gfx}));}catch(e){}}
 /* Grafis: "auto" (turun ke ringan bila perangkat lemah atau fps rendah), "tinggi", "ringan" */
 var GFX={low:false};
 try{GFX.low=!!(navigator.deviceMemory&&navigator.deviceMemory<=2);}catch(e){}
@@ -6609,7 +6609,7 @@ function mdClick(e){
 
 function start3(){
   load();P3.tok=firstOpen();st.sel={i:P3.tok};
-  var lb=document.getElementById("learn3");lb.checked=st.learn;lb.addEventListener("change",function(){st.learn=lb.checked;save();draw3();});
+  var lb=document.getElementById("learn3");lb.checked=st.learn;lb.addEventListener("change",function(){st.learn=lb.checked;st.lk=true;save();draw3();});
   gfxBtns();
   var box=document.getElementById("m3");
   var ok=M3.init(box,{done:stDone3,

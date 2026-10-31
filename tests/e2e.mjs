@@ -18,8 +18,7 @@ async function playStation(pg,i){
   const {pg,ctx,errs}=await newPage();
   ok(await pg.locator(".no3").count()===1,"tanpa WebGL: pesan cadangan tampil");
   ok(await pg.locator(".sc3").count()===19,"timeline 18 stasiun + ujian");
-  await pg.uncheck("#learn3");
-  ok(await pg.locator(".sc3.lock").count()===18,"mode berurutan: 17 stasiun + ujian terkunci");
+  ok(!(await pg.isChecked("#learn3"))&&await pg.locator(".sc3.lock").count()===18,"default: terkunci berurutan (17 stasiun + ujian), Mode belajar tidak dicentang");
   await pg.click('[data-a="play"]');await pg.waitForSelector("#mdl:not([hidden])");
   ok(await pg.locator(".fbk p").count()>=3,"kilasan kisah tampil sebagai teks");
   ok(!(await pg.evaluate(()=>/hlm\./i.test(document.getElementById("mdl").innerText))),"tanpa nomor halaman");
@@ -29,6 +28,17 @@ async function playStation(pg,i){
   await pg.click('[data-m="x"]');
   ok(!(await wide(pg)),"tanpa horizontal scroll");
   ok(errs.length===0,"tanpa error JS "+errs.join("|"));
+  await ctx.close();
+}
+
+/* 1b. Mode belajar: centang membuka semua dan tersimpan; sisa default lama (learn:true tanpa lk) diabaikan */
+{
+  const {pg,ctx}=await newPage();
+  await pg.check("#learn3");
+  ok(await pg.locator(".sc3.lock").count()===0,"dicentang: semua stasiun terbuka");
+  await pg.reload();ok(await pg.isChecked("#learn3")&&await pg.locator(".sc3.lock").count()===0,"pilihan Mode belajar tetap setelah reload");
+  await pg.evaluate(()=>localStorage.setItem("peta-sirah-v2",JSON.stringify({prog:{s:{qd:{0:3},pts:12,tl:false},d:{qd:{},pts:0,tl:false}},mode:"s",learn:true})));
+  await pg.reload();ok(!(await pg.isChecked("#learn3"))&&await pg.locator(".sc3.lock").count()===17&&await pg.evaluate(()=>P().pts)===12,"data lama: kembali terkunci, progres utuh");
   await ctx.close();
 }
 

@@ -106,7 +106,7 @@ function mdClick(e){
 
 function start3(){
   load();P3.tok=firstOpen();st.sel={i:P3.tok};
-  var lb=document.getElementById("learn3");lb.checked=st.learn;lb.addEventListener("change",function(){st.learn=lb.checked;save();draw3();});
+  var lb=document.getElementById("learn3");lb.checked=st.learn;lb.addEventListener("change",function(){st.learn=lb.checked;st.lk=true;save();draw3();});
   gfxBtns();
   var box=document.getElementById("m3");
   var ok=M3.init(box,{done:stDone3,

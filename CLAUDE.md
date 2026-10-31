@@ -58,7 +58,7 @@ Build: `npm run build` (= `python3 build/assemble.py`, output `index.html` + pen
 
 ## State & UX
 - localStorage key `peta-sirah-v2` (`prog.{s,d}.qd[i]` = jumlah soal benar 0–3, `pts`, `tl`). Migrasi otomatis dari `peta-sirah-v1`.
-- Stasiun terkunci sampai stasiun sebelumnya 3/3, kecuali "Mode belajar" (`st.learn`). SEMENTARA default `UNLOCK_DEFAULT=true` di core.js: semua stasiun terbuka; pilihan pemain disimpan (`learn` di localStorage). Ubah ke `false` untuk kembali ke mode berurutan. Poin: SMP 4/soal, dewasa 8/soal, setengahnya kalau salah dulu; ujian urutan +30/+60.
+- Stasiun terkunci sampai stasiun sebelumnya 3/3, kecuali "Mode belajar" (`st.learn`). Default `UNLOCK_DEFAULT=false` (core.js): stasiun berurutan, stasiun 1 selalu terbuka. Centang "Mode belajar" membuka semua; pilihan disimpan (`learn` + `lk` di localStorage). `learn` lama tanpa `lk` (sisa default sementara "semua terbuka") diabaikan. Poin: SMP 4/soal, dewasa 8/soal, setengahnya kalau salah dulu; ujian urutan +30/+60.
 - **Hati**: 3 hati per percobaan stasiun (`MAXH`), tiap jawaban salah −1. Hati habis -> hanya stasiun itu diulang (`qd[i]=0`), set soal diundi ulang tanpa tumpang tindih dengan set sebelumnya selama bank cukup, progres stasiun lain utuh. State di `prog.{s,d}`: `set[i]` (3 indeks bank), `seen`, `hp[i]`, `fail[i]`.
 - Setelah benar: tombol "Soal berikutnya"; selesai 3 soal -> mode ulasan semua soal.
 - Layout: peta 3D di atas, timeline stasiun, panel info stasiun, menu (Latihan harian, Album kartu, Tantangan acak, Ujian urutan) yang membuka jendela `#mdl`, lalu Pengaturan grafis. `st.sel.i` = stasiun terpilih (18 = ujian, dikerjakan di jendela).
@@ -90,9 +90,8 @@ Build: `npm run build` (= `python3 build/assemble.py`, output `index.html` + pen
 
 ## Belum dikerjakan / ide lanjut
 1. Bab hlm. 578–596 belum tercakup.
-2. Kunci stasiun berurutan: `UNLOCK_DEFAULT` masih `true` (ditunda Yogi, "nanti aj").
-3. Verifikasi koordinat dengan sumber peta sirah; kemungkinan peta lokal lebih detail untuk Makkah–Mina.
-4. Uji performa di HP murah (APK) dan atur ambang mode grafis otomatis.
+2. Verifikasi koordinat dengan sumber peta sirah; kemungkinan peta lokal lebih detail untuk Makkah–Mina.
+3. Uji performa di HP murah (APK) dan atur ambang mode grafis otomatis.
 
 ## Aturan teknis yang dipegang
 - Satu file HTML, tidak ada fetch eksternal, localStorage dibungkus try/catch, layout aman di 360px (tanpa horizontal scroll), token warna terang/gelap lewat CSS variables (`--sea/--land/--coast` untuk peta).
